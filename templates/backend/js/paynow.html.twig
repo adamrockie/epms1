@@ -1,0 +1,326 @@
+{% extends "dashboard/base.html" %}
+
+{% block head %} 
+
+<style type="text/css">
+  .form-style-1 {
+      margin: 10px auto;
+      max-width: 400px;
+      padding: 20px 12px 10px 20px;
+      font: 13px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  }
+  .form-style-1 li {
+      padding: 0;
+      display: block;
+      list-style: none;
+      margin: 10px 0 0 0;
+  }
+  .form-style-1 label {
+      margin: 0 0 3px 0;
+      padding: 0px;
+      display: block;
+      font-weight: bold;
+  }
+  .form-style-1 input[type=text],
+  .form-style-1 input[type=date],
+  .form-style-1 input[type=datetime],
+  .form-style-1 input[type=number],
+  .form-style-1 input[type=search],
+  .form-style-1 input[type=time],
+  .form-style-1 input[type=url],
+  .form-style-1 input[type=email],
+  textarea,
+  select {
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      border: 1px solid #BEBEBE;
+      padding: 7px;
+      margin: 0px;
+      -webkit-transition: all 0.30s ease-in-out;
+      -moz-transition: all 0.30s ease-in-out;
+      -ms-transition: all 0.30s ease-in-out;
+      -o-transition: all 0.30s ease-in-out;
+      outline: none;
+  }
+  .form-style-1 input[type=text]:focus,
+  .form-style-1 input[type=date]:focus,
+  .form-style-1 input[type=datetime]:focus,
+  .form-style-1 input[type=number]:focus,
+  .form-style-1 input[type=search]:focus,
+  .form-style-1 input[type=time]:focus,
+  .form-style-1 input[type=url]:focus,
+  .form-style-1 input[type=email]:focus,
+  .form-style-1 textarea:focus,
+  .form-style-1 select:focus {
+      -moz-box-shadow: 0 0 8px #88D5E9;
+      -webkit-box-shadow: 0 0 8px #88D5E9;
+      box-shadow: 0 0 8px #88D5E9;
+      border: 1px solid #88D5E9;
+  }
+  .form-style-1 .field-divided {
+      width: 49%;
+  }
+  .form-style-1 .field-long {
+      width: 100%;
+  }
+  .form-style-1 .field-select {
+      width: 100%;
+  }
+  .form-style-1 .field-textarea {
+      height: 100px;
+  }
+  .form-style-1 input[type=submit], .form-style-1 input[type=button] {
+      background: #f44336;
+      padding: 8px 15px 8px 15px;
+      border: none;
+      color: #fff;
+  }
+  .form-style-1 input[type=submit]:hover, .form-style-1 input[type=button]:hover {
+      background: #e0372b;
+      box-shadow: none;
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+  }
+  .form-style-1 .required {
+      color: red;
+  }
+</style>
+
+{% endblock %}
+
+{% block title %} Pay Now {% endblock %}
+
+
+{% block top_nav %} 
+
+    {% include 'includes/top_nav.html' %}
+
+{% endblock %}
+
+
+{% block quick_profile %}
+
+    {% include 'includes/quick_profile.html' %}
+
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+    {% include 'includes/sidemenu.html' %}
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<h2>{{occupation}}</h2>
+
+<h2>{{data.firm_name}}</h2>
+
+
+
+<!--form action="payment.php" method="POST" onsubmit="makePayment()" id="payment-form">
+  <ul class="form-style-1">
+      <li>
+          <label>Firm Name <span class="required">*</span></label>
+          <input type="text" id="js-firstName" name="firstName" class="field-divided" placeholder="First" readonly/>&nbsp;
+          <label>CAC Number <span class="required">*</span></label>
+          <input type="text" id="js-lastName" name="lastName" class="field-divided" placeholder="Last" readonly/>
+      </li>
+      <li>
+          <label>Email <span class="required">*</span></label>
+          <input type="email" id="js-email" name="email" class="field-long" readonly/>
+      </li>
+      <li>
+          <label>Narration <span class="required">*</span></label>
+          <input type="text" id="js-narration" name="narration" class="field-long" readonly/>
+      </li>
+      <li>
+          <label>Amount <span class="required">*</span></label>
+          <input type="number" id="js-amount" name="amount" class="field-long" readonly/>
+      </li>
+      <li>
+          <input type="button" onclick="makePayment()" value="Pay"/>
+      </li>
+  </ul>
+</form-->
+
+<form>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+
+    <ul class="form-style-1">
+        <li>
+            <label>Firm Name <span class="required">*</span></label>
+            <input type="text" id="js-firmName" name="firmName" class="field-divided" readonly/>&nbsp;
+            <label>CAC Number <span class="required">*</span></label>
+            <input type="text" id="js-cacNumber" name="cacNumber" class="field-divided" readonly/>
+        </li>
+        <li>
+            <label>Email <span class="required">*</span></label>
+            <input type="email" id="js-email" name="email" class="field-long" readonly/>
+        </li>
+        <li>
+            <label>Narration <span class="required">*</span></label>
+            <input type="text" id="js-narration" name="narration" class="field-long" readonly/>
+        </li>
+        <li>
+            <label>Amount <span class="required">*</span></label>
+            <input type="number" id="js-amount" name="amount" class="field-long" readonly/>
+        </li>
+        <li>
+            <button type="button" onclick="payWithPaystack()"> Pay Now </button> 
+        </li>
+    </ul>
+
+    
+</form>
+
+{% endblock %}
+
+
+
+{% block footer_scripts %} 
+    <!--script>
+      function setDemoData() {
+          var obj = {
+              firstName: "{{data.firm_name}}",
+              lastName: "{{data.cac_number}}",
+              email: "{{data.firm_email}}",
+              narration: "{{data.cac_number}} Payment for New Firm Registration",
+              amount: "50000"
+          };
+          for (var propName in obj) {
+              document.querySelector('#js-' + propName).setAttribute('value', obj[propName]);
+          }
+      }
+      function makePayment() {
+          var form = document.querySelector("#payment-form");
+          var paymentEngine = RmPaymentEngine.init({
+              key: 'UzAwMDAyMDkzMzF8NDI4NTI3NDd8Nzg2MzhlNDMxNDhhMjAxNzgyZjAyYWYxNjI1YTk5N2JiOGI5NWUwNGUyYzc4OWFlZmMyOTJjNjRhY2IyYjAwOTUxNDUxZmU3MjhmNzE4YzFhMmI2ZDYwYjIzOGJiZWI0ZDY1YWM0NzA3YmZlNzEwZTVhNjllODA3NjMxNDBjYTI=',
+              customerId: form.querySelector('input[name="email"]').value,
+              firstName: form.querySelector('input[name="firstName"]').value,
+              lastName: form.querySelector('input[name="lastName"]').value,
+              email: form.querySelector('input[name="email"]').value,
+              amount: form.querySelector('input[name="amount"]').value,
+              narration: form.querySelector('input[name="narration"]').value,
+              onSuccess: function (response) {
+                  console.log('callback Successful Response', response);
+                  console.log(response);
+
+                  alert(response.paymentReference);
+
+                  /*
+                        var reference = response.paymentReference;
+                        $.ajax({
+                            url: 'curl_remita.php',
+                            method: 'POST',
+                            data:{ reference:reference },
+                            success: function(result){
+                               // window.location = "dashboard";
+                            }
+                        });
+               */     
+              },
+              onError: function (response) {
+                  console.log('callback Error Response', response);
+              },
+              onClose: function () {
+                  console.log("closed");
+              }
+          });
+          paymentEngine.showPaymentWidget();
+      }
+      window.onload = function () {
+          setDemoData();
+      };
+    </script>
+    <script type="text/javascript" src="https://remitademo.net/payment/v1/remita-pay-inline.bundle.js"></script-->
+
+
+      <script>
+
+        reg_status = "{{firm_details.registration_status}}";
+        
+
+        if(reg_status === 'approved'){
+            //alert(reg_status);
+            amount = 20000;
+            reason = 'Renewal';
+        }else{
+            amount = 50000;
+            reason = 'New Firm Registration';
+        }
+
+        function setData() {
+            var obj = {
+                firmName: "{{data.firm_name}}",
+                cacNumber: "{{data.cac_number}}",
+                email: "{{data.firm_email}}",
+                narration: "{{data.cac_number}} Payment for "+reason,
+                amount: amount
+            };
+            for (var propName in obj) {
+                document.querySelector('#js-' + propName).setAttribute('value', obj[propName]);
+            }
+        }
+
+        function payWithPaystack(){
+          var handler = PaystackPop.setup({
+            key: 'pk_test_5ccd1479b621c77c124880591e1fa3cebb7c82ce',
+            email: '{{data.firm_email}}',
+            amount: amount*100,
+            currency: "NGN",
+           // ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+            metadata: {
+               custom_fields: [
+                  {
+                      display_name: "Mobile Number",
+                      variable_name: "mobile_number",
+                      value: "+{{data.phone}}"
+                  },
+                  {
+                    display_name: "Firm Name",
+                    variable_name: "firm_name",
+                    value: "{{data.firm_name}}"
+                  },
+                  {
+                    display_name: "CAC Number",
+                    variable_name: "cac_number",
+                    value: "{{data.cac_number}}"
+                  }
+               ]
+            },
+            callback: function(response){
+                //alert('success. transaction ref is ' + response.reference);
+                //console.log(response);
+                if(response.status=='success'){
+                    var reference = response.reference;
+                    $.ajax({
+                        url: 'curl.php',
+                        method: 'POST',
+                        data:{ reference:reference },
+                        success: function(result){
+                            window.location = "dashboard";
+                        }
+                    });
+
+                }
+            },
+            onClose: function(){
+                alert('window closed');
+            }
+          });
+          handler.openIframe();
+        }
+
+
+        window.onload = function () {
+            setData();
+        };
+      </script>
+    
+{% endblock %}

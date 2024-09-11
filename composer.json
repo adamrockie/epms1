@@ -1,0 +1,26 @@
+{
+    "name": "lamidi/eloquent",
+    "description": "Sample custom eloquent orm app",
+    "type": "library",
+    "require": {
+        "illuminate/database": "^6.18",
+        "twig/twig": "^2.0",
+        "phpmailer/phpmailer": "~5.2"
+    },
+    "license": "private",
+    "authors": [
+        {
+            "name": "Lamidi Ismaila",
+            "email": "ilamidi1st@yahoo.com"
+        }
+    ],
+    "minimum-stability": "stable",
+
+    "autoload": {
+        "classmap": [
+            "Database/Models",
+            "Classes"
+         ]
+    }
+}
+

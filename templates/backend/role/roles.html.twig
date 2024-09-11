@@ -1,0 +1,306 @@
+{% extends "backend/patials/master.html" %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+    {% block headscripts %}
+
+		<!-- Datatable CSS -->
+        <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+
+    {% endblock %}
+
+{% block content %}
+
+		<!-- Page Content -->
+		<div class="content container-fluid" id="rolelist">
+		
+			<!-- Page Header -->
+			<div class="page-header">
+				<div class="row">
+					<div class="col-sm-12">
+						<h3 class="page-title">Manage Roles & Permissions</h3>
+					</div>
+				</div>
+			</div>
+			<!-- /Page Header -->
+			
+			<div class="row">
+				
+				<div class="col-sm-4 col-md-4 col-lg-4 col-xl-3">
+					<a href="#" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add_role"><i class="fa fa-plus"></i> Add Role</a>
+					<div class="roles-menu">
+						<ul>
+							{% for role in roles %}
+							<li id="row{{role.id}}">
+								<a href="javascript:void(0);" onclick="get_role_details('{{role.id}}')" data-bs-toggle="modal" data-bs-target="#view_role">{{role.name}}
+									<span class="role-action">
+										<span class="action-circle large" data-bs-toggle="modal" data-bs-target="#edit_role">
+											<i class="material-icons">edit</i>
+										</span>
+										<span class="action-circle large delete-btn" onclick="delete_role('{{role.id}}')" data-bs-toggle="modal" data-bs-target="#modal_delete_role">
+											<i class="material-icons">delete</i>
+										</span>
+									</span>
+								</a>
+							</li>
+							{% endfor %}
+
+						</ul>
+					</div>
+				</div>
+
+
+
+			</div>
+		</div>
+		<!-- /Page Content -->
+
+
+        <!-- View Role Modal -->
+		<div id="view_role" class="modal custom-modal fade" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title"> <span id="rolename"></span> Role </h5>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="form_permission">
+							
+                            <div class="form-group">
+                                <h4>Activate/Disable this Role:</h4> 
+                                <input type="checkbox" id="main_module" name="" class="check"  > 
+                                <label for="main_module" class="checktoggle">Access</label>
+                            </div>
+                            <hr>
+
+                            <h4>Permissions</h4>
+                            <hr>
+                            <div class="table-responsive">
+                                    {% for module in modules %}
+                                    <table class="table table-striped custom-table">
+                                        <h5 id="modulename">{{module.module_name|title}}</h5>
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">View</th>
+                                                <th class="text-center">Edit</th>
+                                                <th class="text-center">Create</th>
+                                                <th class="text-center">Approve</th>
+                                                <th class="text-center">Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                            
+                                            <td class="text-center">
+                                                <input type="checkbox"  name="access[{{module.module_name}}][view]" id="{{module.module_name}}_view">
+												
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox"  name="access[{{module.module_name}}][edit]" id="{{module.module_name}}_edit">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox"  name="access[{{module.module_name}}][create]" id="{{module.module_name}}_create">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox"  name="access[{{module.module_name}}][approve]" id="{{module.module_name}}_approve">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox"  name="access[{{module.module_name}}][delete]" id="{{module.module_name}}_delete">
+                                            </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+									
+	
+                                    {% endfor %}
+                            </div>
+							<input type="hidden" name="permission_id" id="permission_id">
+                            <input type="hidden" value="{{token}}" name="token" id="token">
+							<div class="submit-section">
+								<button class="btn btn-primary submit-btn">Submit</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /View Role Modal -->
+
+		
+		<!-- Add Role Modal -->
+		<div id="add_role" class="modal custom-modal fade" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Add Role</h5>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="form_add_role">
+							<div class="form-group">
+								<label>Role Name <span class="text-danger">*</span></label>
+								<input class="form-control" type="text" name="role" id="role" placeholder="Please enter a unique name for the role" required>
+							</div>
+							<input type="hidden" value="{{token}}" name="token" id="token">
+							<div class="submit-section">
+								<button class="btn btn-primary submit-btn">Submit</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Add Role Modal -->
+		
+		<!-- Edit Role Modal -->
+		<div id="edit_role" class="modal custom-modal fade" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content modal-md">
+					<div class="modal-header">
+						<h5 class="modal-title">Edit Role</h5>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="form_update_role">
+							<div class="form-group">
+								<label>Role Name <span class="text-danger">*</span></label>
+								<input class="form-control" type="text" name="role" id="erole">
+							</div>
+							<input type="hidden" name="role_id" id="erole_id">
+							<input type="hidden" value="{{token}}" name="token" id="token">
+							<div class="submit-section">
+								<button class="btn btn-primary submit-btn">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Edit Role Modal -->
+
+		<!-- Delete Role Modal -->
+		<div class="modal custom-modal fade" id="modal_delete_role" role="dialog">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="form-header">
+							<h3>Delete Role</h3>
+							<p>Are you sure want to delete?</p>
+						</div>
+						<div class="modal-btn delete-action">
+							<div class="row">
+								<div class="col-6">
+									<a href="javascript:void(0);" onclick="delete_role('true');" class="btn btn-primary continue-btn">Delete</a>
+								</div>
+								<div class="col-6">
+									<a href="javascript:void(0);" onclick="delete_role('false');" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Delete Role Modal -->
+
+{% endblock %}
+
+{% block jsscript %} 
+
+<script>
+
+	$(document).ready(function() {
+
+		//Get Role Details
+		get_role_details = function(id){
+
+		$.ajax({
+					url: 'get_role/'+id,
+					type: 'get',
+					dataType: 'json',
+					data: {id: id},
+					success: (function(data){ 
+						$('#rolename').html(data.name);
+						$('#erole').val(data.name);
+						$('#erole_id').val(data.id);
+						$('#permission_id').val(data.id);
+                        $('#main_module').attr('name', data.name);
+
+                        //All Modules List here
+                        const modules = ["users", "offices", "employees", "roles", "groups"];
+							
+                        for (var i = 0; i < modules.length; i++) {
+
+                            var module = modules[i];
+
+                            //Check if role has create permission in module
+                            module == 'users' && data.roles.users.create == "on" ? $('#'+module+'_create').prop('checked', data.roles[module].create) : $('#'+module+'_create').prop('unchecked', data.roles[module].create);
+                            module == 'offices' && data.roles.offices.create == "on" ? $('#'+module+'_create').prop('checked', data.roles[module].create) : $('#'+module+'_create').prop('unchecked', data.roles[module].create);
+                            module == 'employees' && data.roles.employees.create == "on" ? $('#'+module+'_create').prop('checked', data.roles[module].create) : $('#'+module+'_create').prop('unchecked', data.roles[module].create);
+                            module == 'roles' && data.roles.roles.create == "on" ? $('#'+module+'_create').prop('checked', data.roles[module].create) : $('#'+module+'_create').prop('unchecked', data.roles[module].create);
+                            module == 'groups' && data.roles.groups.create == "on" ? $('#'+module+'_create').prop('checked', data.roles[module].create) : $('#'+module+'_create').prop('unchecked', data.roles[module].create);
+
+                            //Check if role has approve permission in module
+                            module == 'users' && data.roles.users.approve == "on" ? $('#'+module+'_approve').prop('checked', data.roles[module].approve) : $('#'+module+'_approve').prop('unchecked', data.roles[module].approve);
+                            module == 'offices' && data.roles.offices.approve == "on" ? $('#'+module+'_approve').prop('checked', data.roles[module].approve) : $('#'+module+'_approve').prop('unchecked', data.roles[module].approve);
+                            module == 'employees' && data.roles.employees.approve == "on" ? $('#'+module+'_approve').prop('checked', data.roles[module].approve) : $('#'+module+'_approve').prop('unchecked', data.roles[module].approve);
+                            module == 'roles' && data.roles.roles.approve == "on" ? $('#'+module+'_approve').prop('checked', data.roles[module].approve) : $('#'+module+'_approve').prop('unchecked', data.roles[module].approve);
+                            module == 'groups' && data.roles.groups.approve == "on" ? $('#'+module+'_approve').prop('checked', data.roles[module].approve) : $('#'+module+'_approve').prop('unchecked', data.roles[module].approve);
+
+                            //Check if role has view permission in module
+                            module == 'users' && data.roles.users.view == "on" ? $('#'+module+'_view').prop('checked', data.roles[module].view) : $('#'+module+'_view').prop('unchecked', data.roles[module].view);
+                            module == 'offices' && data.roles.offices.view == "on" ? $('#'+module+'_view').prop('checked', data.roles[module].view) : $('#'+module+'_view').prop('unchecked', data.roles[module].view);
+                            module == 'employees' && data.roles.employees.view == "on" ? $('#'+module+'_view').prop('checked', data.roles[module].view) : $('#'+module+'_view').prop('unchecked', data.roles[module].view);
+                            module == 'roles' && data.roles.roles.view == "on" ? $('#'+module+'_view').prop('checked', data.roles[module].view) : $('#'+module+'_view').prop('unchecked', data.roles[module].view);
+                            module == 'groups' && data.roles.groups.view == "on" ? $('#'+module+'_view').prop('checked', data.roles[module].view) : $('#'+module+'_view').prop('unchecked', data.roles[module].view);
+
+                            //Check if role has edit permission in module
+                            module == 'users' && data.roles.users.edit == "on" ? $('#'+module+'_edit').prop('checked', data.roles[module].edit) : $('#'+module+'_edit').prop('unchecked', data.roles[module].edit);
+                            module == 'offices' && data.roles.offices.edit == "on" ? $('#'+module+'_edit').prop('checked', data.roles[module].edit) : $('#'+module+'_edit').prop('unchecked', data.roles[module].edit);
+                            module == 'employees' && data.roles.employees.edit == "on" ? $('#'+module+'_edit').prop('checked', data.roles[module].edit) : $('#'+module+'_edit').prop('unchecked', data.roles[module].edit);
+                            module == 'roles' && data.roles.roles.edit == "on" ? $('#'+module+'_edit').prop('checked', data.roles[module].edit) : $('#'+module+'_edit').prop('unchecked', data.roles[module].edit);
+                            module == 'groups' && data.roles.groups.edit == "on" ? $('#'+module+'_edit').prop('checked', data.roles[module].edit) : $('#'+module+'_edit').prop('unchecked', data.roles[module].edit);
+
+                            //Check if role has delete permission in module
+                            module == 'users' && data.roles.users.delete == "on" ? $('#'+module+'_delete').prop('checked', data.roles[module].delete) : $('#'+module+'_delete').prop('unchecked', data.roles[module].delete);
+                            module == 'offices' && data.roles.offices.delete == "on" ? $('#'+module+'_delete').prop('checked', data.roles[module].delete) : $('#'+module+'_delete').prop('unchecked', data.roles[module].delete);
+                            module == 'employees' && data.roles.employees.delete == "on" ? $('#'+module+'_delete').prop('checked', data.roles[module].delete) : $('#'+module+'_delete').prop('unchecked', data.roles[module].delete);
+                            module == 'roles' && data.roles.roles.delete == "on" ? $('#'+module+'_delete').prop('checked', data.roles[module].delete) : $('#'+module+'_delete').prop('unchecked', data.roles[module].delete);
+                            module == 'groups' && data.roles.groups.delete == "on" ? $('#'+module+'_delete').prop('checked', data.roles[module].delete) : $('#'+module+'_delete').prop('unchecked', data.roles[module].delete);
+
+                        }
+		
+					})       
+				});
+			};
+
+
+            $('#view_role').on('hidden.bs.modal', function () {
+                $('#view_role form')[0].reset();
+            });
+
+	});
+
+
+
+
+</script>
+<!-- Datatable JS -->
+<!--script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script>
+<script src="assets/js/dataTables.responsive.min.js"></script-->
+
+<script src="templates/backend/role/roles.js"></script>
+
+
+
+
+{% endblock %}

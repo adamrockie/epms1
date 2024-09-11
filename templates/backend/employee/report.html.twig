@@ -1,0 +1,565 @@
+{% extends "backend/patials/master.html" %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+    {% block headscripts %}
+
+    <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+    <!-- Datatable CSS -->
+    <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+
+    <style>
+        /* Preview */
+        .preview{
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            margin: 0 auto;
+            background: white;
+        }
+        
+        .preview img{
+            display: none;
+        }
+    </style>
+
+    {% endblock %}
+
+{% block content %}
+
+<div id="fakeloader-overlay" class="visible incoming">
+    <div class="loader-wrapper-outer">
+      <div class="loader-wrapper-inner">
+        <div class="loader"></div>
+      </div>
+    </div>
+</div>
+
+<!-- Page Content -->
+<div class="content container-fluid"  id="mcontents">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Report</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Report</li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+    <div class="content container-fluid">
+			<div class="row">
+				<!--div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+					<div class="card dash-widget">
+						<div class="card-body">
+							<span class="dash-widget-icon"><i class="fa fa-gg"></i></span>
+							    <div class="dash-widget-info">
+									<h3>112</h3>
+									<span>Total <br>Contracts</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3"-->
+			<!--div class="card dash-widget">
+				<div class="card-body">
+					<span class="dash-widget-icon"><i class="fa fa-handshake-o"></i></span>
+						<div class="dash-widget-info">
+						    <h3>44</h3>
+								<span>Completed Contracts</span>
+						</div>
+					</div>
+				</div>
+			</div-->
+            <div class="row align-items-center col-sm-3">
+                <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_employee"><i class="fa fa-plus"></i>Generate Report</a>
+                <div class="view-icons">
+                    <!--a href="employees" class="grid-view btn btn-link"><i class="fa fa-th"></i></a-->
+                    <!--a href="receiveable" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a-->
+                </div>
+            </div>
+		</div>
+    <!-- /Page Header -->
+    
+    
+    <!-- /Page Content -->
+
+<!-- Add Employee Modal -->
+<div id="add_employee" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Generate Report</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_add_employee" method="post" enctype="multipart/form-data">
+
+                    <div class="row">
+                        <!--div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Contract Name <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="surname" id="surname" required>
+                            </div>
+                        </div-->
+                        <!--div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Contractor <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="lastname" id="lastname" required>
+                            </div>
+                        </div-->
+                        <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="col-form-label">Type of Report <span class="text-danger">*</span></label>
+                            <select class="select" name="title" id="title" required>
+                                <option value="">Select Category...</option>
+                               <option value="Assetissuance.">Asset Issuance</option>
+                               <option value="Receivables.">Receivables</option>
+                               <option value="Inventory.">Inventory</option>
+                               <option value="Logs.">Logs</option>
+                            </select>
+                        </div>
+                    </div>
+                        <!--div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Asset Name</label>
+                                <input class="form-control" type="text" name="middlename" id="middlename">
+                            </div>
+                        </div-->
+                        <!--div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Rank <span class="text-danger">*</span></label>
+                                <select class="select" name="rank" id="rank" required>
+                                    <option value="">Select Rank...</option>
+                                    {% for rank in ranks %}
+                                    <option value="{{rank.id}}">{{rank.rank|title}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div-->
+
+                        <!--div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Grade Level <span class="text-danger">*</span></label>
+                                <select class="select" name="gl" id="gl" required>
+                                    <option value="">Select Grade Level...</option>
+                                   <option value="GL 17">GL17</option>
+                                   <option value="GL 16">GL16</option>
+                                   <option value="GL 15">GL15</option>
+                                   <option value="GL 14">GL14</option>
+                                   <option value="GL 13">GL13</option>
+                                   <option value="GL 12">GL12</option>
+                                   <option value="GL 11">GL11</option>
+                                   <option value="GL 10">GL10</option>
+                                   <option value="GL 09">GL09</option>
+                                   <option value="GL 08">GL08</option>
+                                   <option value="GL 07">GL07</option>
+                                   <option value="GL 06">GL06</option>
+                                   <option value="GL 05">GL05</option>
+                                   <option value="GL 04">GL04</option>
+                                   <option value="GL 03">GL03</option>
+                                   <option value="GL 02">GL02</option>
+                                   <option value="GL 01">GL01</option>
+                                </select>
+                            </div>
+                        </div-->
+
+                        <!--<div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Step <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="step" id="step" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">IPPIS Number<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="ippis" id="ippis" required>
+                            </div>
+                        </div>-->
+                        <!--div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Lot Number <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="file_num" id="file_num" required>
+                            </div>
+                        </div-->
+                        <!--div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Gender <span class="text-danger">*</span></label>
+                                <select class="select" name="sex" id="sex" required>
+                                    <option value="">Select Gender...</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div-->
+
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date From <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="dob" id="dob" required></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date To <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="dob" id="dob" required></div>
+                            </div>
+                        </div>
+
+                        <!--<div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date of First Appointment <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_of_1st__apt" id="date_of_1st__apt" required></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date of Confirmation <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_of_confirmation" id="date_of_confirmation" required></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date of Present Appointment <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_of_pres_appt" id="date_of_pres_appt" required></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">State of Origin <span class="text-danger">*</span></label>
+                                <select class="select" name="state_origin" id="state_origin" required>
+                                    <option value="">-- Select State of Origin --</option>
+                                    {% for state in states %}
+                                        <option value="{{state.state_id}}">{{state.state_name|title}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">LGA<span class="text-danger">*</span></label>
+                                <select class="select" name="lga" id="lga" required>
+                                    <option value="">-- Select State First --</option> 
+                                </select>
+                            </div>
+                        </div>-->
+
+                        <!--div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Official Email</label>
+                                <input class="form-control" type="text" name="official_email" id="official_email">
+                            </div>
+                        </div-->
+                        <!--<div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Personal Email</label>
+                                <input class="form-control" type="text" name="personal_email" id="personal_email">
+                            </div>
+                        </div>-->
+                        <!--div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Phone Number </label>
+                                <input class="form-control" type="text" name="phone" id="phone">
+                            </div>
+                        </div-->
+                        <!--div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Upload Documents<span class="text-danger">*</span></label>
+                                <input class="form-control" type="file" name="passport" id="passport">
+                            </div>
+                        </div-->
+                    </div>
+
+                    <input type="hidden" value="{{token}}" name="token">
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Generate Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Employee Modal -->
+
+<!-- Edit Employee Modal -->
+<div id="edit_employee" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Contract</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_edit_employee" method="post" enctype="multipart/form-data">
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Contract Name <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="surname" id="esurname" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Contractor <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="lastname" id="elastname" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">Status <span class="text-danger">*</span></label>
+                            <select class="select select_edit" name="title" id="etitle" required>
+                                <option value="">Select Status...</option>
+                               <option value="Mr.">Pending</option>
+                               <option value="Mrs.">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                        <!--<div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Middlename</label>
+                                <input class="form-control" type="text" name="middlename" id="emiddlename">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Rank <span class="text-danger">*</span></label>
+                                <select class="select select_edit" name="rank" id="erank" required>
+                                    <option value="">Select Rank...</option>
+                                    {% for rank in ranks %}
+                                    <option value="{{rank.id}}">{{rank.rank|title}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Grade Level <span class="text-danger">*</span></label>
+                                <select class="select select_edit" name="gl" id="egl" required>
+                                    <option value="">Select Grade Level...</option>
+                                   <option value="GL 17">GL 17</option>
+                                   <option value="GL 16">GL 16</option>
+                                   <option value="GL 15">GL 15</option>
+                                   <option value="GL 14">GL 14</option>
+                                   <option value="GL 13">GL 13</option>
+                                   <option value="GL 12">GL 12</option>
+                                   <option value="GL 11">GL 11</option>
+                                   <option value="GL 10">GL 10</option>
+                                   <option value="GL 09">GL 09</option>
+                                   <option value="GL 08">GL 08</option>
+                                   <option value="GL 07">GL 07</option>
+                                   <option value="GL 06">GL 06</option>
+                                   <option value="GL 05">GL 05</option>
+                                   <option value="GL 04">GL 04</option>
+                                   <option value="GL 03">GL 03</option>
+                                   <option value="GL 02">GL 02</option>
+                                   <option value="GL 01">GL 01</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Step <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="step" id="estep" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">IPPIS Number<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="ippis" id="eippis" required>
+                            </div>
+                        </div>-->
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Lot Number <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="file_num" id="efile_no" required>
+                            </div>
+                        </div>
+                        <!--<div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Gender <span class="text-danger">*</span></label>
+                                <select class="select select_edit" name="sex" id="esex" required>
+                                    <option value="">Select Gender...</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>-->
+
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date From <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="dob" id="edob" required></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date To <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="dob" id="edob" required></div>
+                            </div>
+                        </div>
+
+                        <!--<div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date of First Appointment <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_of_1st_appt" id="edate_of_1st_appt" required></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date of Confirmation <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_of_confirmation" id="edate_of_confirmation" required></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date of Present Appointment <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_of_pres_appt" id="edate_of_pres_appt" required></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">State of Origin <span class="text-danger">*</span></label>
+                                <select class="select select_edit" name="state_origin" id="estate_origin" required>
+                                    <option value="">-- Select State of Origin --</option>
+                                    {% for state in states %}
+                                        <option value="{{state.state_id}}">{{state.state_name|title}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>-->
+                        
+                        <!--div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">LGA<span class="text-danger">*</span></label>
+                                <select class="select" name="lga" id="elga" required>
+                                    <option value="">-- Select State First --</option> 
+                                </select>
+                            </div>
+                        </div-->
+                        <!--<div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Local Government</label>
+                                <input class="form-control" type="text" name="lga" id="elga" readonly>
+                            </div>
+                        </div>-->
+
+                        <!--div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Official Email</label>
+                                <input class="form-control" type="text" name="official_email" id="eofficial_email1">
+                            </div>
+                        </div-->
+                        <!--div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Personal Email</label>
+                                <input class="form-control" type="text" name="personal_email" id="epersonal_email2">
+                            </div>
+                        </div-->
+                        <!--div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Phone Number </label>
+                                <input class="form-control" type="text" name="phone" id="ephone3">
+                            </div>
+                        </div-->
+                        <!--div id="preview">
+                            <img src="uploads/profile_pic/" alt="" id="img_preview" width="100px" height="100px">
+                        </div-->
+                        <!--<div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Upload Documents <span class="text-danger">*</span></label>
+                                <input class="form-control" type="file" name="passport" id="epassport">
+                            </div>
+                        </div>-->
+                    </div>
+
+                    <input type="hidden" value="{{token}}" name="token">
+                    <input type="hidden" name="ippis" id="eeippis">
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Generate Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Employee Modal -->
+
+<!-- Delete Department Modal -->
+<div class="modal custom-modal fade" id="delete_employee" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Employee?</h3>
+                    <p>Are you sure want to delete this employee?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="javascript:void(0);" onclick="delete_office('true');" class="btn btn-primary continue-btn">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0);" onclick="delete_office('false');" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Department Modal -->
+
+
+
+{% endblock %}
+
+{% block jsscript %} 
+
+<!-- Datetimepicker JS -->
+<script src="assets/js/moment.min.js"></script>
+<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+<!-- Datatable JS -->
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script>
+<!-- Select 2 -->
+<script src="assets/backend/js/select2.full.min.js"></script>
+
+<script>
+
+    view_profile = function(id){
+        //alert(id);
+            window.location.href = "profile/"+id;
+    }   
+
+    $(document).ready(
+        function() {
+            window.FakeLoader.init( { auto_hide: true } );
+        }
+    );
+
+</script>
+
+<script src="templates/backend/employee/employee.js"></script>
+
+{% endblock %}

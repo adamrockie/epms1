@@ -1,0 +1,1422 @@
+{% extends "backend/patials/master.html" %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+    {% block headscripts %}
+
+		<link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+		<!-- Datatable CSS -->
+        <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+
+    {% endblock %}
+
+{% block content %}
+
+<div id="fakeloader-overlay" class="visible incoming">
+    <div class="loader-wrapper-outer">
+      <div class="loader-wrapper-inner">
+        <div class="loader"></div>
+      </div>
+    </div>
+</div>
+
+<!-- Page Content -->
+<div class="content container-fluid">
+    
+<!-- Page Header -->
+<div class="page-header">
+<div class="row align-items-center">
+	<div class="col">
+		<h3 class="page-title">Staff</h3>
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+			<li class="breadcrumb-item active">Staff</li>
+		</ul>
+	</div>
+</div>
+</div>
+<!-- /Page Header -->
+				
+		<div class="card mb-0">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="profile-view">
+							<div class="profile-img-wrap">
+								<div class="profile-img">
+									<img alt="" src="uploads/profile_pic/{{employee.passport}}">
+								</div>
+							</div>
+							<div class="profile-basic">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="profile-info-left">
+											<h3 class="user-name m-t-0 mb-0">{{employee.surname|title}} {{employee.lastname|title}} {{employee.middlename|title}}</h3>
+											<h5>{{employee.rank.rank}} </h5>
+											<h5>{{employee.gl}} Step: {{employee.step}}</h5>
+											<h5>Current Department Here</h5>
+											<h5>Current Posting Here</h5>
+											
+											<div>IPPIS Number : {{employee.ippis}}</div>
+											<div>File Number : {{employee.file_no}}</div>
+											<div>Date of 1st Appointment : {{employee.date_of_1st_appt|date("d/m/Y")}}</div>
+											<div>Date of Confirmation: {{employee.date_of_confirmation|date("d/m/Y")}}</div>
+											<div class="text">Date of Present Appointment: {{employee.date_of_pres_appt|date("d/m/Y")}}</div>
+											<div class="text">Status: {{employee.status|capitalize}}</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<ul class="personal-info">
+											<li>
+												<div class="title">Birthday:</div>
+												<div class="">{{employee.dob|date("d/m/Y")}}</div>
+											</li>
+											<li>
+												<div class="title">Phone:</div>
+												<div class="text"><a href="tel:{{employee.phone}}">{{employee.phone}}</a><br></div>
+											</li>
+											<li>
+												<div class="title">Official Email:</div>
+												<div class="text"> <a href="mailto:{{employee.official_email}}"> {{employee.official_email|lower}} </a><br></div>
+											</li>
+											<li>
+												<div class="title">Personal Email:</div>
+												<div class="text"> <a href="mailto:{{employee.personal_email}}"> {{employee.personal_email|lower}} </a><br></div>
+											</li>
+											<li>
+												<div class="title">Gender:</div>
+												<div class="">{{employee.sex|capitalize}}<br></div>
+											</li>
+											<li>
+												<div class="title">State of Origin:</div>
+												<div class="">{{employee.state.state_name|title}}<br></div>
+											</li>
+											<li>
+												<div class="title">LGA:</div>
+												<div class="">{{employee.lga|title}}<br></div>
+											</li>
+											<li>
+												<div class="title">Reports to:</div>
+												<div class="text">
+													<!--div class="avatar-box">
+														<div class="avatar avatar-xs">
+															<img src="assets/img/profiles/avatar-16.jpg" alt="">
+														</div>
+													</div-->
+														AuGF
+												</div>
+											</li>
+
+										</ul>
+									</div>
+								</div>
+							</div>
+							{% if role == "Superuser" %}
+							<div class="pro-edit"><a data-bs-target="#edit_employee" data-bs-toggle="modal" class="edit-icon" href="#" onclick="edit_employee('{{employee.ippis}}')"><i class="fa fa-pencil"></i></a></div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card tab-box">
+			<div class="row user-tabs">
+				<div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+					<ul class="nav nav-tabs nav-tabs-bottom">
+						<li class="nav-item"><a href="#emp_profile" data-bs-toggle="tab" class="nav-link">Profile</a></li>
+						<li class="nav-item"><a href="#emp_projects" data-bs-toggle="tab" class="nav-link active">Documents</a></li>
+						<li class="nav-item"><a href="#emp_leave" data-bs-toggle="tab" class="nav-link">Leave</a></li>
+						<li class="nav-item"><a href="#emp_discipline" data-bs-toggle="tab" class="nav-link">Discipline</a></li>
+						<li class="nav-item"><a href="#emp_history" data-bs-toggle="tab" class="nav-link">Promotion History</a></li>
+						<li class="nav-item"><a href="#emp_request" data-bs-toggle="tab" class="nav-link">Requests</a></li>
+
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<div class="tab-content" id="emergency">
+		
+			<!-- Profile Info Tab -->
+			{% include "backend/profile/patials/profile.html.twig" %}
+			<!-- /Profile Info Tab -->
+
+			<!-- Request Tab -->
+			{% include "backend/profile/patials/request.html.twig" %}
+			<!-- /Request Tab -->
+			
+			<!-- Document Tab -->
+			{% include "backend/profile/patials/document.html.twig" %}
+			<!-- /Document Tab -->
+			
+			<!-- Discipline Tab -->
+			{% include "backend/profile/patials/discipline.html.twig" %}
+			<!-- /Discipline Tab -->
+
+			<!-- History Tab -->
+			{% include "backend/profile/patials/history.html.twig" %}
+			<!-- /History Tab -->
+
+			<!-- Leave Info Tab -->
+			{% include "backend/profile/patials/leave.html.twig" %}
+			<!-- /Leave Info Tab -->
+
+		</div>
+
+	</div>
+	<!-- /Page Content -->
+				
+				<!-- Profile Modal -->
+				<div id="profile_info" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Profile Information</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="profile-img-wrap edit-img">
+												<img class="inline-block" src="assets/img/profiles/avatar-02.jpg" alt="user">
+												<div class="fileupload btn">
+													<span class="btn-text">edit</span>
+													<input class="upload" type="file">
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>First Name</label>
+														<input type="text" class="form-control" value="John">
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Last Name</label>
+														<input type="text" class="form-control" value="Doe">
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Birth Date</label>
+														<div class="cal-icon">
+															<input class="form-control datetimepicker" type="text" value="05/06/1985">
+														</div>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Gender</label>
+														<select class="select form-control">
+															<option value="male selected">Male</option>
+															<option value="female">Female</option>
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label>Address</label>
+												<input type="text" class="form-control" value="4487 Snowbird Lane">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>State</label>
+												<input type="text" class="form-control" value="New York">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Country</label>
+												<input type="text" class="form-control" value="United States">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Pin Code</label>
+												<input type="text" class="form-control" value="10523">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Phone Number</label>
+												<input type="text" class="form-control" value="631-889-3206">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Department <span class="text-danger">*</span></label>
+												<select class="select">
+													<option>Select Department</option>
+													<option>Web Development</option>
+													<option>IT Management</option>
+													<option>Marketing</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Designation <span class="text-danger">*</span></label>
+												<select class="select">
+													<option>Select Designation</option>
+													<option>Web Designer</option>
+													<option>Web Developer</option>
+													<option>Android Developer</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Reports To <span class="text-danger">*</span></label>
+												<select class="select">
+													<option>-</option>
+													<option>Wilmer Deluna</option>
+													<option>Lesley Grauer</option>
+													<option>Jeffery Lalor</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Profile Modal -->
+				
+				<!-- Personal Info Modal -->
+				<div id="personal_info_modal" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Personal Information</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form>
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Passport No</label>
+												<input type="text" class="form-control">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Passport Expiry Date</label>
+												<div class="cal-icon">
+													<input class="form-control datetimepicker" type="text">
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Tel</label>
+												<input class="form-control" type="text">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Nationality <span class="text-danger">*</span></label>
+												<input class="form-control" type="text">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Religion</label>
+												<div class="cal-icon">
+													<input class="form-control" type="text">
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Marital status <span class="text-danger">*</span></label>
+												<select class="select form-control">
+													<option>-</option>
+													<option>Single</option>
+													<option>Married</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Employment of spouse</label>
+												<input class="form-control" type="text">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>No. of children </label>
+												<input class="form-control" type="text">
+											</div>
+										</div>
+									</div>
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Personal Info Modal -->
+				
+				<!-- Next of Kin Info Modal -->
+				<div id="family_info_modal" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title"> Next of Kin Informations</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form id="add_nok">
+									<div class="form-scroll">
+										<div class="card">
+											<div class="card-body">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Name <span class="text-danger">*</span></label>
+															<input type="text" class="form-control" name="nok_names" id="nok_names">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Relationship <span class="text-danger">*</span></label>
+															<input class="form-control" type="text" name="nok_relationship" id="nok_relationship">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Date of birth <span class="text-danger">*</span></label>
+															<input class="form-control" type="text" name="nok_dob" id="nok_dob">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Phone <span class="text-danger">*</span></label>
+															<input class="form-control" type="text" name="nok_phone" id="nok_phone">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Phone 2</label>
+															<input class="form-control" type="text" name="nok_phone2" id="nok_phone2">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Email Address <span class="text-danger">*</span></label>
+															<input class="form-control" type="email" name="nok_email" id="nok_email">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Address <span class="text-danger">*</span></label>
+															<input class="form-control" type="text" name="nok_address" id="nok_address">
+														</div>
+													</div>
+													<input class="form-control" type="hidden" value="{{sid}}" name="sid" id="sid">
+												</div>
+											</div>
+										</div>
+										
+									</div>
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Next of Family Info Modal -->
+
+				<!-- Update Next of Kin Info Modal -->
+				<div id="update_family_info_modal" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title"> Update Next of Kin Informations</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form id="update_nok">
+									<div class="form-scroll">
+										<div class="card">
+											<div class="card-body">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Name <span class="text-danger">*</span></label>
+															<input type="text" class="form-control" name="nok_names" id="enok_names">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Relationship <span class="text-danger">*</span></label>
+															<input class="form-control" type="text" name="nok_relationship" id="enok_relationship">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Date of birth <span class="text-danger">*</span></label>
+															<input class="form-control" type="text" name="nok_dob" id="enok_dob">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Phone <span class="text-danger">*</span></label>
+															<input class="form-control" type="text" name="nok_phone" id="enok_phone">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Phone 2</label>
+															<input class="form-control" type="text" name="nok_phone2" id="enok_phone2">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Email Address <span class="text-danger">*</span></label>
+															<input class="form-control" type="email" name="nok_email" id="enok_email">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label>Address <span class="text-danger">*</span></label>
+															<input class="form-control" type="text" name="nok_address" id="enok_address">
+														</div>
+													</div>
+													<input class="form-control" type="hidden" value="{{sid}}" name="sid" id="esid">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Update Next of Family Info Modal -->
+				
+				<!-- Update Emergency Contact Modal -->
+				<div id="update_emergency_contact_modal" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Update Emergency Contact Details</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form id="update_emergency">
+									<div class="card">
+										<div class="card-body">
+											<h3 class="card-title">Primary Contact</h3>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Name <span class="text-danger">*</span></label>
+														<input type="text" class="form-control" name="names" id="emergency_names" required>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Relationship <span class="text-danger">*</span></label>
+														<input class="form-control" type="text" name="relationship" id="emergency_relationship" required>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Phone <span class="text-danger">*</span></label>
+														<input class="form-control" type="text" name="phone_1" id="emergency_phone_1" required>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Phone 2</label>
+														<input class="form-control" type="text" name="phone_2" id="emergency_phone_2">
+													</div>
+												</div>
+												<input class="form-control" type="hidden" value="primary contact" name="type_1" id="emergency_type_1">
+												<input class="form-control" type="hidden" value="{{sid}}" name="sid" id="sid">
+												<input class="form-control" type="hidden" value="" name="id" id="emergency_id">
+											</div>
+										</div>
+									</div>
+									
+									<div class="card">
+										<div class="card-body">
+											<h3 class="card-title">Secondary Contact</h3>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Name <span class="text-danger">*</span></label>
+														<input type="text" class="form-control" name="names_2" id="emergency_names2" required>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Relationship <span class="text-danger">*</span></label>
+														<input class="form-control" type="text" name="relationship_2" id="emergency_relationship2" required>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Phone <span class="text-danger">*</span></label>
+														<input class="form-control" type="text" name="phone_3" id="emergency_phone_12" required>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Phone 2</label>
+														<input class="form-control" type="text" name="phone_4" id="emergency_phone_22">
+													</div>
+												</div>
+												<input class="form-control" type="hidden" value="secondary contact" name="type_2" id="emergency_type_22">
+												<input class="form-control" type="hidden" value="{{sid}}" name="sid_2" id="sid_2">
+												<input class="form-control" type="hidden" value="" name="id2" id="emergency_id2">
+
+											</div>
+										</div>
+									</div>
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Update Emergency Contact Modal -->
+
+				<!-- Add Emergency Contact Modal -->
+				<div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Create Emergency Contact Details</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form id="add_emergency">
+									<div class="card">
+										<div class="card-body">
+											<h3 class="card-title">Primary Contact</h3>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Name <span class="text-danger">*</span></label>
+														<input type="text" class="form-control" name="names" id="emergency_names" required>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Relationship <span class="text-danger">*</span></label>
+														<input class="form-control" type="text" name="relationship" id="emergency_relationship" required>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Phone <span class="text-danger">*</span></label>
+														<input class="form-control" type="text" name="phone_1" id="emergency_phone_1" maxlength="14" required>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Phone 2</label>
+														<input class="form-control" type="text" name="phone_2" id="emergency_phone_2" maxlength="14">
+													</div>
+												</div>
+												<input class="form-control" type="hidden" value="primary contact" name="type_1" id="emergency_type_1">
+												<input class="form-control" type="hidden" value="{{sid}}" name="sid" id="sid">
+											</div>
+										</div>
+									</div>
+									
+									<div class="card">
+										<div class="card-body">
+											<h3 class="card-title">Secondary Contact</h3>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Name <span class="text-danger">*</span></label>
+														<input type="text" class="form-control" name="names_2" id="emergency_names2" required>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Relationship <span class="text-danger">*</span></label>
+														<input class="form-control" type="text" name="relationship_2" id="emergency_relationship2" required>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Phone <span class="text-danger">*</span></label>
+														<input class="form-control" type="text" name="phone_3" id="emergency_phone_12" required>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Phone 2</label>
+														<input class="form-control" type="text" name="phone_4" id="emergency_phone_22">
+													</div>
+												</div>
+												<input class="form-control" type="hidden" value="secondary contact" name="type_2" id="emergency_type_22">
+												<input class="form-control" type="hidden" value="{{sid}}" name="sid_2" id="sid_2">
+
+											</div>
+										</div>
+									</div>
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Add Emergency Contact Modal -->
+				
+				<!-- Education Modal -->
+				<div id="add_education_info" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title"> Add Education Informations</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form id="add_education">
+									<div class="form-scroll">
+										<div class="card">
+											<div class="card-body">
+												<h3 class="card-title">Education Informations</h3>
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<input type="text" value="" class="form-control floating" name="institution" id="institution" required>
+															<label class="focus-label">Institution</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<div class="cal-icon">
+																<input type="text" value="" class="form-control floating datetimepicker" name="start_date" id="start_date" required maxlength="4" minlength="4">
+															</div>
+															<label class="focus-label">Start Year</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<div class="cal-icon">
+																<input type="text" value="" class="form-control floating datetimepicker" name="end_date" id="end_date" required maxlength="4" minlength="4">
+															</div>
+															<label class="focus-label">End Year</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<input type="text" value="" class="form-control floating" name="qualification" id="qualification"  required>
+															<label class="focus-label">Qualification Obtained</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<input type="text" value="" class="form-control floating" name="grade" id="grade">
+															<label class="focus-label">Grade</label>
+														</div>
+													</div>
+													<input type="hidden" value="{{sid}}" name="sid" id="sid">
+												</div>
+											</div>
+										</div>
+										
+									</div>
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Education Modal -->
+
+				<!-- Update Education Modal -->
+				<div id="edit_education_info" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title"> Update Education Informations</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form id="update_education">
+									<div class="form-scroll">
+										<div class="card">
+											<div class="card-body">
+												<h3 class="card-title">Education Informations </h3>
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<input type="text" value="" class="form-control floating" name="institution" id="einstitution" required>
+															<label class="focus-label">Institution</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<div class="cal-icon">
+																<input type="text" value="" class="form-control floating datetimepicker" name="start_date" id="estart_date" required maxlength="4" minlength="4">
+															</div>
+															<label class="focus-label">Start Year</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<div class="cal-icon">
+																<input type="text" value="" class="form-control floating datetimepicker" name="end_date" id="eend_date" required maxlength="4" minlength="4">
+															</div>
+															<label class="focus-label">End Year</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<input type="text" value="" class="form-control floating" name="qualification" id="equalification"  required>
+															<label class="focus-label">Qualification Obtained</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<input type="text" value="" class="form-control floating" name="grade" id="egrade">
+															<label class="focus-label">Grade</label>
+														</div>
+													</div>
+													<input type="hidden" name="id" id="eid">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Update Education Modal -->
+
+				<!-- Training Modal -->
+				<div id="add_training_info" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title"> Add Training Informations</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form id="add_training_form" method="post" enctype="multipart/form-data">
+									<div class="form-scroll">
+										<div class="card">
+											<div class="card-body">
+												<h3 class="card-title">Training Informations</h3>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="form-group form-focus focused">
+															<input type="text" value="" class="form-control floating" name="training" id="training" required>
+															<label class="focus-label">Training Title</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<div class="cal-icon">
+																<input type="text" value="" class="form-control floating datetimepicker" name="start_date" id="start_date" required maxlength="4" minlength="4">
+															</div>
+															<label class="focus-label">Start Date</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<div class="cal-icon">
+																<input type="text" value="" class="form-control floating datetimepicker" name="end_date" id="end_date" required maxlength="4" minlength="4">
+															</div>
+															<label class="focus-label">End Date</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+													<label class="focus-label">Upload Certificate</label>
+														<div class="form-group form-focus focused">
+															<input type="file" value="" class="form-control floating" name="certificate" id="certificate"  required>
+														</div>
+														<small>Only .jpg, .jpeg, .png and .pdf not more than 1mb is accepted</small>
+													</div>
+													<div class="col-md-6">
+													<label class="focus-label">Certificate URL</label>
+														<div class="form-group form-focus focused">
+															<input type="text" value="" class="form-control floating" name="url" id="url">
+														</div>
+													</div>
+													<input type="hidden" value="{{sid}}" name="sid" id="sid">
+												</div>
+											</div>
+										</div>
+										
+									</div>
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--/Training Modal --> 
+
+				<!-- Update Training Modal -->
+				<div id="edit_training_info" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title"> Update Education Informations</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form id="update_education">
+									<div class="form-scroll">
+										<div class="card">
+											<div class="card-body">
+												<h3 class="card-title">Education Informations </h3>
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<input type="text" value="" class="form-control floating" name="institution" id="einstitution" required>
+															<label class="focus-label">Institution</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<div class="cal-icon">
+																<input type="text" value="" class="form-control floating datetimepicker" name="start_date" id="estart_date" required maxlength="4" minlength="4">
+															</div>
+															<label class="focus-label">Start Year</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<div class="cal-icon">
+																<input type="text" value="" class="form-control floating datetimepicker" name="end_date" id="eend_date" required maxlength="4" minlength="4">
+															</div>
+															<label class="focus-label">End Year</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<input type="text" value="" class="form-control floating" name="qualification" id="equalification"  required>
+															<label class="focus-label">Qualification Obtained</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group form-focus focused">
+															<input type="text" value="" class="form-control floating" name="grade" id="egrade">
+															<label class="focus-label">Grade</label>
+														</div>
+													</div>
+													<input type="hidden" name="id" id="eid">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--/ Update Training Modal --> 
+
+				<!-- Delete Training Modal -->
+				<div class="modal custom-modal fade" id="delete_training" role="dialog">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-header">
+									<h3>Delete Training?</h3>
+									<p>Are you sure want to delete this training record?</p>
+								</div>
+								<div class="modal-btn delete-action">
+									<div class="row">
+										<div class="col-6">
+											<a href="javascript:void(0);" onclick="delete_training('true');" class="btn btn-primary continue-btn">Delete</a>
+										</div>
+										<div class="col-6">
+											<a href="javascript:void(0);" onclick="delete_training('false');" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Delete Training Modal -->
+
+				<!-- Upload Docs Modal -->
+				<div id="upload_doc" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Upload a Document</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form id="doc_upload" method="post" enctype="multipart/form-data">
+
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="form-group">
+												<label class="col-form-label">Title <span class="text-danger">*</span></label>
+												<input class="form-control" type="text" name="title" id="title" required>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="col-form-label">Description </label>
+												<input class="form-control" type="text" name="description" id="description">
+											</div>
+										</div>
+
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="col-form-label">Document Type <span class="text-danger">*</span></label>
+												<select class="selectx" name="type_id" id="type_id" required>
+													<option value="">Select Document Type</option>
+													{% for doctype in doctypes %}
+													<option value="{{doctype.id}}">{{doctype.name|title}}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+										<div class="col-sm-12">
+											<div class="form-group">
+												<label class="col-form-label">Upload <span class="text-danger">*</span></label>
+												<input class="form-control" type="file" name="doc" id="doc" required>
+											</div>
+										</div>
+									</div>
+
+									<input type="hidden" value="{{sid}}" name="ippis" id="ippis" >
+									<input type="hidden" value="{{token}}" name="token" id="token" >
+
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Upload Docs Modal -->
+
+				<!-- Update Docs Modal -->
+				<div id="edit_doc" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Edit Employee</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form id="form_edit_doc" method="post" enctype="multipart/form-data">
+									
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="form-group">
+													<label class="col-form-label">Title <span class="text-danger">*</span></label>
+													<input class="form-control" type="text" name="title" id="etitle" required>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="col-form-label">Description </label>
+													<input class="form-control" type="text" name="description" id="edescription">
+												</div>
+											</div>
+	
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="col-form-label">Document Type <span class="text-danger">*</span></label>
+													<select class="select" name="type_id" id="etype_id" required>
+														<option value="">Select Document Type</option>
+														{% for doctype in doctypes %}
+														<option value="{{doctype.id}}">{{doctype.name|title}}</option>
+														{% endfor %}
+													</select>
+												</div>
+											</div>
+
+											<div id="preview">
+												<img src="uploads/profile_pic/" alt="" id="img_preview" width="100px" height="100px">
+											</div>
+
+											<div class="col-sm-12">
+												<div class="form-group">
+													<label class="col-form-label">Upload <span class="text-danger">*</span></label>
+													<input class="form-control" type="file" name="doc" id="doc">
+												</div>
+											</div>
+										</div>
+	
+										<input type="hidden" value="{{sid}}" name="ippis" id="ippis" >
+										<input type="hidden" value="{{token}}" name="token" id="token" >
+										<input type="hidden"  name="uid" id="uid" >
+
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Save</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Update Docs Modal -->
+
+				<!-- Delete Docs Modal -->
+				<div class="modal custom-modal fade" id="delete_upload" role="dialog">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-header">
+									<h3>Delete Employee?</h3>
+									<p>Are you sure want to delete this upload?</p>
+								</div>
+								<div class="modal-btn delete-action">
+									<div class="row">
+										<div class="col-6">
+											<a href="javascript:void(0);" onclick="delete_upload('true');" class="btn btn-primary continue-btn">Delete</a>
+										</div>
+										<div class="col-6">
+											<a href="javascript:void(0);" onclick="delete_upload('false');" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Delete Docs Modal -->
+
+				<!-- Image Modal -->
+				<div id="imagedisplay" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">	
+								<h5 class="modal-title" id="caption"></h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="image-wrapper">
+											<img src="" alt="" id="img_display" width="100%">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer"></div>
+						</div>
+					</div>
+				</div>
+				<!-- /Image Modal -->
+
+				<!-- Edit Employee Modal -->
+				<div id="edit_employee" class="modal custom-modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Edit Employee</h5>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form id="form_edit_employee" method="post" enctype="multipart/form-data">
+
+									<div class="col-sm-3">
+										<div class="form-group">
+											<label class="col-form-label">Grade Level <span class="text-danger">*</span></label>
+											<select class="select2" name="title" id="etitlep" required>
+												<option value="">Select Title...</option>
+											<option value="Mr.">Mr</option>
+											<option value="Mrs.">Mrs</option>
+											<option value="Miss.">Miss</option>
+											<option value="Dr.">Dr</option>
+												<option value="Alh.">Alh</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label class="col-form-label">Surname <span class="text-danger">*</span></label>
+												<input class="form-control" type="text" name="surname" id="esurname" required>
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label class="col-form-label">Lastname <span class="text-danger">*</span></label>
+												<input class="form-control" type="text" name="lastname" id="elastname" required>
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label class="col-form-label">Middlename</label>
+												<input class="form-control" type="text" name="middlename" id="emiddlename">
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="col-form-label">Rank <span class="text-danger">*</span></label>
+												<select class="select2" name="rank" id="erank" required>
+													<option value="">Select Rank...</option>
+													{% for rank in ranks %}
+													<option value="{{rank.id}}">{{rank.rank|title}}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="col-form-label">Grade Level <span class="text-danger">*</span></label>
+												<select class="select2" name="gl" id="eglp" required>
+													<option value="">Select Grade Level...</option>
+												<option value="GL 17">GL 17</option>
+												<option value="GL 16">GL 16</option>
+												<option value="GL 15">GL 15</option>
+												<option value="GL 14">GL 14</option>
+												<option value="GL 13">GL 13</option>
+												<option value="GL 12">GL 12</option>
+												<option value="GL 11">GL 11</option>
+												<option value="GL 10">GL 10</option>
+												<option value="GL 09">GL 09</option>
+												<option value="GL 08">GL 08</option>
+												<option value="GL 07">GL 07</option>
+												<option value="GL 06">GL 06</option>
+												<option value="GL 05">GL 05</option>
+												<option value="GL 04">GL 04</option>
+												<option value="GL 03">GL 03</option>
+												<option value="GL 02">GL 02</option>
+												<option value="GL 01">GL 01</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="col-form-label">Step <span class="text-danger">*</span></label>
+												<input class="form-control" type="text" name="step" id="estep" required>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="col-form-label">IPPIS Number<span class="text-danger">*</span></label>
+												<input class="form-control" type="text" name="ippis" id="eippis" required>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="col-form-label">File Number <span class="text-danger">*</span></label>
+												<input class="form-control" type="text" name="file_num" id="efile_no" required>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="col-form-label">Gender <span class="text-danger">*</span></label>
+												<select class="select2" name="sex" id="esex" required>
+													<option value="">Select Gender...</option>
+													<option value="Male">Male</option>
+													<option value="Female">Female</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="col-sm-4">  
+											<div class="form-group">
+												<label class="col-form-label">Date of Birth <span class="text-danger">*</span></label>
+												<div class="cal-icon"><input class="form-control datetimepicker" type="text" name="dob" id="edob" required></div>
+											</div>
+										</div>
+
+										<div class="col-sm-4">  
+											<div class="form-group">
+												<label class="col-form-label">Date of First Appointment <span class="text-danger">*</span></label>
+												<div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_of_1st_appt" id="edate_of_1st_appt" required></div>
+											</div>
+										</div>
+
+										<div class="col-sm-4">  
+											<div class="form-group">
+												<label class="col-form-label">Date of Confirmation <span class="text-danger">*</span></label>
+												<div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_of_confirmation" id="edate_of_confirmation" required></div>
+											</div>
+										</div>
+
+										<div class="col-sm-4">  
+											<div class="form-group">
+												<label class="col-form-label">Date of Present Appointment <span class="text-danger">*</span></label>
+												<div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date_of_pres_appt" id="edate_of_pres_appt" required></div>
+											</div>
+										</div>
+
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label class="col-form-label">State of Origin <span class="text-danger">*</span></label>
+												<select class="select2" name="state_origin" id="estate_origin" required>
+													<option value="">-- Select State of Origin --</option>
+													{% for state in states %}
+														<option value="{{state.state_id}}">{{state.state_name|title}}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+										
+										<!--div class="col-sm-4">
+											<div class="form-group">
+												<label class="col-form-label">LGA<span class="text-danger">*</span></label>
+												<select class="select" name="lga" id="elga" required>
+													<option value="">-- Select State First --</option> 
+												</select>
+											</div>
+										</div-->
+										<div class="col-sm-4">
+											<div class="form-group">
+												<label class="col-form-label">Local Government</label>
+												<input class="form-control" type="text" name="lga" id="elga" readonly>
+											</div>
+										</div>
+
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="col-form-label">Official Email</label>
+												<input class="form-control" type="text" name="official_email" id="eofficial_email1">
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="col-form-label">Personal Email</label>
+												<input class="form-control" type="text" name="personal_email" id="epersonal_email2">
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label class="col-form-label">Phone Number </label>
+												<input class="form-control" type="text" name="phone" id="ephone3">
+											</div>
+										</div>
+										<div id="preview">
+											<img src="" alt="" id="img_preview" width="100px" height="100px">
+										</div>
+										<div class="col-sm-12">
+											<div class="form-group">
+												<label class="col-form-label">Upload Passport Photograph <span class="text-danger">*</span></label>
+												<input class="form-control" type="file" name="passport" id="epassport">
+											</div>
+										</div>
+									</div>
+
+									<input type="hidden" value="{{token}}" name="token">
+									<input type="hidden" name="ippis" id="eeippis">
+
+									<div class="submit-section">
+										<button class="btn btn-primary submit-btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Edit Employee Modal -->
+				
+    <!-- /Page Content -->
+
+{% endblock %}
+
+{% block jsscript %} 
+
+<script>
+
+    $(document).ready(
+        function() {
+            window.FakeLoader.init( { auto_hide: true } );
+        }
+    );
+
+	image_display = function(title, id){
+		$("#img_display").attr("src", 'uploads/documents/'+id);
+		$("#caption").text(title);
+	}
+
+</script>
+<!-- Datetimepicker JS -->
+<script src="assets/js/moment.min.js"></script>
+<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+<!-- Datatable JS -->
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script>
+<script src="assets/js/dataTables.responsive.min.js"></script>
+
+<script src="templates/backend/profile/profile.js"></script>
+<script src="templates/backend/profile/nok.js"></script>
+<script src="templates/backend/profile/education.js"></script>
+<script src="templates/backend/profile/training.js"></script>
+<script src="templates/backend/profile/doc_upload.js"></script>
+<script src="templates/backend/profile/leave.js"></script>
+
+
+
+{% endblock %}

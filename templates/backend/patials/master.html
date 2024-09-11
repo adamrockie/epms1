@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+	<base href="/epms1/">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <meta name="description" content="OAuGF E-Registry">
+        <meta name="robots" content="noindex, nofollow">
+
+        <title>OAuGF - AMS - {% block title %} {% endblock %}</title>
+		
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+		
+		<!-- Lineawesome CSS -->
+        <link rel="stylesheet" href="assets/css/line-awesome.min.css">
+		
+		<!-- Chart CSS -->
+		<link rel="stylesheet" href="assets/plugins/morris/morris.css">
+
+		<!-- Select2 CSS -->
+		<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+		
+		<!-- Loader CSS -->
+		<link rel="stylesheet" href="assets/css/fakeloader.css">
+
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="assets/css/style.css">
+
+		<!-- Pnotify css -->
+    	<link href="assets/css/PNotifyBrightTheme.css" rel="stylesheet">
+		
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+
+        {% block headscripts %} 
+		{% endblock %}
+    </head>
+	
+    <body>
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+		
+			<!-- Header -->
+            <div class="header">
+			
+				<!-- Logo -->
+                <div class="header-left">
+                    <a href="index.html" class="logo">
+						<img src="assets/img/logo.png" width="40" height="40" alt="">
+					</a>
+                </div>
+				<!-- /Logo -->
+				
+				<a id="toggle_btn" href="javascript:void(0);">
+					<span class="bar-icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+				</a>
+				
+				<!-- Header Title -->
+                <div class="page-title-box">
+				    <h3>OAuGF Asset Management System</h3>
+                </div>
+				<!-- /Header Title -->
+				
+				<a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
+				
+                <!-- Header Menu -->
+                {% include 'backend/patials/top_navigation.html.twig' %}
+                <!-- Header Menu -->
+					
+            </div>
+			<!-- /Header -->
+			
+			<!-- Sidebar -->
+            {% include 'backend/patials/side_menu.html.twig' %}
+			<!-- /Sidebar -->
+			
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+			
+				<!-- Page Content -->
+                {% block content %} {% endblock %}
+				<!-- /Page Content -->
+
+            </div>
+			<!-- /Page Wrapper -->
+			
+        </div>
+		<!-- /Main Wrapper -->
+		
+		<!-- jQuery -->
+        <script src="assets/js/jquery-3.6.0.min.js"></script>
+
+		<!-- Select2 JS -->	
+		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+		
+		<!-- Slimscroll JS -->
+		<script src="assets/js/jquery.slimscroll.min.js"></script>
+
+		<!-- Loader -->
+		<script src="assets/js/fakeloader.min.js"></script>
+		
+		<!-- Chart JS -->
+		<!--script src="assets/plugins/morris/morris.min.js"></script>
+		<script src="assets/plugins/raphael/raphael.min.js"></script>
+		<script src="assets/js/chart.js"></script-->
+
+		<!-- Pnotify Js -->
+		<script src="assets/plugins/pnotify/PNotify.js"></script>
+		<script src="assets/plugins/pnotify/PNotifyButtons.js"></script>
+		<script src="assets/plugins/pnotify/PNotifyCallbacks.js"></script>
+		<script src="assets/plugins/pnotify/PNotifyDesktop.js"></script>
+		<script src="assets/plugins/pnotify/PNotifyConfirm.js"></script>
+		<script src="assets/plugins/pnotify/notify-event.js"></script>
+
+		<!-- Custom JS -->
+		<script src="assets/js/app.js"></script>
+
+		<!-- Custom JSScrips -->
+		{% block jsscript %} {% endblock %}
+		<!-- /Custom JSScrips -->
+		
+    </body>
+</html>

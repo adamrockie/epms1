@@ -1,0 +1,357 @@
+{% extends "backend/patials/master.html" %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+    {% block headscripts %}
+
+    <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+    <!-- Datatable CSS -->
+    <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+
+    <style>
+        /* Preview */
+        .preview{
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            margin: 0 auto;
+            background: white;
+        }
+        
+        .preview img{
+            display: none;
+        }
+    </style>
+
+    {% endblock %}
+
+{% block content %}
+
+<div id="fakeloader-overlay" class="visible incoming">
+    <div class="loader-wrapper-outer">
+      <div class="loader-wrapper-inner">
+        <div class="loader"></div>
+      </div>
+    </div>
+</div>
+
+<!-- Page Content -->
+<div class="content container-fluid"  id="mcontents">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Inventory</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Inventory</li>
+                </ul>
+            </div>
+        </div><br>
+            <div class="content container-fluid">
+			<div class="row">
+				<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+					<div class="card dash-widget">
+						<div class="card-body">
+							<span class="dash-widget-icon"><i class="fa fa-cube"></i></span>
+							    <div class="dash-widget-info">
+									<h3>{{tinventory}}</h3>
+									<span>Total <br>Inventory</span>
+								</div>
+							</div>
+						</div>
+					</div>
+			<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+			    <div class="card dash-widget">
+				    <div class="card-body">
+					    <span class="dash-widget-icon"><i class="fa fa-cube"></i></span>
+						    <div class="dash-widget-info">
+						        <h3>{{issued}}</h3>
+								<span>Total <br>Issued</span>
+						    </div>
+					</div>
+				</div>
+			</div>
+            <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+			    <div class="card dash-widget">
+				    <div class="card-body">
+					    <span class="dash-widget-icon"><i class="fa fa-cube"></i></span>
+						    <div class="dash-widget-info">
+						        <h3>{{nissued}}</h3>
+								<span>Total <br>Not Issued</span>
+						    </div>
+					</div>
+				</div>
+			</div>
+            <div class="col-auto float-end ms-auto">
+                <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_employee"><i class="fa fa-plus"></i> Add Asset</a>
+                <div class="view-icons">
+                    <!--a href="employees" class="grid-view btn btn-link"><i class="fa fa-th"></i></a-->
+                    <a href="inventory" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table datatable" id="staff_table">
+                    <thead>
+                        <tr>
+                            
+                            <th>Inventory</th>
+                            <th>Warranty</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th class="text-end no-sort">Action</th>
+                        </tr>
+                    </thead>
+                   <tbody>
+                    {% for items in inventory %}
+                        <tr>
+                            <td>{{items.inventory}}</td>
+                            <td>{{items.warranty}}</td>
+                            <td>{{items.amount}}</td>
+                            <td>{{items.status}}</td>
+                            <td>{{items.date}}</td>
+                             <td class="text-end">
+                                <div class="dropdown dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <!--a class="dropdown-item" href="javascript:void(0);"  onclick="view_profile('{{items.id}}')"><i class="fa fa-eye m-r-5"></i> More Details</a-->
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_inventory" onclick="edit_inventory({{items.id}})"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                   </tbody>
+                </table>
+
+            {#% include '/backend/employee/pagination.html.twig'  08131956314 1960 %#}
+                           
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Employee Modal -->
+<div id="add_employee" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Asset</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_add_employee" method="post" enctype="multipart/form-data">
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Inventory <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="inventory" id="inventory" placeholder="name" required>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Amount <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="amount" id="amount" placeholder="Enter Amount" required>
+                            </div>
+                        </div>
+                    
+                        
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Status <span class="text-danger">*</span></label>
+                            <select class="select" name="status" id="status" required>
+                                <option value="">Select Status...</option>
+                               <option value="Issued">Issued</option>
+                               <option value="Not issued">Not Issued</option>
+                            </select>
+                        </div>
+                    </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Warranty <span class="text-danger">*</span></label>
+                                <select class="select" name="warranty" id="warranty" required>
+                                    <option value="">Select...</option>
+                                    <option value="12months">12 Months</option>
+                                    <option value="24months">24 Months</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date<span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date" id="date" required></div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Upload Asset<span class="text-danger">*</span></label>
+                                <input class="form-control" type="file" name="upload" id="upload">
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" value="{{token}}" name="token">
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Employee Modal -->
+
+<!-- Edit Inventory Modal -->
+<div id="edit_inventory" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Asset</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_edit_inventory" method="post" enctype="multipart/form-data">
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Inventory <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="inventory" id="einventory" required>
+                            </div>
+                        </div>
+                          
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Status <span class="text-danger">*</span></label>
+                                <select class="select_edit" name="status" id="estatus" required>
+                                    <option value="">Select...</option>
+                                    <option value="Issued">Issued</option>
+                                    <option value="Not issued">Not Issued</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Warranty <span class="text-danger">*</span></label>
+                                <select class="select_edit" name="warranty" id="ewarranty" required>
+                                    <option value="">Select...</option>
+                                    <option value="12months">12 Months</option>
+                                    <option value="24months">24 Months</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date" id="edate" required></div>
+                            </div>
+                        </div>
+
+                       
+                        <div id="preview">
+                            <img src="uploads/inventory/" alt="" id="img_preview" width="100px" height="100px">
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Upload Asset <span class="text-danger">*</span></label>
+                                <input class="form-control" type="file" name="upload" id="eupload">
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" value="{{token}}" name="token">
+                    <input type="hidden" name="ippis" id="eeippis">
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Employee Modal -->
+
+<!-- Delete Department Modal -->
+<div class="modal custom-modal fade" id="delete_employee" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Asset?</h3>
+                    <p>Are you sure want to delete this asset?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="javascript:void(0);" onclick="delete_office('true');" class="btn btn-primary continue-btn">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0);" onclick="delete_office('false');" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Department Modal -->
+
+
+
+{% endblock %}
+
+{% block jsscript %} 
+
+<!-- Datetimepicker JS -->
+<script src="assets/js/moment.min.js"></script>
+<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+<!-- Datatable JS -->
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script>
+<!-- Select 2 -->
+<script src="assets/backend/js/select2.full.min.js"></script>
+
+<script>
+
+    view_profile = function(id){
+        //alert(id);
+            window.location.href = "profile/"+id;
+    }   
+
+    $(document).ready(
+        function() {
+            window.FakeLoader.init( { auto_hide: true } );
+        }
+    );
+
+</script>
+
+<script src="templates/backend/employee/inventory.js"></script>
+
+{% endblock %}

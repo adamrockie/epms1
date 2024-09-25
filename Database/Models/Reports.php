@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class Receiveable extends Model
+class Reports extends Model
 {
     
    /**
@@ -14,7 +14,7 @@ class Receiveable extends Model
     * @var string
     */
     //use SoftDeletes; 
-    protected $table = "receivable";
+    protected $table = "reports";
    /**
     * The attributes that are mass assignable.
     *

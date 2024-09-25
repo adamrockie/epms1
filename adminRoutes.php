@@ -57,6 +57,10 @@ $router->map('GET','/report',  function( ) {
     require __DIR__ . '/controller/backend/employee/report.php';
 } , 'report');
 
+$router->map('POST','/postreport',  function( ) {
+    require __DIR__ . '/controller/backend/employee/postreport.php';
+} , 'postreport');
+
 $router->map('GET','/employees',  function( ) {
     require __DIR__ . '/controller/backend/employee/employees.php';
 } , 'employees');

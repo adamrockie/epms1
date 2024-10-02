@@ -189,6 +189,14 @@ $(document).ready(function() {
          theme: "classic"
     });
     
+    $(".select").select2({
+        dropdownParent: $("#gen_report_form"),
+        allowClear: false,
+         width: '100%',
+         theme: "classic"
+    });
+    
+    
     $(".select_edit").select2({
     dropdownParent: $("#edit_inventory"),
     allowClear: false,

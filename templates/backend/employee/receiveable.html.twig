@@ -93,17 +93,18 @@
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-					    <div class="card dash-widget">
-						    <div class="card-body">
-							    <span class="dash-widget-icon"><i class="fa fa-book"></i></span>
-							        <div class="dash-widget-info">
-									<h3></h3>
-									<!--span>Generate <br>Report</span-->
-                                    <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#report"><i></i>Generate Report</a>
-								    </div>
-							</div>
-						</div>
-					</div>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#report">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-book"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>***</h3>
+                                    <span>Generate Report</span>
+                                </div>
+                        </div>
+                    </div>
+                </a>
+			</div>
         </div>
 	</div>
     <!-- /Page Header -->
@@ -370,31 +371,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form_add_employee" method="post" enctype="multipart/form-data">
+                <form id="gen_report_form" action="recgenreport" method="post">
                     <div class="row">
 
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Contractor <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="surname" id="surname" required>
+                                <label class="col-form-label">Contractor <span class="text-danger"></span></label>
+                                <input class="form-control" type="text" name="contractor" id="contractor">
                             </div>
                         </div>
-                        <!--div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-form-label">Lastname <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="lastname" id="lastname" required>
-                            </div>
-                        </div-->
-                        <!--div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-form-label">Asset Name</label>
-                                <input class="form-control" type="text" name="middlename" id="middlename">
-                            </div>
-                        </div-->
                          <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="col-form-label">Status <span class="text-danger">*</span></label>
-                                <select class="select" name="state_origin" id="state_origin" required>
+                                <select class="selectxx" name="status" id="status" required>
                                     <option value="">-- Select Status --</option>
                                     <option value="pending">Pending</option>
                                     <option value="completed">Completed</option>
@@ -405,13 +394,13 @@
                         <div class="col-sm-6">  
                             <div class="form-group">
                                 <label class="col-form-label">Date From <span class="text-danger">*</span></label>
-                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="dob" id="dob" required></div>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="from" id="from" required></div>
                             </div>
                         </div>
                         <div class="col-sm-4">  
                             <div class="form-group">
                                 <label class="col-form-label">Date To <span class="text-danger">*</span></label>
-                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="dob" id="dob" required></div>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="to" id="to" required></div>
                             </div>
                         </div>
                         

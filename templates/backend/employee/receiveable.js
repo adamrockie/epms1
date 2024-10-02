@@ -188,7 +188,14 @@ $(document).ready(function() {
     
     
     $(".select").select2({
-        dropdownParent: $("#add_receivable"),
+        dropdownParent: $("#add_employee"),
+        allowClear: false,
+         width: '100%',
+         theme: "classic"
+    });
+
+    $(".selectxx").select2({
+        dropdownParent: $("#gen_report_form"),
         allowClear: false,
          width: '100%',
          theme: "classic"

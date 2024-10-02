@@ -11,9 +11,7 @@ use Classes\User;
 use Classes\Token;
 use Classes\Session;
 use Database\Models\Employees;
-use Database\Models\Offices;
-use Database\Models\Ranks;
-use Database\Models\States;
+
 
 $user = new User();
 $sessionName  = Config::get('session/session_name');

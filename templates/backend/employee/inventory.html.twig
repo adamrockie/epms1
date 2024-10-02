@@ -93,16 +93,17 @@
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#report">
 				<div class="card dash-widget">
 					<div class="card-body">
 						<span class="dash-widget-icon"><i class="fa fa-book"></i></span>
 							<div class="dash-widget-info">
-								<h3></h3>
-								<!--span>Generate <br>Report</span-->
-                                <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#report"><i></i>Generate Report</a>
+								<h3>***</h3>
+								<span>Generate Report</span>
 							</div>
 					</div>
 				</div>
+            </a>
 			</div>
         </div>
     </div>
@@ -345,28 +346,22 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form_add_employee" method="post" enctype="multipart/form-data">
+                <form id="gen_report_form" action="invgenreport" method="post">
                     <div class="row">
                     
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Inventory <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="surname" id="surname" required>
+                                <label class="col-form-label">Inventory Name <span class="text-danger"></span></label>
+                                <input class="form-control" type="text" name="inventory_name" id="inventory_name">
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label class="col-form-label">Amount <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="lastname" id="lastname" required>
+                                <label class="col-form-label">Amount <span class="text-danger"></span></label>
+                                <input class="form-control" type="number" name="amount" id="amount">
                             </div>
                         </div>
-                        <!--div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-form-label">Asset Name</label>
-                                <input class="form-control" type="text" name="middlename" id="middlename">
-                            </div>
-                        </div-->
-                        <div class="col-sm-6">
+                        <div class="col-sm-8">
                         <div class="form-group">
                             <label class="col-form-label">Status <span class="text-danger">*</span></label>
                             <select class="select" name="status" id="status" required>
@@ -377,20 +372,21 @@
                         </div>
                     </div>
                        
-                        <div class="col-sm-4">  
+                        <div class="col-sm-6">  
                             <div class="form-group">
                                 <label class="col-form-label">Date From <span class="text-danger">*</span></label>
-                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="dob" id="dob" required></div>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="from" id="from" required></div>
                             </div>
                         </div>
-                        <div class="col-sm-4">  
+                        <div class="col-sm-6">  
                             <div class="form-group">
                                 <label class="col-form-label">Date To <span class="text-danger">*</span></label>
-                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="dob" id="dob" required></div>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="to" id="to" required></div>
                             </div>
                         </div>
                     </div>    
                     <input type="hidden" value="{{token}}" name="token">
+                    <input type="hidden" value="inventory" name="category">
 
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn">Generate</button>

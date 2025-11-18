@@ -1,0 +1,274 @@
+{% extends "backend/patials/master.html" %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+    {% block headscripts %}
+
+    <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+    <!-- Datatable CSS -->
+    <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+
+    <style>
+        /* Preview */
+        .preview{
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            margin: 0 auto;
+            background: white;
+        }
+        
+        .preview img{
+            display: none;
+        }
+    </style>
+
+    {% endblock %}
+
+{% block content %}
+
+<div id="fakeloader-overlay" class="visible incoming">
+    <div class="loader-wrapper-outer">
+      <div class="loader-wrapper-inner">
+        <div class="loader"></div>
+      </div>
+    </div>
+</div>
+
+<!-- Page Content -->
+<div class="content container-fluid"  id="mcontents">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Report</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Report</li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+    <div class="content container-fluid">
+			<div class="row">
+				<!--div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+					<div class="card dash-widget">
+						<div class="card-body">
+							<span class="dash-widget-icon"><i class="fa fa-gg"></i></span>
+							    <div class="dash-widget-info">
+									<h3>112</h3>
+									<span>Total <br>Contracts</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3"-->
+			<!--div class="card dash-widget">
+				<div class="card-body">
+					<span class="dash-widget-icon"><i class="fa fa-handshake-o"></i></span>
+						<div class="dash-widget-info">
+						    <h3>44</h3>
+								<span>Completed Contracts</span>
+						</div>
+					</div>
+				</div>
+			</div-->
+            <div class="row align-items-center col-sm-3">
+                <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_employee"><i class="fa fa-plus"></i>Generate Report</a>
+                <div class="view-icons">
+                    <!--a href="employees" class="grid-view btn btn-link"><i class="fa fa-th"></i></a-->
+                    <!--a href="receiveable" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a-->
+                </div>
+            </div>
+		</div>
+    <!-- /Page Header -->
+    
+    
+    <!-- /Page Content -->
+
+<!-- Add Employee Modal -->
+<div id="add_employee" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Generate Report</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_add_employee" method="post">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="col-form-label">Type of Report <span class="text-danger">*</span></label>
+                            <select class="select" name="category" id="category" required>
+                                <option value="">Select Category...</option>
+                               <option value="Assetissuance.">Asset Issuance</option>
+                               <option value="Receivables">Receivables</option>
+                               <option value="Inventory">Inventory</option>
+                               <option value="Logs">Logs</option>
+                            </select>
+                        </div>
+                    </div>
+
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date From <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="startdate" id="startdate" required></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date To <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="enddate" id="enddate" required></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" value="{{token}}" name="token">
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Generate Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Employee Modal -->
+
+<!-- Edit Employee Modal -->
+<div id="edit_employee" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Contract</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_edit_employee" method="post" enctype="multipart/form-data">
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Contract Name <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="surname" id="esurname" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Contractor <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="lastname" id="elastname" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label">Status <span class="text-danger">*</span></label>
+                            <select class="select select_edit" name="title" id="etitle" required>
+                                <option value="">Select Status...</option>
+                               <option value="Mr.">Pending</option>
+                               <option value="Mrs.">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Lot Number <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="file_num" id="efile_no" required>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date From <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="dob" id="edob" required></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">  
+                            <div class="form-group">
+                                <label class="col-form-label">Date To <span class="text-danger">*</span></label>
+                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="dob" id="edob" required></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <input type="hidden" value="{{token}}" name="token">
+                    <input type="hidden" name="ippis" id="eeippis">
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Generate Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Employee Modal -->
+
+<!-- Delete Department Modal -->
+<div class="modal custom-modal fade" id="delete_employee" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Employee?</h3>
+                    <p>Are you sure want to delete this employee?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="javascript:void(0);" onclick="delete_office('true');" class="btn btn-primary continue-btn">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0);" onclick="delete_office('false');" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Department Modal -->
+
+
+
+{% endblock %}
+
+{% block jsscript %} 
+
+<!-- Datetimepicker JS -->
+<script src="assets/js/moment.min.js"></script>
+<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+<!-- Datatable JS -->
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script>
+<!-- Select 2 -->
+<script src="assets/backend/js/select2.full.min.js"></script>
+
+<script>
+
+    view_profile = function(id){
+        //alert(id);
+            window.location.href = "profile/"+id;
+    }   
+
+    $(document).ready(
+        function() {
+            window.FakeLoader.init( { auto_hide: true } );
+        }
+    );
+
+</script>
+
+<script src="templates/backend/employee/report.js"></script>
+
+{% endblock %}

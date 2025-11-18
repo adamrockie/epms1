@@ -1,0 +1,245 @@
+{% extends "backend/patials/master.html" %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+    {% block headscripts %}
+
+
+    {% endblock %}
+
+{% block content %}
+
+<!-- Page Content -->
+    <div class="content container-fluid" id="mcontents">
+                    
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{title}}</h3>
+                    <span>{{location}}</span>
+                    <hr>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title}}</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-end ms-auto">
+                    <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_member"><i class="fa fa-plus"></i> Add a New Member</a>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div>
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table datatable" id="">
+                        <thead>
+                            <tr>
+                                <th style="width: 30px;">#</th>
+                                <th>Staff Full Name</th>
+                                <th>Rank</th>
+                                <th>GL</th>
+                                <th>Date Posted</th>
+                                <th>Status</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for member in members %}
+                            
+                                <tr>
+                                    <td>{{loop.index}}</td>
+                                    <td>{{member.title}} {{member.names|title}}</td>
+                                    <td>{{member.rank|title}}</td>                                    
+                                    <td>{{member.gl|upper}}</td>
+                                    <td>{{member.start_date|date("d/m/Y")}}</td>
+                                    <td>{{member.status|title}}</td>
+                                    <td class="text-end">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a href="#" class="dropdown-item" data-bs-toggle="modal" data-id="{{office.id}}" onclick="view_profile('{{member.ippis}}');"><i class="fa fa-eye m-r-5"></i>View Profile</a>
+                                                <!--a href="#" class="dropdown-item" data-bs-toggle="modal" data-id="{{office.id}}" onclick="edit_unit('{{unit.unit_id}}');"><i class="fa fa-pencil m-r-5"></i>Edit</a>
+                                                <a href="#" class="dropdown-item" data-bs-toggle="modal"  data-id="{{office.id}}" onclick="delete_warning('{{unit.unit_id}}', '{{token}}');"><i class="fa fa-trash-o m-r-5"></i>Delete</a-->
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+
+<!-- /Page Content -->
+
+<!-- Add Member Modal -->
+<div id="add_member" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add a new member to this unit</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id='form_add_member'>
+
+                    <div class="form-group">
+                        <label class="col-form-label">Select a Staff <span class="text-danger">*</span></label>
+                        <select class="newselect" name="ippis" id="new_member" required>
+                            <option>Select Officer</option>
+                            {% for employee in employees %}
+                                <option value="{{employee.ippis}}">{{employee.surname|title}} {{employee.lastname|title}} {{employee.middlename|title}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!--div class="form-group">
+                        <label class="col-form-label">Select a Staff <span class="text-danger">*</span></label>
+                        <select class="select" name="ippis" id="new_member" required>
+                            <option>Select Officer</option>
+                            {% for employee in employees %}
+                                <option value="{{employee.ippis}}">{{employee.surname|title}} {{employee.lastname|title}} {{employee.middlename|title}}</option>
+                            {% endfor %}
+                        </select>
+                    </div-->
+
+                    <!--select class="select" name="state">
+                        <option value="AL">Alabama</option>
+                          ...
+                        <option value="WY">Wyoming</option>
+                    </select-->
+
+                    <div class="form-group">
+                        <label>Current Posting Department <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="location" id="nlocation" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rank <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="rank" id="nrank" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>GL <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="gl" id="ngl" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="status" id="nstatus" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date Posted <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="start_date" id="ndate" readonly>
+                    </div>
+
+                    <input type="hidden" value="{{token}}" name="token" id="token">
+                    <input type="hidden" value="{{office_id}}" name="office_id" id="oid">
+                    <input type="hidden" value="{{oid}}" name="unit_id" id="uid"><input type="hidden" name="pid" id="pid">
+                    
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn"  id="add_member" >Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Unit Modal -->
+
+<!-- Edit Unit Modal -->
+<div id="edit_department" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Department/Unit</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id='edit_office'>
+
+                    <div class="form-group">
+                        <label>Department Name <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="name" id="ename" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Location <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="branch_code" id="ebranch_code" required>
+                    </div>
+
+                    <input type="hidden" name="office_id" value="" id="office_id">
+                    
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn"  id="update_office" >Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Unit Modal -->
+
+<!-- Delete Unit Modal -->
+<div class="modal custom-modal fade" id="delete_department" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete this Department/Unit?</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="javascript:void(0);" onclick="delete_office('true');" class="btn btn-primary continue-btn">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0);" onclick="delete_office('false');" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Unit Modal -->
+
+
+		
+
+{% endblock %}
+
+{% block jsscript %} 
+
+<script>
+   
+    $(".select").select2({
+        placeholder: "Select an Officer",
+        allowClear: true,
+        width: '100%',
+        theme: "classic"
+    });
+
+</script>
+
+<script src="templates/backend/admin/unitdetails.js"></script>
+
+
+{% endblock %}

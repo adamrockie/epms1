@@ -1,0 +1,80 @@
+{% extends "frontend/patials/master.html" %}
+
+{% block title %} Register {% endblock %}
+
+{% block head %}  {% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="row align-items-center text-center">
+        <div class="col-md-12">
+            <div class="card-body">
+                <form class="" action="post_register" method="POST">
+
+                <img src="assets/images/naelogo.png" width="65px" alt="" class="img-fluid mb-4">
+                <h4 class="mb-3 f-w-400">Sign up</h4>
+
+                <div class="form-group mb-3">
+                    <label class="floating-label" for="Email">Email address</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label class="floating-label" for="Password">Password</label>
+                    <input type="password" name="password"id="password" class="form-control"  placeholder="" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label class="floating-label" for="Password">Confirm Password</label>
+                    <input type="password" name="confirm_password"id="confirm_password" class="form-control"  placeholder="" required>
+                </div>
+                <!--div class="custom-control custom-checkbox  text-left mb-4 mt-2">
+                <!--div class="custom-control custom-checkbox  text-left mb-4 mt-2">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                    <label class="custom-control-label" for="customCheck1">Send me the <a href="#!"> Newsletter</a> weekly.</label>
+                </div-->
+                <input type="hidden" name="token" value="{{token}}">
+                <button type="submit" name="submit" class="btn btn-primary btn-block mb-4">Sign up</button>
+
+                </form>
+                <p class="mb-2">Already have an account? <a href="login" class="f-w-400">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    
+      $("#confirm_password").blur(
+        function check() {
+          var password;
+          password = $('#password').val();
+          c_password = $('#confirm_password').val();
+    
+          if(password === c_password) {
+            
+          }else{
+            alert('Password and Confirm Password does not match');
+            document.getElementById('confirm_password').value='';
+          }
+        });    
+    
+    
+          $("#email").blur(function(){
+            email = $('#email').val();
+              $.ajax({
+                url: 'checkemail',
+                type: 'post',
+                data: { email : email, },
+                success: function(response){
+                  if(response=='true'){
+                    alert('Email address already registered, Please login instead');
+                    $('#email').val('');
+                  }
+                }
+              });
+            });
+    
+    
+    </script>
+{% endblock %}

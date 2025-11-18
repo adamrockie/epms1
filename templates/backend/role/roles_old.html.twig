@@ -1,0 +1,254 @@
+{% extends "backend/patials/master.html" %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+    {% block headscripts %}
+
+		<!-- Datatable CSS -->
+        <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+
+    {% endblock %}
+
+{% block content %}
+
+		<!-- Page Content -->
+		<div class="content container-fluid">
+		
+			<!-- Page Header -->
+			<div class="page-header">
+				<div class="row">
+					<div class="col-sm-12">
+						<h3 class="page-title">Roles & Permissions</h3>
+					</div>
+				</div>
+			</div>
+			<!-- /Page Header -->
+			
+			<div class="row">
+				
+				<div class="col-sm-4 col-md-4 col-lg-4 col-xl-3">
+					<a href="#" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add_role"><i class="fa fa-plus"></i> Add Roles</a>
+					<div class="roles-menu">
+						<ul>
+							{% for role in roles %}
+							<li id="row{{role.id}}">
+								<a href="javascript:void(0);" onclick="get_role_details('{{role.id}}')" >{{role.name}}
+									<span class="role-action">
+										<span class="action-circle large" data-bs-toggle="modal" data-bs-target="#edit_role">
+											<i class="material-icons">edit</i>
+										</span>
+										<span class="action-circle large delete-btn" data-bs-toggle="modal" data-bs-target="#delete_role">
+											<i class="material-icons">delete</i>
+										</span>
+									</span>
+								</a>
+							</li>
+							{% endfor %}
+
+						</ul>
+					</div>
+				</div>
+
+
+				<div class="col-sm-8 col-md-8 col-lg-8 col-xl-9">
+					<h6 class="card-title m-b-20"><span id="rolename"></span> Module Access and Permissions </h6>
+					<form id="form_roles_permissions">
+						{% for module in modules %}
+							<div class="m-b-30">
+								<ul class="list-group notification-list">
+
+									<li class="list-group-item">
+										{{module.module_name|title}} 
+										<div class="status-toggle">
+											<input type="checkbox" id="{{module.module_name}}" name="access[{{loop.index}}][{{module.module_name}}]" class="check"  >
+											<label for="{{module.module_name}}" class="checktoggle">Access</label>
+										</div>
+
+										<div class="table-responsive">
+											<table class="table table-striped custom-table">
+												<thead>
+													<tr>
+														<th class="text-center">View</th>
+														<th class="text-center">Edit</th>
+														<th class="text-center">Create</th>
+														<th class="text-center">Approve</th>
+														<th class="text-center">Delete</th>
+													</tr>
+												</thead>
+											<tbody>
+												<tr>
+												
+												<td class="text-center">
+													<input type="checkbox"  name="access[{{loop.index}}][{{module.module_name}}][view]" id="view">
+												</td>
+												<td class="text-center">
+													<input type="checkbox"  name="access[{{loop.index}}][{{module.module_name}}][edit]" id="edit">
+												</td>
+												<td class="text-center">
+													<input type="checkbox"  name="access[{{loop.index}}][{{module.module_name}}][create]" id="create">
+												</td>
+												<td class="text-center">
+													<input type="checkbox"  name="access[{{loop.index}}][{{module.module_name}}][approve]" id="approve">
+												</td>
+												<td class="text-center">
+													<input type="checkbox"  name="access[{{loop.index}}][{{module.module_name}}][delete]" id="delete">
+												</td>
+												</tr>
+											</tbody>
+											</table>	
+										</div>
+										
+									</li>
+								</ul>
+							</div>
+						{% endfor %}
+
+						<input type="hidden" value="{{token}}" name="token" id="token">
+						<div class="submit-section">
+							<button class="btn btn-primary submit-btn">Submit</button>
+						</div>
+					</form>
+					      	
+
+				</div>
+			</div>
+		</div>
+		<!-- /Page Content -->
+		
+		<!-- Add Role Modal -->
+		<div id="add_role" class="modal custom-modal fade" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Add Role</h5>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group">
+								<label>Role Name <span class="text-danger">*</span></label>
+								<input class="form-control" type="text">
+							</div>
+							<div class="submit-section">
+								<button class="btn btn-primary submit-btn">Submit</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Add Role Modal -->
+		
+		<!-- Edit Role Modal -->
+		<div id="edit_role" class="modal custom-modal fade" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content modal-md">
+					<div class="modal-header">
+						<h5 class="modal-title">Edit Role</h5>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group">
+								<label>Role Name <span class="text-danger">*</span></label>
+								<input class="form-control" value="Team Leader" type="text">
+							</div>
+							<div class="submit-section">
+								<button class="btn btn-primary submit-btn">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Edit Role Modal -->
+
+		<!-- Delete Role Modal -->
+		<div class="modal custom-modal fade" id="delete_role" role="dialog">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="form-header">
+							<h3>Delete Role</h3>
+							<p>Are you sure want to delete?</p>
+						</div>
+						<div class="modal-btn delete-action">
+							<div class="row">
+								<div class="col-6">
+									<a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+								</div>
+								<div class="col-6">
+									<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Delete Role Modal -->
+
+{% endblock %}
+
+{% block jsscript %} 
+
+<script>
+
+	$(document).ready(function() {
+
+		//Get Role Details
+		get_role_details = function(id){
+
+				
+
+		$.ajax({
+					url: 'get_role/'+id,
+					type: 'get',
+					dataType: 'json',
+					data: {id: id},
+					success: (function(data){ 
+						$('#rolename').html(data.name);//.css('color', 'green');
+						//$('#row'+data.id).attr('class', '');
+						//$('#row'+data.id).toggleClass("active");
+						$('#row'+data.id).attr('class', 'active');
+						let role;
+						foreach(data.roles as role){
+
+							if(role.name == 'users'){
+								$('#admin').prop('checked', true);
+							}
+							//$('#'+permission.name).prop('checked', true);
+						}
+						
+						$('#euemail').val(data.email);
+						$('#elocation').val(data.office_name);
+						$('#eoffice_id').val(data.office_id);
+						$('#erole').val(data.group_id).attr('selected', 'selected').change();
+						$('#eselected_names').val(data.staff_id).attr('selected', 'selected').change();
+		
+					})       
+				});
+			};
+
+	});
+
+
+
+
+</script>
+<!-- Datatable JS -->
+<!--script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script>
+<script src="assets/js/dataTables.responsive.min.js"></script-->
+
+<script src="templates/backend/role/roles.js"></script>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,256 @@
+<div id="emp_request" class="pro-overview tab-pane fade">
+    <div class="row">
+
+        <!-- Docs Header -->
+           <div class="page-header">
+               <div class="row align-items-center">
+
+                   <div class="col-auto float-end ms-auto">
+                       <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_request"><i class="fa fa-plus"></i>Add New Request</a>
+                       <div class="view-icons">
+                       </div>
+                   </div>
+               </div>
+           </div>
+       <!-- /Docs Header -->
+
+       <!--Request List-->
+
+       <div class="row" id="uploadlist">
+           <div class="col-md-12">
+               <div class="table-responsive">
+                   <table class="table table-striped custom-table datatable" id="staff_table">
+                       <thead>
+                           <tr>
+                               <th>Title</th>
+                               <th>Description</th>
+                               <th>Status</th>
+                               <th>Date</th>
+                               <th class="text-end no-sort">Action</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+   
+                           {% for request in requests %}
+
+                           <tr>
+                               <td>{{request.title|title}}</td>
+                               <td>{{request.content|length > 70 ? request.content|slice(0, 70) ~ '...' : request.content  }}</td>
+                               <td>{{request.status}}</td>
+                               <td>{{request.created_at|date("d/m/Y")}}</td>
+                               <td class="text-end">
+                                   <div class="dropdown dropdown-action">
+                                       <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                       <div class="dropdown-menu dropdown-menu-right">
+                                           <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#view_request" onclick="get_request('{{request.uniqid}}')"><i class="fa fa-eye m-r-5"></i>View Details</a>
+                                           <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_request" onclick="edit_request('{{request.uniqid}}')"><i class="fa fa-pencil m-r-5"></i>Edit</a>
+                                           <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_request" onclick="delete_req_warning('{{request.uniqid}}');"><i class="fa fa-trash-o m-r-5"></i>Delete</a>
+                                       </div>
+                                   </div>
+                               </td>
+                           </tr>
+   
+                           {% endfor %}
+   
+                       </tbody>
+                   </table>                               
+               </div>
+           </div>
+       </div>
+
+       <!--Request List-->
+       
+   </div>
+</div>
+
+
+<!-- Request Modal -->
+<div id="add_request" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add a New Request</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_add_request" method="post" enctype="multipart/form-data">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Title <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="title" id="title" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Contents <span class="text-danger">*</span></label>
+                                <textarea class="form-control" name="content" id="content" rows="7"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Request Status <span class="text-danger">*</span></label>
+                                <select class="select" name="request_status" id="request_status" required>
+                                    <option value="">Select Request Status</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Attachment </label>
+                                <input class="form-control" type="file" name="attachment" id="attachment" >
+                            </div>
+                        </div-->
+                    </div>
+
+                    <input type="hidden" value="{{sid}}" name="staff_id" id="staff_id" >
+                    <input type="hidden" value="{{token}}" name="token" id="token" >
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Request Modal -->
+
+<!-- View Request Modal -->
+<div id="view_request" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">View Request</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table datatable" id="staff_table">
+                            
+                            <tbody>
+                                <tr>
+                                    <td>Title:</td>
+                                    <td> <span id="dis_title"></span> </td>
+                                </tr>
+                                <tr>
+                                    <td>Content:</td>
+                                    <td style="white-space: normal !important; 
+                                    word-wrap: break-word"> <span id="dis_content"></span> </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Attachment:</td>
+                                    <td> 
+                                        Download Attachment
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Status:</td>
+                                    <td> <span id="dis_status"></span> </td>
+                                </tr>
+        
+                            </tbody>
+                        </table>                               
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /View Request Modal -->
+
+<!-- Update Request Modal -->
+<div id="edit_request" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Request</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_edit_request" method="post" enctype="multipart/form-data">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Title <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="title" id="eetitle" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Contents <span class="text-danger">*</span></label>
+                                <textarea class="form-control" name="content" id="eecontent" rows="7"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Request Status <span class="text-danger">*</span></label>
+                                <select class="select" name="request_status" id="req_status" required>
+                                    <option value="">Select Request Status</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Attachment 1 </label>
+                                <input class="form-control" type="file" name="attachment1" id="eeattachment1" >
+                            </div>
+                        </div-->
+                    </div>
+
+                    <input type="hidden" name="uniqid" id="requniqid" ><input type="hidden" value="{{sid}}" name="staff_id" id="reqstaff_id" >
+                    <input type="hidden" value="{{token}}" name="token" id="eetoken" >
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Update Discipline Modal -->
+
+<!-- Delete Displine Modal -->
+<div class="modal custom-modal fade" id="delete_request" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Query/Discipline?</h3>
+                    <p>Are you sure want to delete this item?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="javascript:void(0);" onclick="delete_discipline('true');" class="btn btn-primary continue-btn">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0);" onclick="delete_discipline('false');" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Discipline Modal -->

@@ -1,0 +1,153 @@
+<div id="emp_profile" class="tab-pane fade">
+    <div class="row">
+        
+        <div class="col-md-6 d-flex" >
+            <div class="card profile-box flex-fill">
+                <div class="card-body">
+                    
+                    <h3 class="card-title">Emergency Contact 
+                        {% if role == "Superuser" %} 
+                        <a href="#" class="edit-icon" data-bs-toggle="modal" data-bs-target="#{{emergency_modal}}" onclick="get_emergency('{{sid}}');"><i class="fa fa-pencil"></i></a>
+                        {% endif %}
+                    </h3>
+                                                    
+                    <ul class="personal-info">
+                        {% for detail in emergency  %}
+                        <h5 class="section-title">{{detail.type|title}}</h5>
+                            <li>
+                                <div class="title">Name</div>
+                                <div class="text">{{detail.names|title}}</div>
+                            </li>
+                            <li>
+                                <div class="title">Relationship</div>
+                                <div class="text">{{detail.relationship|title}}</div>
+                            </li>
+                            <li>
+                                <div class="title">Phone </div>
+                                <div class="text">{{detail.phone_1}}, {{detail.phone_2}}</div>
+                            </li>
+                            <hr>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex">
+            <div class="card profile-box flex-fill">
+                <div class="card-body">
+
+                    <h3 class="card-title">Education Informations 
+                        {% if role == "Superuser" %}
+                        <a href="#" class="edit-icon" data-bs-toggle="modal" data-bs-target="#add_education_info"><i class="fa fa-plus"></i></a>
+                        {% endif %}
+                    </h3>
+                    <div class="experience-box">
+                        <ul class="experience-list">
+                        {% for edu in educations %}
+
+                            <li>
+                                <div class="experience-user">
+                                    <div class="before-circle"></div>
+                                </div>
+                                <div class="experience-content">
+                                    <div class="timeline-content">
+                                        <div>{{edu.institution}}</div>
+                                        <a href="#" class="edit-icon " data-bs-toggle="modal" data-bs-target="#delete_education_info"><i class="fa fa-trash"></i></a>
+                                        <a href="#" class="edit-icon" data-bs-toggle="modal" data-bs-target="#edit_education_info" onclick="get_edu('{{edu.id}}');"><i class="fa fa-pencil"></i></a>
+                                        <div>{{edu.qualification}}</div>
+                                        <span class="time">{{edu.start_date}} - {{edu.end_date}}</span>
+                                    </div>
+                                </div>
+                            </li>
+                    
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-6 d-flex">
+            <div class="card profile-box flex-fill">
+                <div class="card-body">
+                    <h3 class="card-title">Next of Kin Informations
+                        {% if role == "Superuser" %} 
+                        <a href="#" class="edit-icon" data-bs-toggle="modal" data-bs-target="#{{nok_modal}}" onclick="get_nok('{{sid}}');"><i class="fa fa-pencil"></i></a>
+                        {% endif %}
+                    </h3>
+                    <div class="table-responsive">
+                        <table class="table table-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Names</th>
+                                    <th>Relationship</th>
+                                    <th>Date of Birth</th>
+                                    <th>Phone</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{nok.names|title}}</td>
+                                    <td>{{nok.relationship|title}}</td>
+                                    <td>{{(nok.dob == '') ? '' : nok.dob|date("d/m/Y")}}</td>
+                                    <td>{{nok.phone_1}} <br> {{nok.phone_2}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 d-flex">
+            <div class="card profile-box flex-fill">
+                <div class="card-body">
+                    <h3 class="card-title">Training Attended
+                        {% if role == "Superuser" %} 
+                        <a href="#" class="edit-icon" data-bs-toggle="modal" data-bs-target="#add_training_info"><i class="fa fa-plus"></i></a>
+                        {% endif %}
+                    </h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Training Attended</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Certificate</th>
+                                    <th>Verifiable Link</th>
+                                    {% if role == 'Superuser' %}
+                                    <th>Action</th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for training in trainings %}
+                                <tr>
+                                    <td>{{training.training}}</td>
+                                    <td>{{training.start_date|date("d/m/Y")}}</td>
+                                    <td>{{training.end_date|date("d/m/Y")}}</td>
+                                    <td><a href="uploads/certificates/{{training.certificate}}" target="_blank"><button type="button" class="btn btn-success"> <i class="fa fa-download"></i> </button></a></td>
+                                    <td>
+                                    {% if training.url == '' %}
+                                    {% else %}
+                                    <a href="{{training.url}}" target="_blank"><button type="button" class="btn btn-success"> <i class="fa fa-external-link"></i> </button></a>
+                                    {% endif %}
+                                    </td>
+                                    {% if role == 'Superuser' %}
+                                    <td><a href="#" data-bs-toggle="modal" onclick="delete_t_warning('{{training.id}}');"><button type="button" class="btn btn-danger"> <i class="fa fa-trash"></i> </button></a></td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

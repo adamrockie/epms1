@@ -1,0 +1,53 @@
+<div class="tab-pane fade" id="emp_history">
+    <div class="row">
+
+         <!-- Docs Header -->
+            <!--div class="page-header">
+                <div class="row align-items-center">
+
+                    <div class="col-auto float-end ms-auto">
+                        <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#upload_doc"><i class="fa fa-plus"></i>Upload a New Document</a>
+                        <div class="view-icons">
+                        </div>
+                    </div>
+                </div>
+            </div-->
+        <!-- /Docs Header -->
+
+        <!--Docs List-->
+
+        <div class="row" id="uploadlist">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table datatable" id="staff_table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th class="text-end no-sort">Action by</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+    
+                            {% for his in history %}
+
+                            <tr>
+                                <td>{{his.type|title}}</td>
+                                <td>{{his.description}}</td>
+                                <td>{{his.created_at|date("d/m/Y")}}</td>
+                                <td class="text-end no-sort">{{his.author.names|capitalize}}</td>
+                            </tr>
+    
+                            {% endfor %}
+    
+                        </tbody>
+                    </table>                               
+                </div>
+            </div>
+        </div>
+
+        <!--Docs List-->
+        
+    </div>
+</div>

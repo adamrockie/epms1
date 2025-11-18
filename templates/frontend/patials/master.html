@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <meta name="description" content="OAuGF E-Registry">
+        <meta name="robots" content="noindex, nofollow">
+        <title>OAuGF HRMS - {% block title %} {% endblock %}</title>
+		
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="assets/css/style.css">
+
+			<!-- Pnotify css -->
+    	<link href="assets/css/PNotifyBrightTheme.css" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+		
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+		{% block headscripts %} {% endblock %}
+    </head>
+    <body class="account-page">
+	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+		<!--Content Start-->
+		{% block content %} {% endblock %}
+		<!--Content End-->
+        </div>
+		<!-- /Main Wrapper -->
+		
+		<!-- jQuery -->
+        <script src="assets/js/jquery-3.6.0.min.js"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+		
+		<!-- Custom JS -->
+		<script src="assets/js/app.js"></script>
+
+		<!-- Pnotify Js -->
+		<script src="assets/plugins/pnotify/PNotify.js"></script>
+		<script src="assets/plugins/pnotify/PNotifyButtons.js"></script>
+		<script src="assets/plugins/pnotify/PNotifyCallbacks.js"></script>
+		<script src="assets/plugins/pnotify/PNotifyDesktop.js"></script>
+		<script src="assets/plugins/pnotify/PNotifyConfirm.js"></script>
+		<script src="assets/plugins/pnotify/notify-event.js"></script>
+
+		<!-- Custom JSScrips -->
+		{% block jsscript %} {% endblock %}
+		<!-- /Custom JSScrips ->
+
+		
+    </body>
+</html>

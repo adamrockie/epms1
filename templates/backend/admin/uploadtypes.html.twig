@@ -1,0 +1,182 @@
+{% extends "backend/patials/master.html" %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+    {% block headscript %}
+
+
+
+    {% endblock %}
+
+{% block content %}
+
+<!-- Page Content -->
+    <div class="content container-fluid" id="typess">
+                    
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title}}</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-end ms-auto">
+                    <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_type_modal"><i class="fa fa-plus"></i> Add New</a>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+        
+        <div class="row" id="mcontents">
+            <div class="col-md-12">
+                <div>
+                    <table class="table table-striped custom-table mb-0 datatable">
+                        <thead>
+                            <tr>
+                                <th style="width: 30px;">#</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th class="text-end">Edit</th>
+                                <th class="text-end">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for doc in docs %}
+                            
+                                <tr>
+                                    <td>{{loop.index}}</td>
+                                    <td>{{doc.name|upper}}</td>
+                                    <td>{{doc.description|capitalize}}</td>
+                                    <td class="text-end">
+                                        <a href="#" class="btn btn-icon btn-success" data-bs-toggle="modal" data-id="{{doc.id}}" onclick="get_types('{{doc.id}}');"><i class="fa fa-pencil"></i></a>
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="#" class="btn btn-icon btn-danger" data-bs-toggle="modal"  data-id="{{doc.id}}" onclick="delete_warning('{{doc.id}}');"><i class="fa fa-trash-o"></i></a>
+                                    </td>
+                                </tr>
+                                
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- /Page Content -->
+
+<!-- Add Document Type Modal -->
+<div id="add_type_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add a new upload type</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id='add_type'>
+
+                    <div class="form-group">
+                        <label>Type (Name) <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="name" id="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="description" id="description" required>
+                    </div>
+                    
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Document Type Modal -->
+
+<!-- Edit Department Modal -->
+<div id="edit_type_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Upload Type</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id='update_type'>
+
+                    <div class="form-group">
+                        <label>Type (Name) <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="name" id="ename" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" name="description" id="edescription" required>
+                    </div>
+
+                    <input type="hidden" name="type_id" value="" id="type_id">
+                    
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" >Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Department Modal -->
+
+<!-- Delete Department Modal -->
+<div class="modal custom-modal fade" id="delete_type_modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete Site?</h3>
+                    <p>Are you sure you want to delete?</p>
+                </div>
+                <div class="modal-btn delete-action">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="javascript:void(0);" onclick="delete_type('true');" class="btn btn-primary continue-btn">Delete</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0);" onclick="delete_type('false');" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Department Modal -->
+
+
+		
+
+{% endblock %}
+
+{% block jsscript %} 
+
+<script>
+    
+
+
+</script>
+
+<script src="templates/backend/admin/uploadtypes.js"></script>
+
+
+{% endblock %}

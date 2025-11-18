@@ -1,0 +1,93 @@
+{% extends "backend/patials/master.html" %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+    {% block headscripts %}
+
+    	<!-- Select2 CSS -->
+		<!--link rel="stylesheet" href="assets/css/select2.min.css"-->
+        <!-- Datatable CSS -->
+        <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+
+
+    {% endblock %}
+
+{% block content %}
+
+<!-- Page Content -->
+    <div class="content container-fluid" id="mcontents">
+                    
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title}}</li>
+                    </ul>
+                </div>
+                <!--div class="col-auto float-end ms-auto">
+                    <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_head"><i class="fa fa-plus"></i> Add New Head</a>
+                </div-->
+            </div>
+        </div>
+        <!-- /Page Header -->
+        
+        <div class="row">
+            <div class="col-md-4">
+
+                <div class="modal-body">
+                    <form id='form_add_head'>
+                        <div class="form-group">
+                            <label class="col-form-label">Staff <span class="text-danger">*</span></label>
+                            <select class="" name="staff" id="staff" required>
+                                <option value="">Select an Officer...</option>
+                                {% for employee in employees %}
+                                    <option value="{{employee.ippis}}">{{employee.surname|title}} {{employee.lastame|title}} {{employee.middlename|title}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <input type="hidden" value="{{token}}" name="token" id="token">                    
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn float-left"  id="add_head" >Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<!-- /Page Content -->
+
+
+
+
+		
+
+{% endblock %}
+
+{% block jsscript %} 
+
+<script>
+
+    $("#staff").select2({
+        placeholder: "Select an Officer",
+        allowClear: true,
+        width: '100%',
+        theme: "classic"
+    });
+
+</script>
+
+<!-- Datatable JS -->
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script>
+<script src="assets/js/dataTables.responsive.min.js"></script>
+
+
+<script src="templates/backend/admin/view_staff.js"></script>
+
+
+{% endblock %}

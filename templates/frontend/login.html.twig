@@ -1,0 +1,93 @@
+{% extends "frontend/patials/master.html" %}
+
+{% block title %} {{title}} - Login {% endblock %}
+
+{% block headscripts %}
+
+      <style> 
+        #g-recaptcha-response {
+        display: block !important;
+        position: absolute;
+        margin: -78px 0 0 0 !important;
+        width: 302px !important;
+        height: 76px !important;
+        z-index: -999999;
+        opacity: 0;
+        }
+     </style>
+
+{% endblock %}
+
+{% block content %}
+
+
+<div class="account-content">
+				
+    <div class="container">
+    
+        <!-- Account Logo -->
+        <div class="account-logo">
+            <a href="home"><img src="assets/img/logo2.png" alt="OAuGF Logo" width="150px" height="auto"></a>
+        </div>
+        <!-- /Account Logo -->
+        
+        <div class="account-box">
+            <div class="account-wrapper animate__animated {% if auth %} animate__shakeX {% endif %}">
+                <h3 class="account-title">Asset Management System<br>Login</h3><br>
+                <!--p class="account-subtitle">Access HRMS</p-->
+                {% if auth %}
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> {{ auth }}
+                    </div>
+                {% endif %}
+
+                <!-- Account Form -->
+                <form action="post_login" method="post">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input name="email" id="email" class="form-control" type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <label>Password</label>
+                            </div>
+                            <div class="col-auto">
+                                <a class="text-muted" href="passwordreset">
+                                    Forgot password?
+                                </a>
+                            </div>
+                        </div>
+                        <input name="password" id="password" class="form-control" type="password">
+                        <input name="token" id="token" class="form-control" type="hidden" value="{{token}}">
+                    </div>
+
+                     <div class="form-group">
+                        <div class="custom-control custom-control-xs custom-checkbox">
+                            <div class="g-recaptcha" data-sitekey="{{sitekey}}"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <button class="btn btn-primary account-btn" type="submit">Login</button>
+                    </div>
+                </form>
+                <!-- /Account Form -->
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    window.onload = function() {
+        var $recaptcha = document.querySelector('#g-recaptcha-response');
+
+        if($recaptcha) {
+            $recaptcha.setAttribute("required", "required");
+        }
+    };
+</script>
+
+{% endblock %}

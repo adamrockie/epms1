@@ -25,19 +25,19 @@ if($user->isLoggedIn()){
         $id                         = $items['id'];
         $inventory              = $items['inventory'];
         $amount                 = $items['amount'];
-        $cstatus                = $items['status'];
+        $status                = $items['status'];
         $warranty               = $items['warranty'];
         $quantity               = $items['quantity'];
         $date                   = $items['date'];
         $upload                 = $items['upload'];
             
 
-        [$status, $message, ] = ['success', 'inventory retrieved successfully'];
+        [$save_status, $message, ] = ['success', 'inventory retrieved successfully'];
         echo json_encode([
             'id'                    => $id,
             'inventory'         => $inventory,
             'amount'            => $amount,
-            'cstatus'           => $cstatus,
+            'status'           => $status,
             'warranty'          => $warranty,
             'quantity'          => (string)$quantity,
             'date'              => $date,
@@ -47,7 +47,7 @@ if($user->isLoggedIn()){
 
     }else{
 
-        [$status, $message] = ['error', 'An error occurred, inventory could not be added'];
+        [$save_status, $message] = ['error', 'An error occurred, inventory could not be added'];
         echo json_encode([
             'status'=>$status, 
             'msg'=>$message

@@ -26,7 +26,7 @@ if ($user->isLoggedIn()) {
 
     $inventory      = Sanitize::sanitize(Input::get('inventory'));
     $amount         = Sanitize::sanitize(Input::get('amount'));
-    $cstatus        = Sanitize::sanitize(Input::get('cstatus'));
+    $status        = Sanitize::sanitize(Input::get('status'));
     $warranty       = Sanitize::sanitize(Input::get('warranty'));
     $quantity       = Sanitize::sanitize(Input::get('quantity'));
     $date           = Sanitize::sanitize(Input::get('date'));
@@ -57,7 +57,7 @@ if ($user->isLoggedIn()) {
         ->update([
            'inventory'         => $inventory,
             'amount'            => $amount,
-            'status'           => $cstatus,
+            'status'           => $status,
             'warranty'          => $warranty,
             'quantity'          => (string)$quantity,
             'date'              => $date,

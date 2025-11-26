@@ -288,7 +288,7 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="col-form-label">Status <span class="text-danger">*</span></label>
-                                <select class="select_edit" name="status" id="estatus" required>
+                                <select class="form-select select_edit" name="status" id="cstatus" required>
                                     <option value="">Select...</option>
                                     <option value="Issued">Issued</option>
                                     <option value="Not issued">Not Issued</option>
@@ -389,38 +389,41 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Inventory Name <span class="text-danger"></span></label>
-                                <input class="form-control" type="text" name="inventory_name" id="inventory_name">
+                              <select class="form-control" name="inventory" id="repinventory" style="width: 100%;">
+                                <option value="">Select Inventory...</option>
+                                {% for items in inventory %}
+                                    <option value="{{ items.inventory }}">{{ items.inventory }}</option>
+                                {% endfor %}
+                              </select>
+
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-form-label">Amount <span class="text-danger"></span></label>
-                                <input class="form-control" type="number" name="amount" id="amount">
+                          <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                   <div class="form-group">
+                                       <label class="col-form-label">Date (From)<span class="text-danger">*</span></label>
+                                       <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="from" id="from" required></div>
+                                   </div>
+                               </div>
+                               <div class="col-sm-6">
+                                   <div class="form-group">
+                                       <label class="col-form-label">Date (To)<span class="text-danger">*</span></label>
+                                       <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="to" id="to" required></div>
+                                   </div>
+                               </div>
                             </div>
+
                         </div>
+
+                        
+                     
                         <div class="col-sm-8">
-                        <div class="form-group">
-                            <label class="col-form-label">Status <span class="text-danger">*</span></label>
-                            <select class="select" name="status" id="status" required>
-                                <option value="">Select Status...</option>
-                               <option value="Issued">Issued</option>
-                               <option value="Not issued">Not Issued</option>
-                            </select>
-                        </div>
+                    
                     </div>
                        
-                        <div class="col-sm-6">  
-                            <div class="form-group">
-                                <label class="col-form-label">Date From <span class="text-danger">*</span></label>
-                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="from" id="from" required></div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">  
-                            <div class="form-group">
-                                <label class="col-form-label">Date To <span class="text-danger">*</span></label>
-                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="to" id="to" required></div>
-                            </div>
-                        </div>
+                     
+                       
                     </div>    
                     <input type="hidden" value="{{token}}" name="token">
                     <input type="hidden" value="inventory" name="category">
@@ -434,6 +437,7 @@
     </div>
 </div>
 <!-- /Report Modal -->
+
 
 
 
@@ -486,9 +490,19 @@ document.getElementById('view_inventory_modal').addEventListener('click', functi
     }
 });
 
+ $(document).ready(function() {
+        $('#repinventory').select2({
+            dropdownParent: $('#report'), 
+            placeholder: "Select Inventory",
+            allowClear: true
+        });
+    });
+
 </script>
 
 <script src="templates/backend/employee/inventory.js"></script>
+
+
 
 
 {% endblock %}

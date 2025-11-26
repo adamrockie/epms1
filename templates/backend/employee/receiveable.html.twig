@@ -93,7 +93,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                <a href="#" data-bs-toggle="modal" data-bs-target="#report">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#receivable_report">
                     <div class="card dash-widget">
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa fa-book"></i></span>
@@ -392,7 +392,7 @@
 <!-- /Delete Department Modal -->
 
 <!-- Report Modal -->
-<div id="report" class="modal custom-modal fade" role="dialog">
+<div id="receivable_report" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -408,32 +408,35 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Contractor <span class="text-danger"></span></label>
-                                <input class="form-control" type="text" name="contractor" id="contractor">
+                            
+
+                                <select class="form-control" name="contractor" id="contractor_name" style="width: 100%;">
+                                <option value="">Select Contractor...</option>
+                                {% for  items in receiveable %}
+                                    <option value="{{ items.contractor }}">{{ items.contractor }}</option>
+                                {% endfor %}
+                              </select>
+                             
                             </div>
                         </div>
-                         <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-form-label">Status <span class="text-danger">*</span></label>
-                                <select class="selectxx" name="status" id="status" required>
-                                    <option value="">-- Select Status --</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="completed">Completed</option>
-                                    
-                                </select>
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                   <div class="form-group">
+                                       <label class="col-form-label">Date (From)<span class="text-danger">*</span></label>
+                                       <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="from" id="from" required></div>
+                                   </div>
+                               </div>
+                               <div class="col-sm-6">
+                                   <div class="form-group">
+                                       <label class="col-form-label">Date (To)<span class="text-danger">*</span></label>
+                                       <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="to" id="to" required></div>
+                                   </div>
+                               </div>
                             </div>
+
                         </div>
-                        <div class="col-sm-6">  
-                            <div class="form-group">
-                                <label class="col-form-label">Date From <span class="text-danger">*</span></label>
-                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="from" id="from" required></div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">  
-                            <div class="form-group">
-                                <label class="col-form-label">Date To <span class="text-danger">*</span></label>
-                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="to" id="to" required></div>
-                            </div>
-                        </div>
+                    
                         
                     </div>    
                     <input type="hidden" value="{{token}}" name="token">
@@ -476,6 +479,14 @@
         }
     );
 
+</script>
+<script> $(document).ready(function() {
+        $('#contractor_name').select2({
+            dropdownParent: $('#receivable_report'), 
+            placeholder: "Select Contractor",
+            allowClear: true
+        });
+    });
 </script>
 
 

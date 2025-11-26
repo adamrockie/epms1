@@ -38,7 +38,7 @@ if($user->isLoggedIn()){
 
         
 
-        [$status, $message, ] = ['success', 'contract information retrieved successfully'];
+        [$save_status, $message, ] = ['success', 'contract information retrieved successfully'];
         echo json_encode([
             'id'                    => $id,
             'contract'              => $contract,
@@ -55,7 +55,7 @@ if($user->isLoggedIn()){
 
     }else{
 
-        [$status, $message] = ['error', 'An error occurred, contract information could not be added'];
+        [$save_status, $message] = ['error', 'An error occurred, contract information could not be added'];
         echo json_encode([
             'status'=>$status, 
             'msg'=>$message

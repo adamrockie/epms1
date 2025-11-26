@@ -73,7 +73,8 @@ $(document).ready(function () {
 
         $("#einventory").val(data.inventory);
         $("#eid").val(data.id);
-        $("#estatus").val(data.cstatus).attr("selected", "selected").change();
+        $("#cstatus").val(data.status).attr("selected", "selected").change();
+
         $("#ewarranty")
           .val(data.warranty)
           .attr("selected", "selected")

@@ -60,6 +60,10 @@
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
+                <button type="submit" class="btn btn-primary float-end mt-3">
+                    <i class="fa fa-download"></i> Download
+                </button>
+     <br>
                 <table class="table table-striped custom-table datatable" id="staff_table">
                     <thead>
                         <tr>
@@ -130,6 +134,38 @@
         }
     );
 
+</script>
+
+<script>
+    function downloadTableCSV(tableId, filename = "table.csv") {
+        const table = document.getElementById(tableId);
+        let csv = [];
+
+        // Loop through each row (header + body)
+        for (let row of table.querySelectorAll("tr")) {
+            let rowData = [];
+            for (let cell of row.querySelectorAll("th, td")) {
+                let text = cell.innerText.replace(/,/g, ""); 
+                rowData.push(text);
+            }
+            csv.push(rowData.join(",")); // CSV row
+        }
+
+        // Create CSV Blob
+        let blob = new Blob([csv.join("\n")], { type: "text/csv" });
+        let url = URL.createObjectURL(blob);
+
+        // Create download link
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    document.querySelector(".btn.btn-primary i.fa.fa-download").parentElement.onclick = function() {
+        downloadTableCSV("staff_table", "inventory.csv");
+    };
 </script>
 
 <script src="templates/backend/employee/inventory.js"></script>

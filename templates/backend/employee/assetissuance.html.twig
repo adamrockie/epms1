@@ -52,51 +52,58 @@
         </div>
     </div>
     <div class="content container-fluid">
-			<div class="row">
-				<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-					<div class="card dash-widget">
-						<div class="card-body">
-							<span class="dash-widget-icon"><i class="fa fa-gg"></i></span>
-							    <div class="dash-widget-info">
-									<h3>0</h3>
-									<span>Approved <br>Request</span>
-								</div>
-							</div>
-						</div>
-					</div>
-                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-					<div class="card dash-widget">
-						<div class="card-body">
-							<span class="dash-widget-icon"><i class="fa fa-gg"></i></span>
-							    <div class="dash-widget-info">
-									<h3>0</h3>
-									<span>Denied <br>Request</span>
-								</div>
-							</div>
-						</div>
-					</div>
-                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-					    <div class="card dash-widget">
-						    <div class="card-body">
-							    <span class="dash-widget-icon"><i class="fa fa-book"></i></span>
-							        <div class="dash-widget-info">
-									<h3></h3>
-									<!--span>Generate <br>Report</span-->
-                                    <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#history"><i></i>History</a>
-								    </div>
-							</div>
-						</div>
-					</div>
-			    
-            <!--div-- class="col-auto float-end ms-auto">
-                <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_employee"><i class="fa fa-plus"></i> Add Asset</a>
-                <div class="view-icons">
-                    <a href="employees" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
-                    <a href="assetissuance" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
+                <a href="pending_requests">
+                    <div class="card">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-folder-open-o"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{ total_pending }}</h3>
+                                <span>Pending <br>Request</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <span class="dash-widget-icon"><i class="fa fa-hourglass-half"></i></span>
+                        <div class="dash-widget-info">
+                            <h3>0</h3>
+                            <span>Processing <br>Request</span>
+                        </div>
+                    </div>
                 </div>
-            </div-->
+            </div>
+            <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <span class="dash-widget-icon"><i class="fa fa-check"></i></span>
+                        <div class="dash-widget-info">
+                            <h3>0</h3>
+                            <span>Approved <br>Request</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-lg-3 col-xl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <span class="dash-widget-icon"><i class="fa fa-ban"></i></span>
+                        <div class="dash-widget-info">
+                            <h3>0</h3>
+                            <span>Denied <br>Request</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+
+			    
+        
+    
     <!-- /Page Header -->
     
     <div class="row">
@@ -110,22 +117,44 @@
                             <th>Lastname</th>
                             <th>Asset Name</th>
                             <th>Description</th>
-                            <!--th>Rank</th-->
                             <th>Status</th>
-                            <!--th>IPPIS</th-->
-                            <!--th>File No</th>-->
                             <th>Date Issued</th>
                             <th class="text-end no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
 
-                       
+                        {% for item in pending_items %}
+                        <tr>
+                            <td>{{item.title}}</td>
+                            <td>{{item.firstname}}</td>
+                            <td>{{item.lastname}}</td>
+                            <td>{{item.asset_name}}</td>
+                            <td>{{item.description}}</td>
+                            <td>
+                                {% if item.status == 'Approved' %}
+                                    <span class="badge bg-success">{{item.status}}</span>
+                                {% elseif item.status == 'Denied' %}
+                                    <span class="badge bg-danger">{{item.status}}</span>
+                                {% else %}
+                                    <span class="badge bg-warning">{{item.status}}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{item.date_issued}}</td>
+                            <td class="text-end">
+                                <div class="dropdown dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_employee" onclick="edit_employee('{{item.ippis}}');"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_employee" onclick="set_delete_employee('{{item.ippis}}');"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
 
                     </tbody>
                 </table>
-
-            {#% include '/backend/employee/pagination.html.twig'  08131956314 1960 %#}
                            
             </div>
         </div>

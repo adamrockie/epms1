@@ -3,6 +3,7 @@ require "config.php";
 require_once 'twig.php';
 
 use Carbon\Traits\Timestamp;
+use Classes\ApiCalls;
 use Classes\Config;
 use Classes\Permissions;
 use Classes\Redirect;
@@ -31,21 +32,16 @@ if($user->isLoggedIn()){
     $userc      = UserModel::where('id', '=', $id)->first();
 
     $token = Token::generate();
-    
-    $staff = Employees::with('rank')->get()->toArray();
-    $ranks      = Ranks::all();
-    $offices    = Offices::all();
-    $states     = States::all();
- 
+
+    $pending_items = ApiCalls::getallrequests(); 
+    $total_pending = count($pending_items);
+
     echo $twig->render('backend/employee/assetissuance.html.twig', [
         'title'     => 'Employees List',
         'userc'     => $userc,
-        'employees' => $staff,
-        'ranks'     => $ranks,
-        'offices'   => $offices,
-        'states'    => $states,
         'token'     => $token,
-        'role'         => $role,
+        'role'         => $role,    
+        'total_pending'=> $total_pending,      
         'current_user' => $current_user,      
         ]);
 }else{

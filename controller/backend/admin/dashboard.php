@@ -11,8 +11,6 @@ use Classes\User;
 use Classes\Token;
 use Classes\Session;
 use Database\Models\Employees;
-use Database\Models\Offices;
-use Database\Models\Units;
 use Database\Models\Inventory;
 use Database\Models\Receiveable;
 
@@ -32,7 +30,6 @@ if($user->isLoggedIn()){
     $retired_num    = Employees::where('status', '=', 'retired')->count();
     $tinventory     = Inventory::all()->count();
     $tprojects      = Receiveable::all()->count();
-    $unit_num       = Units::all()->count();
     $epms_user_num  = UserModel::all()->count();
 
     $c_user = UserModel::where('id', '=', $id)->first()->toArray();

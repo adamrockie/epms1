@@ -5,11 +5,21 @@
  * API Routes
  */
 
-
 //Get a list of all inventory items
 $router->map('GET','/api_inventory',  function(  ) {
     require __DIR__ . '/controller/backend/api/api_inventory.php';
 } , 'api_inventory');
+
+
+// Receive POST inventory request from epms
+$router->map('POST','/api_inventory_request',  function() {
+    require __DIR__ . '/controller/backend/api/api_inventory_request.php';
+}, 'api_inventory_request');
+
+// Get login staff inventory request
+$router->map('GET', '/api_my_requests', function() {
+    require __DIR__ . '/controller/backend/api/api_my_requests.php';
+}, 'api_my_requests');
 
 
 //Get a staff current department
@@ -84,6 +94,4 @@ $router->map('GET','/api_doc/[*:id]',  function( $id ) {
     require __DIR__ . '/controller/backend/api/aapi_doc.php';
 } , 'aapi_doc');
 
-
- 
 ?>

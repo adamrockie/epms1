@@ -12,7 +12,7 @@ $router->map('GET','/api_inventory',  function(  ) {
 
 
 // Receive POST inventory request from epms
-$router->map('POST','/api_inventory_request',  function() {
+$router->map('POST', '/api_inventory_request',  function() {
     require __DIR__ . '/controller/backend/api/api_inventory_request.php';
 }, 'api_inventory_request');
 
@@ -20,6 +20,16 @@ $router->map('POST','/api_inventory_request',  function() {
 $router->map('GET', '/api_my_requests', function() {
     require __DIR__ . '/controller/backend/api/api_my_requests.php';
 }, 'api_my_requests');
+
+// head of department reponse to staff item request from epms
+$router->map('POST', '/api_heads_response',  function() {
+    require __DIR__ . '/controller/backend/api/api_heads_response.php';
+}, 'api_heads_response');
+
+// agf of department reponse to staff item request from epms
+$router->map('POST', '/api_agf_response',  function() {
+    require __DIR__ . '/controller/backend/api/api_heads_response.php';
+}, 'api_agf_response');
 
 
 //Get a staff current department

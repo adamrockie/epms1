@@ -28,7 +28,7 @@ $router->map('POST', '/api_heads_response',  function() {
 
 // agf of department reponse to staff item request from epms
 $router->map('POST', '/api_agf_response',  function() {
-    require __DIR__ . '/controller/backend/api/api_heads_response.php';
+    require __DIR__ . '/controller/backend/api/api_agf_response.php';
 }, 'api_agf_response');
 
 

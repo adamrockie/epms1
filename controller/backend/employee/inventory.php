@@ -2,7 +2,6 @@
 require "config.php";
 require_once 'twig.php';
 
-use Carbon\Traits\Timestamp;
 use Classes\Config;
 use Classes\Permissions;
 use Classes\Redirect;
@@ -11,10 +10,9 @@ use Classes\User;
 use Classes\Token;
 use Classes\Session;
 use Database\Models\Employees;
-use Database\Models\Offices;
-use Database\Models\Ranks;
-use Database\Models\States;
+
 use Database\Models\Inventory;
+use Database\Models\ItemRequests;
 
 $user = new User();
 $sessionName  = Config::get('session/session_name');
@@ -36,6 +34,10 @@ if($user->isLoggedIn()){
     $inventory      = Inventory::all();
     $issued         = count(Inventory::where('status', '=', 'issued')->get());
     $nissued        = count(Inventory::where('status', '=', 'notissued')->get());
+    $all_item_requests = ItemRequests::with('staff')->get();
+    $total_requests = ItemRequests::count();
+    $total_approved = ItemRequests::where('status', 'approve')->count();
+
     $tinventory     = count($inventory);
  
     echo $twig->render('backend/employee/inventory.html.twig', [
@@ -43,6 +45,9 @@ if($user->isLoggedIn()){
         'userc'         => $userc,
         'inventory'     => $inventory,
         'tinventory'    => $tinventory,
+        'all_item_requests' => $all_item_requests,
+        'total_requests'    => $total_requests,
+        'total_approved'    => $total_approved,
         'issued'        => $issued,
         'nissued'       => $nissued,
         'token'         => $token,

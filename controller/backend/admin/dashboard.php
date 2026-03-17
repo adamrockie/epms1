@@ -18,7 +18,6 @@ $user = new User();
 
 if($user->isLoggedIn()){
 
-    
     $sessionName= Config::get('session/session_name');
     $id         = Session::get($sessionName);
     $user       = UserModel::where('id', '=', $id)->first();
@@ -100,7 +99,6 @@ if($user->isLoggedIn()){
         'current_user'      => $current_user,
 
         ]);
-
 
 }else{
     Redirect::to('home');

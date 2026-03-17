@@ -74,6 +74,13 @@ $router->map('GET','/edit_inventory/[*:id]',  function( $id ) {
     require __DIR__ . '/controller/backend/employee/edit_inventory.php';
 } , 'edit_inventory');
 
+$router->map('GET','/request',  function( ) {
+    require __DIR__ . '/controller/backend/employee/request.php';
+} , 'request');
+
+$router->map('POST','/update_item_request',  function( ) {
+    require __DIR__ . '/controller/backend/employee/update_item_request.php';
+} , 'update_item_request');
 
 /** Receivable */
 $router->map('POST','/add_receivable',  function( ) {

@@ -1,0 +1,272 @@
+{% extends "backend/patials/master.html" %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+    {% block headscripts %}
+
+    <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+    <!-- Datatable CSS -->
+    <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+
+    <style>
+        /* Preview */
+        .preview{
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            margin: 0 auto;
+            background: white;
+        }
+        
+        .preview img{
+            display: none;
+        }
+    </style>
+
+    {% endblock %}
+
+{% block content %}
+
+<div id="fakeloader-overlay" class="visible incoming">
+    <div class="loader-wrapper-outer">
+      <div class="loader-wrapper-inner">
+        <div class="loader"></div>
+      </div>
+    </div>
+</div>
+
+<!-- Page Content -->
+<div class="content container-fluid"  id="mcontents">
+    
+
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table datatable" id="staff_table">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Qty</th>
+                            <th>Status</th>
+                            <th>Requested By</th>
+                            <th>Date</th>
+                            <th class="text-end no-sort">Action</th>
+                        </tr>
+                    </thead>
+                   <tbody>
+                    {% for item in all_item_requests %}
+                        <tr>
+                            <td>{{ item.item_name }}</td>
+                            <td>{{ item.qty }}</td>
+                            <td>{{ item.status }}</td>
+                            <td>
+                                {{ item.staff.surname ?? '' }} 
+                                {{ item.staff.lastname ?? '' }}
+                            </td>
+                            <td>{{ item.request_date }}</td>
+
+                          
+                             <td class="text-end">
+                                <div class="dropdown dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                       <a class="dropdown-item" href="#" 
+                                        data-bs-toggle="modal" data-bs-target="#view_comment_modal" 
+                                        onclick="view_comment(`{{ item.comment | escape }}`)">
+                                        <i class="fa fa-eye m-r-5"></i> Note
+                                        </a>
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_inventory" onclick="edit_request({{ item.id }}, {{ item.qty }}, '{{ item.ippis }}')"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                   </tbody>
+                </table>
+            <!-- View Item Image Modal -->
+
+            <div id="view_inventory_modal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center;">
+            <div style="background:#fff; padding:20px; border-radius:8px; max-width:500px; width:90%; position:relative;">
+                <button id="close_inventory_modal" style="position:absolute; top:10px; right:10px; border:none; background:none; font-size:18px; cursor:pointer;">&times;</button>
+                <img id="inventory_modal_image" src="" alt="Inventory" style="width:100%; height:auto; display:block; margin-top:20px;">
+            </div>
+            </div>
+         
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Edit Request Status Modal -->
+<div id="edit_inventory" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Request Status</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="form_edit_request" method="post">
+                    
+                    <!-- Hidden Fields -->
+                    <input type="hidden" name="id" id="eid">
+                    <input type="hidden" name="ippis" id="eeippis">
+                    <input type="hidden" value="{{token}}" name="token">
+
+                    <div class="row">
+
+                        <!-- Requested Quantity (Read-only) -->
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Requested Qty</label>
+                                <input class="form-control" type="text" id="requested_qty" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Quantity Given -->
+                       <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Status</label>
+                            <select class="form-select" name="status" id="status">
+                                <option value="">Select...</option>
+                                <option value="given">Given</option>
+                                <option value="not_given">Not Given</option>
+                            </select>
+                            </div>
+                        </div>
+
+                       
+
+                        <!-- Comment -->
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Comment</label>
+                                <textarea class="form-control" name="comment" id="comment" rows="4" placeholder="Enter additional details..."></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="submit-section">
+                        <button type="submit" class="btn btn-primary submit-btn">
+                            Update Request
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Edit Request Modal -->
+
+
+<!-- Comment Modal -->
+<div id="view_comment_modal" class="modal custom-modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Issuing Note</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="comment_text" style="white-space: pre-wrap; background:#f8f9fa; padding:10px; border-radius:5px;"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block jsscript %} 
+
+<!-- Datetimepicker JS -->
+<script src="assets/js/moment.min.js"></script>
+<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+<!-- Datatable JS -->
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script>
+<!-- Select 2 -->
+<script src="assets/backend/js/select2.full.min.js"></script>
+
+<script>
+
+    view_profile = function(id){
+        //alert(id);
+            window.location.href = "profile/"+id;
+    }   
+
+    $(document).ready(
+        function() {
+            window.FakeLoader.init( { auto_hide: true } );
+        }
+    );
+    function edit_request(id, qty, ippis) {
+    
+    document.getElementById('eid').value = id;
+    document.getElementById('requested_qty').value = qty;
+    document.getElementById('eeippis').value = ippis;
+
+    // Reset fields
+    document.getElementById('qty_given').value = '';
+    document.getElementById('completion_status').value = '';
+    document.getElementById('comment').value = '';
+}
+function view_comment(comment) {
+    document.getElementById('comment_text').textContent = comment || 'No comment available.';
+}
+
+</script>
+<script>
+    // Show modal function
+function viewInventoryImage(uploadFileName) {
+    var modal = document.getElementById('view_inventory_modal');
+    var img = document.getElementById('inventory_modal_image');
+
+    img.src = 'uploads/inventory/' + uploadFileName; // set the image
+    modal.style.display = 'flex'; // show modal
+}
+
+// Close modal
+document.getElementById('close_inventory_modal').addEventListener('click', function() {
+    document.getElementById('view_inventory_modal').style.display = 'none';
+});
+
+// Optional: close modal when clicking outside the modal content
+document.getElementById('view_inventory_modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.style.display = 'none';
+    }
+});
+
+ $(document).ready(function() {
+        $('#repinventory').select2({
+            dropdownParent: $('#report'), 
+            placeholder: "Select Inventory",
+            allowClear: true
+        });
+    });
+
+</script>
+
+
+<script src="templates/backend/employee/request.js"></script>
+
+
+
+
+{% endblock %}

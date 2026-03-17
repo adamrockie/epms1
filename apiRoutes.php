@@ -21,6 +21,13 @@ $router->map('GET', '/api_my_requests', function() {
     require __DIR__ . '/controller/backend/api/api_my_requests.php';
 }, 'api_my_requests');
 
+
+// Get login staff store update for request
+$router->map('GET', '/api_request_update', function() {
+    require __DIR__ . '/controller/backend/api/api_request_update.php';
+}, 'api_request_update');
+
+
 // head of department reponse to staff item request from epms
 $router->map('POST', '/api_heads_response',  function() {
     require __DIR__ . '/controller/backend/api/api_heads_response.php';

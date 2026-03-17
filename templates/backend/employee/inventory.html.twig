@@ -84,7 +84,8 @@
 						    </div>
 					</div>
 				</div>
-			</div>   
+			</div>  
+             
             <div class="col-auto float-end ms-auto">
                 <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_inventory"><i class="fa fa-plus"></i> Add Asset</a>
                 <div class="view-icons">
@@ -93,17 +94,30 @@
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-            <a href="#" data-bs-toggle="modal" data-bs-target="#report">
-				<div class="card dash-widget">
-					<div class="card-body">
-						<span class="dash-widget-icon"><i class="fa fa-book"></i></span>
-							<div class="dash-widget-info">
-								<h3>***</h3>
-								<span>Generate Report</span>
-							</div>
-					</div>
-				</div>
-            </a>
+                <a href="request">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-cube"></i></span>
+                            <div class="dash-widget-info">
+                                <h4>Request: {{total_requests}}</h4>           
+                                <h4>Approved: {{total_approved}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+			</div>
+             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#report">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-book"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>***</h3>
+                                    <span>Generate Report</span>
+                                </div>
+                        </div>
+                    </div>
+                </a>
 			</div>
         </div>
     </div>

@@ -27,6 +27,10 @@ $router->map('GET', '/api_request_update', function() {
     require __DIR__ . '/controller/backend/api/api_request_update.php';
 }, 'api_request_update');
 
+// Get Pending Approvals for AGF and Director
+$router->map('GET', '/api_pending_approval', function() {
+    require __DIR__ . '/controller/backend/api/api_pending_approval.php';
+}, 'api_pending_approval');
 
 // head of department reponse to staff item request from epms
 $router->map('POST', '/api_heads_response',  function() {

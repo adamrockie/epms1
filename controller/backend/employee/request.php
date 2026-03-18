@@ -29,7 +29,7 @@ if($user->isLoggedIn()){
     $id         = Session::get($sessionName);
     $userc      = UserModel::where('id', '=', $id)->first();
 
-    $token = Token::generate();
+    $token = Token::generate(); 
     
     $all_item_requests = ItemRequests::with('staff')->get();
  

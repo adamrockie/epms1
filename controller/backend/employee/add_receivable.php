@@ -29,9 +29,6 @@ $user = new User();
 
 if($user->isLoggedIn() && Token::check(Input::get('token'))){
 
-
-    
-
     $upload      = 'null';
     $upload_status = '0';
 

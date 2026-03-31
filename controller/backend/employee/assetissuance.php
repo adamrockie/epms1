@@ -15,6 +15,7 @@ use Database\Models\Employees;
 use Database\Models\Offices;
 use Database\Models\Ranks;
 use Database\Models\States;
+use Database\Models\ItemRequests;
 
 $user = new User();
 $sessionName  = Config::get('session/session_name');
@@ -33,15 +34,20 @@ if($user->isLoggedIn()){
 
     $token = Token::generate();
 
-    $pending_items = ApiCalls::getallrequests(); 
-    $total_pending = count($pending_items);
+    $total_requests = ItemRequests::where('status', 'pending')->count();
+    $total_approved = ItemRequests::where('status', 'approve')->count();
+    $total_reject = ItemRequests::where('status', 'reject')->count();
+    $all_item_requests = ItemRequests::with('staff')->get();
 
     echo $twig->render('backend/employee/assetissuance.html.twig', [
         'title'     => 'Employees List',
         'userc'     => $userc,
         'token'     => $token,
         'role'         => $role,    
-        'total_pending'=> $total_pending,      
+        'total_requests'    => $total_requests,
+        'total_approved'    => $total_approved, 
+        'total_rejects'    => $total_reject,
+        'all_requests'    => $all_item_requests,
         'current_user' => $current_user,      
         ]);
 }else{

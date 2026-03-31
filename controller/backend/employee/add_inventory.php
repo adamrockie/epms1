@@ -28,8 +28,10 @@ if(!empty($_FILES['upload']['name'])){
 $inv = new Inventory();
 $inv->inventory = $_POST['inventory'];
 $inv->quantity  = $_POST['quantity'];
+$inv->amount    = $_POST['amount'];
 $inv->status    = $_POST['status'];
 $inv->warranty  = $_POST['warranty'];
+$inv->life_span = $_POST['life_span'];
 $inv->date      = $_POST['date'];
 $inv->upload    = $upload;
 

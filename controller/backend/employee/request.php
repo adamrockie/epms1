@@ -34,7 +34,7 @@ if($user->isLoggedIn()){
     $all_item_requests = ItemRequests::with('staff')->get();
  
     $total_requests = ItemRequests::count();
-    $total_approved = ItemRequests::where('status', 'approved')->count();
+    $total_approved = ItemRequests::where('status', 'approve')->count();
  
     echo $twig->render('backend/employee/request.html.twig', [
         'title'         => 'Request',

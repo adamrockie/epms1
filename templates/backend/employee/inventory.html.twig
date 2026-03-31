@@ -133,7 +133,9 @@
                             <th>Inventory</th>
                             <th>Quantity</th>
                             <th>Warranty</th>
-                            <!--th>Amount</th-->
+                            <th>Expected Useful Life</th>
+                            <th>Per Unit Cost</th>
+                            <th>Current Cost of Item</th>
                             <th>Status</th>
                             <th>Date</th>
                             <th>Image</th>
@@ -146,7 +148,9 @@
                             <td>{{items.inventory}}</td>
                             <td>{{items.quantity}}</td>
                             <td>{{items.warranty}}</td>
-                            <!--td>{{items.amount}}</td-->
+                            <td>{{items.life_span}} year(s)</td>
+                            <td>₦{{items.amount}}</td>
+                            <td>₦{{items.current_value|number_format(2) }}</td>
                             <td>{{items.status}}</td>
                             <td>{{items.date}}</td>
                             <td>
@@ -212,18 +216,18 @@
                                 <input class="form-control" type="text" name="inventory" id="inventory" placeholder="name" required>
                             </div>
                         </div>
-                        
-                        <!--div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-form-label">Amount <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="amount" id="amount" placeholder="Enter Amount" required>
-                            </div>
-                        </div-->
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Quantity <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" name="quantity" id="quantity" placeholder="quantity" required>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Per Unit Cost<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="amount" id="amount" placeholder="Enter Amount" required>
                             </div>
                         </div>
                       
@@ -238,7 +242,7 @@
                         </div>
                     </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Warranty <span class="text-danger">*</span></label>
                                 <select class="form-select" name="warranty" id="warranty" required>
@@ -249,7 +253,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">  
+                        <div class="col-sm-6">  
                             <div class="form-group">
                                 <label class="col-form-label">Date<span class="text-danger">*</span></label>
                                 <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date" id="date" required></div>
@@ -257,10 +261,16 @@
                         </div>
 
                         
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Upload Asset<span class="text-danger">*</span></label>
                                 <input class="form-control" type="file" name="upload" id="upload">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Expected Useful Life<span class="text-danger">*</span></label>
+                                <input type="text" name="life_span"  id="life_span" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -292,14 +302,14 @@
                     <input type="hidden" id="item_id" name="id">
 
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Inventory <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" name="inventory" id="einventory" required>
                             </div>
                         </div>
                           
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Status <span class="text-danger">*</span></label>
                                 <select class="form-select select_edit" name="status" id="cstatus" required>
@@ -310,7 +320,7 @@
                             </div>
                         </div>
                         
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Warranty <span class="text-danger">*</span></label>
                                 <select class="select_edit" name="warranty" id="ewarranty" required>
@@ -321,28 +331,40 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Quantity <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" name="quantity" id="equantity" placeholder="quantity" required>
                             </div>
                         </div>
 
-                        <div class="col-sm-4">  
+                         <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Per Unit Cost<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="amount" id="eamount" placeholder="Enter Amount" required>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">  
                             <div class="form-group">
                                 <label class="col-form-label">Date <span class="text-danger">*</span></label>
                                 <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date" id="edate" required></div>
                             </div>
                         </div>
 
-                       
                         <div id="preview">
                             <img src="uploads/inventory/" alt="" id="img_preview" width="100px" height="100px">
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Upload Asset <span class="text-danger">*</span></label>
                                 <input class="form-control" type="file" name="upload" id="eupload">
+                            </div>
+                        </div>
+                         <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Expected Useful Life<span class="text-danger">*</span></label>
+                                <input type="text" name="life_span" id="elife_span" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -511,8 +533,10 @@ document.getElementById('view_inventory_modal').addEventListener('click', functi
             allowClear: true
         });
     });
+  
 
 </script>
+
 
 <script src="templates/backend/employee/inventory.js"></script>
 

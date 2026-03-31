@@ -81,6 +81,8 @@ $(document).ready(function () {
           .change();
         $("#edate").val(data.date);
         $("#equantity").val(data.quantity).toString();
+        $("#eamount").val(data.amount).toString();
+        $("#elife_span").val(data.life_span).toString();
         $("#eupload").val(data.upload);
       },
     });

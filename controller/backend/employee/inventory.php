@@ -31,7 +31,36 @@ if($user->isLoggedIn()){
 
     $token = Token::generate();
     
-    $inventory      = Inventory::all();
+    // $inventory      = Inventory::all();
+    $inventory = Inventory::all()->map(function ($item) {
+
+        $cost = $item->amount;
+        $lifeSpan = $item->life_span;
+
+        // Get years
+        $purchaseYear = date('Y', strtotime($item->date));
+        $currentYear = date('Y');
+
+        $yearsUsed = $currentYear - $purchaseYear;
+
+        // Avoid division by zero
+        if ($lifeSpan > 0) {
+            $annualDepreciation = $cost / $lifeSpan;
+            $currentValue = $cost - ($annualDepreciation * $yearsUsed);
+        } else {
+            $currentValue = $cost;
+        }
+
+        // Prevent negative value
+        if ($currentValue < 0) {
+            $currentValue = 0;
+        }
+
+        // Attach to item
+        $item->current_value = $currentValue;
+
+        return $item;
+    });
     $issued         = count(Inventory::where('status', '=', 'issued')->get());
     $nissued        = count(Inventory::where('status', '=', 'notissued')->get());
     $all_item_requests = ItemRequests::with('staff')->get();

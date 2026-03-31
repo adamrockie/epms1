@@ -22,7 +22,7 @@ if (!$ippis) {
 if (!$status) {
     echo json_encode([
         "success" => 0,
-        "message" => "Status is required (given / not_given)"
+        "message" => "Status is required (disbursed / not_disbursed)"
     ]);
     exit;
 }

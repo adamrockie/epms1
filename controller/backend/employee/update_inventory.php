@@ -28,6 +28,7 @@ if ($user->isLoggedIn()) {
     $amount         = Sanitize::sanitize(Input::get('amount'));
     $status        = Sanitize::sanitize(Input::get('status'));
     $warranty       = Sanitize::sanitize(Input::get('warranty'));
+    $life_span      = Sanitize::sanitize(Input::get('life_span'));
     $quantity       = Sanitize::sanitize(Input::get('quantity'));
     $date           = Sanitize::sanitize(Input::get('date'));
     $upload         = $record->upload; // default to existing image
@@ -59,6 +60,7 @@ if ($user->isLoggedIn()) {
             'amount'            => $amount,
             'status'           => $status,
             'warranty'          => $warranty,
+            'life_span'         => $life_span,
             'quantity'          => (string)$quantity,
             'date'              => $date,
             'upload'            => $upload,

@@ -35,9 +35,7 @@ class ItemRequests extends Model
     //     return $this->belongsTo('Database\Models\Items', 'item_id');
     // }
 
- 
-    
-   
+  
 }
 
 ?>

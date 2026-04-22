@@ -24,7 +24,6 @@ $current_user = Employees::where('ippis', '=', $userc['ippis'])->first();
 
 if($user->isLoggedIn()){
 
-    
     $sessionName= Config::get('session/session_name');
     $id         = Session::get($sessionName);
     $userc      = UserModel::where('id', '=', $id)->first();

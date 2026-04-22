@@ -30,6 +30,15 @@ class ItemRequests extends Model
         return $this->belongsTo('Database\Models\Employees', 'ippis', 'ippis');
     }
 
+    public function inventory()
+    {
+        return $this->belongsTo(
+            'Database\Models\Inventory',
+            'item_id',     
+            'id'   
+        );
+    }
+
     // public function item()
     // {
     //     return $this->belongsTo('Database\Models\Items', 'item_id');

@@ -1,0 +1,166 @@
+{% extends "backend/patials/master.html" %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+
+<div class="content container-fluid">
+
+    <!-- ITEM DETAILS -->
+    <div class="card">
+        <div class="card-header">
+            <h4>Item Details (Single Item View)</h4>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <!-- ITEM INFO -->
+                <div class="col-md-8">
+                    <table class="table table-bordered">
+
+                        <tr>
+                            <th>Item Name</th>
+                            <td>{{ request.inventory.inventory }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Item ID</th>
+                            <td>{{ request.inventory.id}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Amount</th>
+                            <td>{{ request.inventory.amount }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Warranty</th>
+                            <td>{{ request.inventory.warranty ?? 'N/A' }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Life Span</th>
+                            <td>{{ request.inventory.life_span ?? 'N/A' }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Status</th>
+                            <td>{{ request.inventory.status }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Date Added</th>
+                            <td>{{ request.inventory.date }}</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+                <!-- QR CODE -->
+                <div class="col-md-4 text-center">
+
+                    <h5>QR Code</h5>
+
+                    <!-- QR IMAGE -->
+                    <img src="/epms1/functions/generate_qr.php?data={{ request.inventory.inventoryid }}" alt="QR Code"
+                        style="width:200px; height:200px;">
+                    <p class="mt-2">
+                        <small>Scan to view item details</small>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- STAFF DETAILS -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>Assigned Staff</h4>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+
+                <tr>
+                    <th>Full Name</th>
+                    <td>
+                        {{ request.staff.title ?? '' }}
+                        {{ request.staff.surname ?? '' }}
+                        {{ request.staff.lastname ?? '' }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>IPPIS</th>
+                    <td>{{ request.staff.ippis }}</td>
+                </tr>
+
+                <tr>
+                    <th>Email</th>
+                    <td>{{ request.staff.official_email ?? 'N/A' }}</td>
+                </tr>
+
+                <tr>
+                    <th>Phone</th>
+                    <td>{{ request.staff.phone ?? 'N/A' }}</td>
+                </tr>
+
+                <tr>
+                    <th>Rank</th>
+                    <td>{{ request.staff.rank.name ?? 'N/A' }}</td>
+                </tr>
+
+                <tr>
+                    <th>Office</th>
+                    <td>{{ request.staff.office.office_name ?? 'N/A' }}</td>
+                </tr>
+
+            </table>
+
+        </div>
+    </div>
+
+    <!-- REQUEST INFO (for record only) -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>Request Info</h4>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+
+                <tr>
+                    <th>Requested Qty</th>
+                    <td>{{ request.qty }}</td>
+                </tr>
+
+                <tr>
+                    <th>Status</th>
+                    <td>{{ request.status }}</td>
+                </tr>
+
+                <tr>
+                    <th>Request Date</th>
+                    <td>{{ request.request_date }}</td>
+                </tr>
+
+                <tr>
+                    <th>Comment</th>
+                    <td>{{ request.comment ?? 'No comment' }}</td>
+                </tr>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

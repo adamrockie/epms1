@@ -67,7 +67,6 @@
                             </td>
                             <td>{{ item.request_date }}</td>
 
-
                             <td class="text-end">
                                 <div class="dropdown dropdown-action">
                                     <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
@@ -82,6 +81,9 @@
                                             data-bs-target="#edit_inventory"
                                             onclick="edit_request({{ item.id }}, {{ item.qty }}, '{{ item.item_name|escape }}', '{{ item.item_id }}', '{{ item.ippis }}')"><i
                                                 class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item" href="view_request/{{ item.id }}">
+                                            <i class="fa fa-eye m-r-5"></i> View
+                                        </a>
                                     </div>
                                 </div>
                             </td>

@@ -78,6 +78,13 @@ $router->map('GET','/request',  function( ) {
     require __DIR__ . '/controller/backend/employee/request.php';
 } , 'request');
 
+
+$router->map('GET','/view_request/[*:id]',  function($id) {
+    $_GET['id'] = $id; 
+    require __DIR__ . '/controller/backend/employee/view_request.php';
+}, 'view_request');
+
+
 $router->map('POST','/update_item_request',  function( ) {
     require __DIR__ . '/controller/backend/employee/update_item_request.php';
 } , 'update_item_request');

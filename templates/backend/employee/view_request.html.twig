@@ -1,86 +1,133 @@
 {% extends "backend/patials/master.html" %}
-
 {% block title %} {{title}} {% endblock %}
+{% block headscripts %}
+<style>
+    @media print {
 
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Hide everything */
+        body * {
+            visibility: hidden;
+        }
+
+        .card-body {
+            position: relative;
+        }
+
+        /* Show only QR section */
+        #qr-section,
+        #qr-section * {
+            visibility: visible;
+        }
+
+        /* Remove absolute positioning (VERY IMPORTANT) */
+        #qr-section {
+            position: absolute !important;
+            right: 0;
+            left: 0;
+
+        }
+
+        /* Prevent page break issues */
+        html,
+        body {
+            height: auto;
+            overflow: hidden;
+        }
+
+        @page {
+            margin: 10mm;
+        }
+    }
+</style>
+{% endblock %}
 {% block content %}
 
 <div class="content container-fluid">
 
     <!-- ITEM DETAILS -->
-    <div class="card">
+    <div class="card mb-3">
         <div class="card-header">
             <h4>Item Details (Single Item View)</h4>
         </div>
 
         <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Item Name</th>
+                    <td>{{ request.inventory.inventory }}</td>
+                </tr>
 
+                <tr>
+                    <th>Item ID</th>
+                    <td>{{ request.inventory.id }}</td>
+                </tr>
+
+                <tr>
+                    <th>Amount</th>
+                    <td>{{ request.inventory.amount }}</td>
+                </tr>
+
+                <tr>
+                    <th>Warranty</th>
+                    <td>{{ request.inventory.warranty ?? 'N/A' }}</td>
+                </tr>
+
+                <tr>
+                    <th>Life Span</th>
+                    <td>{{ request.inventory.life_span ?? '0' }} year(s)</td>
+                </tr>
+
+                <tr>
+                    <th>Status</th>
+                    <td>{{ request.inventory.status }}</td>
+                </tr>
+
+                <tr>
+                    <th>Date Added</th>
+                    <td>{{ request.inventory.date }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4>Item Media</h4>
+
+            <button onclick="printQR()" class="btn btn-primary btn-sm">
+                Print QR Code
+            </button>
+        </div>
+
+        <div class="card-body">
             <div class="row">
 
-                <!-- ITEM INFO -->
-                <div class="col-md-8">
-                    <table class="table table-bordered">
-
-                        <tr>
-                            <th>Item Name</th>
-                            <td>{{ request.inventory.inventory }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Item ID</th>
-                            <td>{{ request.inventory.id}}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Amount</th>
-                            <td>{{ request.inventory.amount }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Warranty</th>
-                            <td>{{ request.inventory.warranty ?? 'N/A' }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Life Span</th>
-                            <td>{{ request.inventory.life_span ?? 'N/A' }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Status</th>
-                            <td>{{ request.inventory.status }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Date Added</th>
-                            <td>{{ request.inventory.date }}</td>
-                        </tr>
-
-                    </table>
+                <!-- IMAGE -->
+                <div class="col-md-6 text-center">
+                    <h6>Item Image</h6>
+                    <img src="uploads/inventory/{{ request.inventory.upload }}"
+                        style="width:200px;height:200px;object-fit:cover;">
                 </div>
 
                 <!-- QR CODE -->
-                <div class="col-md-4 text-center">
-
-                    <h5>QR Code</h5>
-
-                    <!-- QR IMAGE -->
-                    <img src="/epms1/functions/generate_qr.php?data={{ request.inventory.inventoryid }}" alt="QR Code"
-                        style="width:200px; height:200px;">
-                    <p class="mt-2">
-                        <small>Scan to view item details</small>
-                    </p>
-
+                <div class="col-md-6 text-center" id="qr-section">
+                    <h6>QR Code</h6>
+                    <img src="/epms1/functions/generate_qr.php?id={{ request.id }}" style="width:200px;">
+                    <p><small>Scan to view item details</small></p>
                 </div>
 
             </div>
-
         </div>
     </div>
 
     <!-- STAFF DETAILS -->
     <div class="card mt-4">
         <div class="card-header">
-            <h4>Assigned Staff</h4>
+            <h4>Disbursed to</h4>
         </div>
 
         <div class="card-body">
@@ -111,21 +158,11 @@
                     <td>{{ request.staff.phone ?? 'N/A' }}</td>
                 </tr>
 
-                <tr>
-                    <th>Rank</th>
-                    <td>{{ request.staff.rank.name ?? 'N/A' }}</td>
-                </tr>
-
-                <tr>
-                    <th>Office</th>
-                    <td>{{ request.staff.office.office_name ?? 'N/A' }}</td>
-                </tr>
 
             </table>
 
         </div>
     </div>
-
     <!-- REQUEST INFO (for record only) -->
     <div class="card mt-4">
         <div class="card-header">
@@ -162,5 +199,11 @@
     </div>
 
 </div>
+
+<script>
+    function printQR() {
+        window.print();
+    }
+</script>
 
 {% endblock %}

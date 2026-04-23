@@ -1,13 +1,8 @@
 <?php
-require "config.php";
 
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Writer\PngWriter;
+$id = $_GET['data'] ?? '';
 
-$data = $_GET['data'] ?? 'NO_DATA';
+$url = "http://127.0.0.1/epms1/view_request/" . $id;
 
-$qrCode = QrCode::create($data)->setSize(300);
-$writer = new PngWriter();
-
-header('Content-Type: image/png');
-echo $writer->write($qrCode)->getString();
+header("Location: https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" . urlencode($url));
+exit;

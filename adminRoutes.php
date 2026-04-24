@@ -54,6 +54,15 @@ $router->map('POST','/update_inventory',  function( ) {
     require __DIR__ . '/controller/backend/employee/update_inventory.php';
 } , 'update_inventory');
 
+$router->map('GET','/view_inventory/[*:id]', function($id) {
+    $_GET['id'] = $id;  
+    require __DIR__ . '/controller/backend/employee/view_inventory.php';
+}, 'view_inventory');
+
+$router->map('POST','/reduce_qty', function() {
+    require __DIR__ . '/controller/backend/employee/reduce_qty.php';
+}, 'reduce_qty');
+
 $router->map('GET','/report',  function( ) {
     require __DIR__ . '/controller/backend/employee/report.php';
 } , 'report');

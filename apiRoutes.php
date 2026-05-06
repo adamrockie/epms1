@@ -37,6 +37,12 @@ $router->map('POST', '/api_heads_response',  function() {
     require __DIR__ . '/controller/backend/api/api_heads_response.php';
 }, 'api_heads_response');
 
+// staff delete request if not approved yet
+$router->map('POST', '/api_delete_request', function() {
+    require __DIR__ . '/controller/backend/api/api_delete_request.php';
+}, 'api_delete_request');
+
+
 // agf of department reponse to staff item request from epms
 $router->map('POST', '/api_agf_response',  function() {
     require __DIR__ . '/controller/backend/api/api_agf_response.php';

@@ -70,7 +70,7 @@
 
                             <td class="text-end d-flex justify-content-end">
                                 <a href="javascript:void(0)"
-                                    onclick="viewQR('{{item.id}}', '{{item.item_name|e('js')}}', '{{item_serial|e('js')}}')">
+                                    onclick="viewQR('{{item.id}}', '{{item.item_name|e('js')}}', '{{item.serial_no|e('js')}}')">
                                     <i class="fa fa-qrcode m-r-5"></i>
                                 </a>
                                 <div class="dropdown dropdown-action">
@@ -335,7 +335,7 @@
 
                 const win = window.open('', '', 'width=600,height=250');
                 win.document.write(`
-            <html>
+             <html>
             <head>
                 <title>Print QR</title>
                 <style>
@@ -362,6 +362,7 @@
                         overflow: hidden;
                     }
 
+                    /* ── Left: Black brand strip ── */
                     .brand-strip {
                         width: 6mm;
                         background: #000 !important;
@@ -380,6 +381,7 @@
                         white-space: nowrap;
                     }
 
+                    /* ── QR Code section ── */
                     .qr-section {
                         width: 27mm;
                         display: flex;
@@ -402,6 +404,7 @@
                         display: block;
                     }
 
+                    /* ── Text section ── */
                     .text-section {
                         flex: 1;
                         min-width: 0;
@@ -422,6 +425,7 @@
                         max-width: 100%;
                     }
 
+                    /* ── Serial number curved card ── */
                     .serial-card {
                         display: inline-flex;
                         align-items: center;
@@ -433,9 +437,9 @@
                     }
                     .serial-label {
                         font-size: 4pt;
-                        color: #999 !important;
+                        color: #fff !important;
                         letter-spacing: 0.6px;
-                        text-transform: uppercase;
+                       
                         font-weight: bold;
                     }
                     .serial-value {
@@ -449,16 +453,20 @@
                     }
 
                     .site-url {
-                        font-size: 5pt;
-                        color: #555;
+                        font-size: 6pt;
+                        color: #000;
                         letter-spacing: 0.3px;
                         font-weight: 600;
+                        margin-top: 10px;
+                        text-align: center;
                     }
                     .footer-text {
-                        font-size: 4pt;
-                        color: #999;
+                        font-size: 6pt;
+                        color: #000;
+                        font-weight: 600;
                         letter-spacing: 1.2px;
                         text-transform: uppercase;
+                    
                     }
                 </style>
             </head>
@@ -475,13 +483,14 @@
                 </div>
 
                 <div class="text-section">
+                <div class="footer-text">— OAUGF AMS —</div>
                     <div class="item-name">${itemName}</div>
                     <div class="serial-card">
-                        <span class="serial-label">S/N</span>
+                        <span class="serial-label">Serial number:</span>
                         <span class="serial-value">${itemSerial}</span>
                     </div>
-                    <div class="site-url">oaugf.ng</div>
-                    <div class="footer-text">— OAUGF AMS —</div>
+                    <div class="site-url">www.oaugf.ng</div>
+                    
                 </div>
 
             </body>

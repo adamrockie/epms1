@@ -63,12 +63,14 @@
                             <td>{{ item.status }}</td>
                             <td>
                                 {{ item.staff.surname ?? '' }}
+                                {{ item.staff.middlename ?? '' }}
                                 {{ item.staff.lastname ?? '' }}
                             </td>
                             <td>{{ item.request_date }}</td>
 
                             <td class="text-end d-flex justify-content-end">
-                                <a href="javascript:void(0)" onclick="viewQR('{{item.id}}')">
+                                <a href="javascript:void(0)"
+                                    onclick="viewQR('{{item.id}}', '{{item.item_name|e('js')}}', '{{item_serial|e('js')}}')">
                                     <i class="fa fa-qrcode m-r-5"></i>
                                 </a>
                                 <div class="dropdown dropdown-action">
@@ -82,7 +84,7 @@
                                         </a>
                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                             data-bs-target="#edit_inventory"
-                                            onclick="edit_request({{ item.id }}, {{ item.qty }}, '{{ item.item_name|escape }}', '{{ item.item_id }}', '{{ item.ippis }}')"><i
+                                            onclick="edit_request({{ item.id }}, {{ item.qty }}, '{{ item.item_name|escape }}', '{{ item.item_id }}', '{{ item.ippis }}', '{{ item.serial_no }}')"><i
                                                 class="fa fa-pencil m-r-5"></i> Edit</a>
 
                                     </div>
@@ -145,10 +147,8 @@
                             <div class="form-group">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <button type="button" id="add_serial" class="btn btn-sm btn-primary mb-2">
-                                            + Add Serial Number
-                                        </button>
-                                        <div id="serial_container"></div>
+                                        <label class="col-form-label">Serial No.</label>
+                                        <input class="form-control" type="text" id="request_serial" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -307,14 +307,14 @@
     });
 
 </script>
-
 <script>
-    function viewQR(id) {
-
+    function viewQR(id, name, serial) {
         const modal = document.getElementById("qr_modal");
         const img = document.getElementById("qr_image");
 
         img.src = "/epms1/functions/generate_qr.php?id=" + id;
+        img.dataset.itemName = name || "";
+        img.dataset.itemSerial = serial || "";
 
         modal.style.display = "flex";
     }
@@ -324,14 +324,175 @@
     }
 
     function printQR() {
-        let content = document.getElementById("qr_image").outerHTML;
+        const img = document.getElementById("qr_image");
+        const itemName = img.dataset.itemName || "Unnamed Item";
+        const itemSerial = img.dataset.itemSerial || "N/A";
 
-        let win = window.open('', '', 'width=600,height=600');
-        win.document.write('<html><head><title>Print QR</title></head><body style="text-align:center;">');
-        win.document.write(content);
-        win.document.write('</body></html>');
-        win.document.close();
-        win.print();
+        fetch(img.src, { credentials: "omit" })
+            .then(res => res.blob())
+            .then(blob => {
+                const objectURL = URL.createObjectURL(blob);
+
+                const win = window.open('', '', 'width=600,height=250');
+                win.document.write(`
+            <html>
+            <head>
+                <title>Print QR</title>
+                <style>
+                    @page {
+                        size: 90.3mm 29mm;
+                        margin: 0;
+                    }
+                    * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                        color-adjust: exact;
+                    }
+                    body {
+                        width: 90.3mm;
+                        height: 29mm;
+                        background: #fff;
+                        font-family: Arial, Helvetica, sans-serif;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: stretch;
+                        overflow: hidden;
+                    }
+
+                    .brand-strip {
+                        width: 6mm;
+                        background: #000 !important;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                    }
+                    .brand-strip span {
+                        color: #fff !important;
+                        font-size: 5.5pt;
+                        font-weight: bold;
+                        letter-spacing: 2.5px;
+                        writing-mode: vertical-rl;
+                        transform: rotate(180deg);
+                        white-space: nowrap;
+                    }
+
+                    .qr-section {
+                        width: 27mm;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 1mm;
+                        flex-shrink: 0;
+                    }
+                    .qr-wrap {
+                        border: 0.4mm solid #000;
+                        padding: 0.7mm;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background: #fff !important;
+                    }
+                    .qr-wrap img {
+                        width: 21mm;
+                        height: 21mm;
+                        display: block;
+                    }
+
+                    .text-section {
+                        flex: 1;
+                        min-width: 0;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        padding: 2mm 2.8mm;
+                        gap: 1.3mm;
+                        overflow: hidden;
+                    }
+                    .item-name {
+                        font-size: 7.5pt;
+                        font-weight: bold;
+                        color: #111;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 100%;
+                    }
+
+                    .serial-card {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 1mm;
+                        background: #111 !important;
+                        border-radius: 3mm 1mm 3mm 1mm;
+                        padding: 1mm 2.2mm;
+                        max-width: fit-content;
+                    }
+                    .serial-label {
+                        font-size: 4pt;
+                        color: #999 !important;
+                        letter-spacing: 0.6px;
+                        text-transform: uppercase;
+                        font-weight: bold;
+                    }
+                    .serial-value {
+                        font-size: 6.5pt;
+                        color: #fff !important;
+                        font-weight: bold;
+                        letter-spacing: 0.4px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    .site-url {
+                        font-size: 5pt;
+                        color: #555;
+                        letter-spacing: 0.3px;
+                        font-weight: 600;
+                    }
+                    .footer-text {
+                        font-size: 4pt;
+                        color: #999;
+                        letter-spacing: 1.2px;
+                        text-transform: uppercase;
+                    }
+                </style>
+            </head>
+            <body>
+
+                <div class="brand-strip">
+                    <span>OAUGF</span>
+                </div>
+
+                <div class="qr-section">
+                    <div class="qr-wrap">
+                        <img src="${objectURL}" onload="window.print(); window.close();" />
+                    </div>
+                </div>
+
+                <div class="text-section">
+                    <div class="item-name">${itemName}</div>
+                    <div class="serial-card">
+                        <span class="serial-label">S/N</span>
+                        <span class="serial-value">${itemSerial}</span>
+                    </div>
+                    <div class="site-url">oaugf.ng</div>
+                    <div class="footer-text">— OAUGF AMS —</div>
+                </div>
+
+            </body>
+            </html>
+        `);
+                win.document.close();
+            })
+            .catch(err => {
+                console.error("Failed to load QR image for printing:", err);
+                alert("Could not load QR code for printing. Please try again.");
+            });
     }
 </script>
 

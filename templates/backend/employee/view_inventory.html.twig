@@ -10,9 +10,9 @@ endblock %} {% block content %}
         <small class="text-muted">Inventory Details</small>
       </div>
 
-      <button class="btn btn-success btn-sm" onclick="useItem({{ item.id }})">
+      <!--button class="btn btn-success btn-sm" onclick="useItem({{ item.id }})">
         Confirm
-      </button>
+      </button-->
     </div>
   </div>
 
@@ -21,7 +21,7 @@ endblock %} {% block content %}
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
-          <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+          <p><strong>Serial No.:</strong> {{ item.serial_no }}</p>
           <p><strong>Amount:</strong> ₦{{ item.amount }}</p>
           <p><strong>Warranty:</strong> {{ item.warranty }}</p>
         </div>

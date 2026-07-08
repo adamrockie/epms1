@@ -30,7 +30,10 @@ if($user->isLoggedIn()){
 
     $token = Token::generate(); 
     
-    $all_item_requests = ItemRequests::with('staff')->get();
+    // $all_item_requests = ItemRequests::with('staff')->get(); 
+    $all_item_requests = ItemRequests::with(['staff', 'inventory'])->get();
+
+   
  
     $total_requests = ItemRequests::count();
     $total_approved = ItemRequests::where('status', 'approve')->count();

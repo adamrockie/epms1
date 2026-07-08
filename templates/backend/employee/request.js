@@ -51,9 +51,10 @@ let maxQty = 0;
 let currentItemName = "";
 
 // OPEN MODAL + SET VALUES
-function edit_request(id, qty, item_name, item_id, ippis) {
+function edit_request(id, qty, item_name, item_id, ippis, serial_no) {
   document.getElementById("eid").value = id;
-  document.getElementById("request_display").value = qty + " " + item_name;
+  document.getElementById("request_display").value = item_name;
+  document.getElementById("request_serial").value = serial_no;
   document.getElementById("eeippis").value = ippis;
   document.getElementById("eitem_id").value = item_id;
   // SET LIMIT

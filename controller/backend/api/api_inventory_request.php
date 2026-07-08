@@ -32,6 +32,7 @@ try {
         $inventoryItem = Inventory::where('id', $item['item_id'])->first();
 
         $itemName = $inventoryItem ? $inventoryItem->inventory : '';
+        $serialNo   = $inventoryItem ? $inventoryItem->serial_no  : '';
 
         // Save exactly what is sent
         ItemRequests::create([
@@ -50,6 +51,7 @@ try {
             'status'               => $item['status'] ?? 'pending',
             'request_date'         => $item['request_date'] ?? date('Y-m-d H:i:s'),
             'comment'              => $item['comment'] ?? '',
+            'serial_no'            => $serialNo,
             'created_at'           => $item['created_at'] ?? date('Y-m-d H:i:s'),
             'updated_at'           => $item['updated_at'] ?? date('Y-m-d H:i:s'),
             'deleted_at'           => $item['deleted_at'] ?? null,

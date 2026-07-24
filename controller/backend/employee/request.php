@@ -33,7 +33,22 @@ if($user->isLoggedIn()){
     // $all_item_requests = ItemRequests::with('staff')->get(); 
     $all_item_requests = ItemRequests::with(['staff', 'inventory'])->get();
 
-   
+    $statusPriority = [
+        'approve' => 1,
+        'pending' => 2,
+    ];
+
+    $all_item_requests = collect($all_item_requests)->sort(function ($a, $b) use ($statusPriority) {
+        $aPriority = $statusPriority[$a['status']] ?? 3;
+        $bPriority = $statusPriority[$b['status']] ?? 3;
+    
+        if ($aPriority === $bPriority) {
+            // optional: keep secondary order stable, e.g. by request_date desc
+            return strtotime($b['request_date']) <=> strtotime($a['request_date']);
+        }
+    
+        return $aPriority <=> $bPriority;
+    })->values()->all();
  
     $total_requests = ItemRequests::count();
     $total_approved = ItemRequests::where('status', 'approve')->count();

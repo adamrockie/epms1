@@ -21,7 +21,7 @@ class ItemRequests extends Model
     * @var array
     */
     protected $fillable = [
-        'rid','ippis','item_id', 'item_name', 'item_description', 'qty', 'head', 'head_approval_status', 'dir_approval_date', 'agf', 'agf_approval_status', 'agf_approval_date', 'status', 'request_date','comment', 'serial_no', 'created_at', 'updated_at', 'deleted_at',
+        'rid','ippis','item_id', 'item_name', 'item_description', 'qty', 'head', 'head_approval_status', 'head_rejection_reason', 'dir_approval_date', 'agf', 'agf_approval_status', 'agf_rejection_reason', 'agf_approval_date', 'status', 'request_date','comment', 'serial_no', 'created_at', 'updated_at', 'deleted_at',
     ];
 
 

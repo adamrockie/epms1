@@ -18,6 +18,15 @@ if(!$data || empty($data['id']) || empty($data['action'])){
     exit;
 }
 
+// Reject actions must include a reason
+if($data['action'] === 'reject' && empty(trim($data['reason'] ?? ''))){
+    echo json_encode([
+        "success" => 0,
+        "message" => "A reason is required for rejection"
+    ]);
+    exit;
+}
+
 try {
 
     $request = ItemRequests::where('id', intval($data['id']))->first();
@@ -29,14 +38,22 @@ try {
         ]);
         exit;
     }
-  
-    // Update ONLY the required fields
-    $request->update([
+
+    $updateData = [
         'agf_approval_status' => $data['action'],
-        'status' => $data['action'],
-        'agf_approval_date'    => date('Y-m-d H:i:s'),
-        'updated_at'           => date('Y-m-d H:i:s')
-    ]);
+        'status'              => $data['action'],
+        'agf_approval_date'   => date('Y-m-d H:i:s'),
+        'updated_at'          => date('Y-m-d H:i:s'),
+    ];
+
+    if($data['action'] === 'reject'){
+        $updateData['agf_rejection_reason'] = trim($data['reason']);
+    } else {
+        // clear any stale reason if it's being approved after a previous rejection
+        $updateData['agf_rejection_reason'] = null;
+    }
+
+    $request->update($updateData);
 
     echo json_encode([
         "success" => 1,

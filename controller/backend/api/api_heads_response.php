@@ -18,6 +18,15 @@ if(!$data || empty($data['id']) || empty($data['action'])){
     exit;
 }
 
+// Reject actions must include a reason
+if($data['action'] === 'reject' && empty(trim($data['reason'] ?? ''))){
+    echo json_encode([
+        "success" => 0,
+        "message" => "A reason is required when not recommending"
+    ]);
+    exit;
+}
+
 try {
 
     $request = ItemRequests::where('id', intval($data['id']))->first();
@@ -29,13 +38,22 @@ try {
         ]);
         exit;
     }
-  
-    // Update ONLY the required fields
-    $request->update([
+
+    $updateData = [
         'head_approval_status' => $data['action'],
         'dir_approval_date'    => date('Y-m-d H:i:s'),
-        'updated_at'           => date('Y-m-d H:i:s')
-    ]);
+        'updated_at'           => date('Y-m-d H:i:s'),
+    ];
+
+    if($data['action'] === 'reject'){
+        $updateData['head_rejection_reason'] = trim($data['reason']);
+        // if head rejects, the overall status should reflect that too
+        $updateData['status'] = 'reject';
+    } else {
+        $updateData['head_rejection_reason'] = null;
+    }
+
+    $request->update($updateData);
 
     echo json_encode([
         "success" => 1,

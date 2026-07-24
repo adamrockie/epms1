@@ -32,6 +32,7 @@ $inv->amount    = $_POST['amount'];
 $inv->status    = $_POST['status'];
 $inv->warranty  = $_POST['warranty'];
 $inv->life_span = $_POST['life_span'];
+$inv->category = $_POST['category'];
 $inv->date      = $_POST['date'];
 $inv->upload    = $upload;
 

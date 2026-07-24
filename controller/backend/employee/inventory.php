@@ -32,7 +32,7 @@ if($user->isLoggedIn()){
     $token = Token::generate();
     
     // $inventory      = Inventory::all();
-    $inventory = Inventory::all()->map(function ($item) {
+    $inventory = Inventory::orderBy('id', 'desc')->get()->map(function ($item) {
 
         $cost = $item->amount;
         $lifeSpan = $item->life_span;
@@ -61,12 +61,25 @@ if($user->isLoggedIn()){
 
         return $item;
     });
+
+    $inventory_summary = Inventory::selectRaw('category, COUNT(*) as total')
+    ->selectRaw("SUM(CASE WHEN status = 'issued' THEN 1 ELSE 0 END) as issued_count")
+    ->selectRaw("SUM(CASE WHEN status != 'issued' THEN 1 ELSE 0 END) as available_count")
+    ->groupBy('category')
+    ->orderBy('category')
+    ->get();
+
+
+
     $issued         = count(Inventory::where('status', '=', 'issued')->get());
-    $nissued        = count(Inventory::where('status', '=', 'notissued')->get());
+    $nissued        = count(Inventory::where('status', '=', 'Not Issued')->get());
     $all_item_requests = ItemRequests::with('staff')->get();
     $total_requests = ItemRequests::count();
     $total_approved = ItemRequests::where('status', 'approve')->count();
-
+    $total_pending  = ItemRequests::where('status', 'pending')->count();
+    $total_disbursed = ItemRequests::where('status', 'disbursed')->count(); 
+    $total_rejected  = ItemRequests::where('status', 'reject')->count();
+    
     $tinventory     = count($inventory);
  
     echo $twig->render('backend/employee/inventory.html.twig', [
@@ -74,9 +87,13 @@ if($user->isLoggedIn()){
         'userc'         => $userc,
         'inventory'     => $inventory,
         'tinventory'    => $tinventory,
+        'inventory_summary' => $inventory_summary,
         'all_item_requests' => $all_item_requests,
         'total_requests'    => $total_requests,
         'total_approved'    => $total_approved,
+        'total_pending'    =>  $total_pending,
+        'total_disburst'   => $total_disbursed,
+        'total_rejected'    => $total_rejected,
         'issued'        => $issued,
         'nissued'       => $nissued,
         'token'         => $token,

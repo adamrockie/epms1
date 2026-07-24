@@ -21,6 +21,7 @@ try {
     $requests = ItemRequests::where('ippis', $ippis)
         ->orWhere('head', $ippis)
         ->orWhere('agf', $ippis)
+        ->orderByRaw("CASE WHEN status = 'pending' THEN 0 ELSE 1 END")
         ->orderBy('request_date','desc')
         ->get()
         ->toArray();

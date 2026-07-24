@@ -60,7 +60,14 @@
                         <tr>
                             <td>{{ item.item_name }}</td>
                             <td>{{ item.qty }}</td>
-                            <td>{{ item.status }}</td>
+                            <td>
+
+                                <span
+                                    class="badge bg-{{ item.status == 'approve' ? 'success' : (item.status == 'pending' ? 'warning' : (item.status == 'reject' ? 'danger' : (item.status == 'not_disbursed' ? 'danger' : (item.status == 'disbursed' ? 'info' : 'secondary')))) }}">
+                                    {{ item.status|replace({'_': ' '})|title }}
+                                </span>
+                            </td>
+
                             <td>
                                 {{ item.staff.surname ?? '' }}
                                 {{ item.staff.middlename ?? '' }}
@@ -82,10 +89,19 @@
                                             onclick="view_comment(`{{ item.comment | escape }}`)">
                                             <i class="fa fa-eye m-r-5"></i> Note
                                         </a>
+
+                                        {% if item.status == 'reject' %}
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#view_rejection_modal"
+                                            onclick="view_rejection_reason(`{{ item.head_rejection_reason ?? '' }}`, `{{ item.agf_rejection_reason ?? '' }}`)">
+                                            <i class="fa fa-ban m-r-5"></i> View Rejection Reason
+                                        </a>
+                                        {% else %}
                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                             data-bs-target="#edit_inventory"
                                             onclick="edit_request({{ item.id }}, {{ item.qty }}, '{{ item.item_name|escape }}', '{{ item.item_id }}', '{{ item.ippis }}', '{{ item.serial_no }}')"><i
                                                 class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        {% endif %}
 
                                     </div>
                                 </div>
@@ -95,6 +111,26 @@
                         {% endfor %}
                     </tbody>
                 </table>
+
+                <!-- View Rejection Reason Modal -->
+                <div id="view_rejection_modal" class="modal custom-modal fade" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Rejection Reason</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="rejection_reason_body">
+                                    <p class="text-muted">No reason provided.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- View Item Image Modal -->
 
                 <div id="view_inventory_modal" class="modal"
@@ -308,6 +344,23 @@
 
 </script>
 <script>
+    window.view_rejection_reason = function (headReason, agfReason) {
+        let html = '';
+
+        if (headReason && headReason.trim() !== '') {
+            html += '<p><strong>Director:</strong> ' + $('<div>').text(headReason).html() + '</p>';
+        }
+
+        if (agfReason && agfReason.trim() !== '') {
+            html += '<p><strong>AGF:</strong> ' + $('<div>').text(agfReason).html() + '</p>';
+        }
+
+        if (html === '') {
+            html = '<p class="text-muted">No reason provided.</p>';
+        }
+
+        $('#rejection_reason_body').html(html);
+    };
     function viewQR(id, name, serial) {
         const modal = document.getElementById("qr_modal");
         const img = document.getElementById("qr_image");

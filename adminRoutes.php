@@ -41,6 +41,18 @@ $router->map('GET','/receiveable',  function( ) {
     require __DIR__ . '/controller/backend/employee/receiveable.php';
 } , 'receiveable');
 
+$router->map('GET','/contract',  function( ) {
+    require __DIR__ . '/controller/backend/employee/contract.php';
+} , 'contract');
+
+$router->map('GET','/procurement_request',  function( ) {
+    require __DIR__ . '/controller/backend/employee/procurement_request.php';
+} , 'procurement_request');
+
+$router->map('POST', '/add_request_item', function () {
+    require __DIR__ . '/controller/backend/employee/add_request_item.php';
+}, 'add_request_item');
+
 $router->map('POST','/add_inventory',  function( ) {
     require __DIR__ . '/controller/backend/employee/add_inventory.php';
 } , 'add_inventory');

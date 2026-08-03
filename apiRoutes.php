@@ -121,4 +121,14 @@ $router->map('GET','/api_doc/[*:id]',  function( $id ) {
     require __DIR__ . '/controller/backend/api/aapi_doc.php';
 } , 'aapi_doc');
 
+// procurement request
+$router->map('GET','/api_get_procurement_requests',  function(  ) {
+    require __DIR__ . '/controller/backend/api/api_get_procurement_requests.php';
+} , 'api_get_procurement_requests');
+
+$router->map('POST', '/api_agf_procurement_response',  function() {
+    require __DIR__ . '/controller/backend/api/api_agf_procurement_response.php';
+}, 'api_agf_procurement_response');
+
+
 ?>

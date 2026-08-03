@@ -17,11 +17,11 @@ class RequestItems extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'id', 'subject', 'description', 'status', 'note',
+
+     protected $fillable = [
+        'id', 'subject', 'description', 'status', 'note', 'remarks',
         'created_at', 'updated_at'
     ];
-
     
 }
 

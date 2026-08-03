@@ -45,6 +45,7 @@ $router->map('GET','/contract',  function( ) {
     require __DIR__ . '/controller/backend/employee/contract.php';
 } , 'contract');
 
+// procurement section 
 $router->map('GET','/procurement_request',  function( ) {
     require __DIR__ . '/controller/backend/employee/procurement_request.php';
 } , 'procurement_request');
@@ -52,6 +53,26 @@ $router->map('GET','/procurement_request',  function( ) {
 $router->map('POST', '/add_request_item', function () {
     require __DIR__ . '/controller/backend/employee/add_request_item.php';
 }, 'add_request_item');
+
+$router->map('GET', '/get_item_request/[*:id]', function ($id) {
+    $_GET['id'] = $id;
+    require __DIR__ . '/controller/backend/employee/get_request_item.php';
+}, 'get_item_request');
+ 
+$router->map('POST', '/update_request_item', function () {
+    require __DIR__ . '/controller/backend/employee/update_request_item.php';
+}, 'update_request_item');
+ 
+$router->map('POST', '/delete_item_request', function () {
+    require __DIR__ . '/controller/backend/employee/delete_request_item.php';
+}, 'delete_item_request');
+ 
+$router->map('POST', '/add_item_remark', function () {
+    require __DIR__ . '/controller/backend/employee/add_request_remark.php';
+}, 'add_item_remark');
+
+
+
 
 $router->map('POST','/add_inventory',  function( ) {
     require __DIR__ . '/controller/backend/employee/add_inventory.php';

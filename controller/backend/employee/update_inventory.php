@@ -25,6 +25,7 @@ if ($user->isLoggedIn()) {
     }
 
     $inventory      = Sanitize::sanitize(Input::get('inventory'));
+    $item_type  = Sanitize::sanitize(Input::get('item_type'));
     $amount         = Sanitize::sanitize(Input::get('amount'));
     $status        = Sanitize::sanitize(Input::get('status'));
     $warranty       = Sanitize::sanitize(Input::get('warranty'));
@@ -57,6 +58,7 @@ if ($user->isLoggedIn()) {
     $saved = Inventory::where('id', '=', $id)
         ->update([
            'inventory'         => $inventory,
+           'item_type'          => $item_type, 
             'amount'            => $amount,
             'status'           => $status,
             'warranty'          => $warranty,

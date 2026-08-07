@@ -54,7 +54,11 @@ class Receiveable extends Model
     {
         return $this->hasManyThrough('Database\Models\Offices', 'Database\Models\Posting', 'office_id', 'office_id', 'ippis', 'ippis');
     }
-    
+    public function documents()
+    {
+        return $this->hasMany('Database\Models\ReceivableDocument', 'receivable_id', 'id')
+                    ->orderBy('created_at', 'desc');
+    }
    
 }
 

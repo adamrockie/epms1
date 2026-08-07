@@ -45,10 +45,25 @@ $router->map('GET','/contract',  function( ) {
     require __DIR__ . '/controller/backend/employee/contract.php';
 } , 'contract');
 
-// procurement section 
+
 $router->map('GET','/procurement_request',  function( ) {
     require __DIR__ . '/controller/backend/employee/procurement_request.php';
 } , 'procurement_request');
+
+$router->map('GET', '/get_receivable_documents/[i:id]', function ($id) {
+    $params = ['id' => $id];
+    require __DIR__ . '/controller/backend/employee/get_receivable_documents.php';
+}, 'get_receivable_documents');
+
+
+$router->map('POST', '/update_receivable_status', function () {
+    require __DIR__ . '/controller/backend/employee/update_receivable_status.php';
+}, 'update_receivable_status');
+
+
+$router->map('GET','/store_request',  function( ) {
+    require __DIR__ . '/controller/backend/employee/store_request.php';
+} , 'store_request');
 
 $router->map('POST', '/add_request_item', function () {
     require __DIR__ . '/controller/backend/employee/add_request_item.php';

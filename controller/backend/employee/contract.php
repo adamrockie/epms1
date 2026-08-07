@@ -16,6 +16,7 @@ use Database\Models\Ranks;
 use Database\Models\States;
 use Database\Models\Receiveable;
 
+
 $user = new User();
 $sessionName  = Config::get('session/session_name');
 $id           = Session::get($sessionName);
@@ -33,7 +34,8 @@ if($user->isLoggedIn()){
 
     $token = Token::generate();
     
-    $receiveable    = Receiveable::all();
+    // $receiveable    = Receiveable::all();
+    $receiveable = Receiveable::with('documents')->get();
     $completed      = count(Receiveable::where('status', '=', 'completed')->get());
     $pending        = count(Receiveable::where('status', '=', 'pending')->get());
     $tprojects      = count($receiveable);

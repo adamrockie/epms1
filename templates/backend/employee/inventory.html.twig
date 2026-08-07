@@ -132,7 +132,7 @@
                 <div class="col-md-12 col-lg-6 col-xl-3">
                     <div class="card dash-widget category-summary-card">
                         <div class="card-body">
-                            <h6 class="mb-3"><i class="fa fa-th-large m-r-5"></i> Assets by Category</h6>
+                            <h6 class="mb-3"><i class="fa fa-th-large m-r-5"></i> Assets by Type</h6>
                             {% for cat in inventory_summary %}
                             <div class="d-flex justify-content-between align-items-center category-row">
                                 <span class="category-name">{{ cat.category }}</span>
@@ -311,17 +311,25 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Category</label>
-                                    <select class="form-control" name="category" required>
+                                    <label class="col-form-label">Category <span class="text-danger">*</span></label>
+                                    <select class="form-select" name="item_type" id="item_type" required>
                                         <option value="">Select Category</option>
-                                        <option value="laptop">Laptop</option>
-                                        <option value="printer">Printer</option>
-                                        <option value="camera">Camera</option>
-                                        <option value="monitor">Monitor</option>
-                                        <option value="phone">Phone</option>
-                                        <option value="furniture">Furniture</option>
-                                        <option value="other">Other</option>
+                                        <option value="consumable">Consumable</option>
+                                        <option value="capital">Capital</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Item Type <span class="text-danger">*</span></label>
+                                    <input class="form-control category-input" type="text" name="category" id="category"
+                                        list="category_list" placeholder="e.g. Computer, Printer, AC" autocomplete="off"
+                                        required>
+                                    <datalist id="category_list">
+                                        {% for cat in categories %}
+                                        <option value="{{ cat }}"></option>
+                                        {% endfor %}
+                                    </datalist>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -421,6 +429,31 @@
                                 </div>
                             </div>
 
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Category <span class="text-danger">*</span></label>
+                                    <select class="form-select select_edit" name="item_type" id="eitem_type" required>
+                                        <option value="">Select...</option>
+                                        <option value="consumable">Consumable</option>
+                                        <option value="capital">Capital</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Item Type <span class="text-danger">*</span></label>
+                                    <input class="form-control category-input" type="text" name="category"
+                                        id="ecategory" list="category_list" placeholder="e.g. Computer, Printer, AC"
+                                        autocomplete="off" required>
+                                    <datalist id="category_list">
+                                        {% for cat in categories %}
+                                        <option value="{{ cat }}"></option>
+                                        {% endfor %}
+                                    </datalist>
+                                </div>
+                            </div>
+
                             <div id="preview">
                                 <img src="uploads/inventory/" alt="" id="img_preview" width="100px" height="100px">
                             </div>
@@ -453,7 +486,6 @@
         </div>
     </div>
     <!-- /Edit Inventory Modal -->
-
     <!-- Delete Department Modal -->
     <div class="modal custom-modal fade" id="delete_invor" role="dialog">
         <div class="modal-dialog modal-dialog-centered">

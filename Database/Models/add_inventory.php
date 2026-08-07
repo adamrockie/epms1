@@ -48,6 +48,7 @@ try {
     Inventory::create([
         "inventory" => $_POST["inventory"],
         'category'    => $_POST['category'],  
+        'item_type'    => $_POST['item_type'], 
         "quantity"  => $_POST["quantity"],
         "amount"  => $_POST["amount"],
         "warranty"  => $_POST["warranty"],

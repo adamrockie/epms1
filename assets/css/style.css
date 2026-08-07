@@ -8762,34 +8762,42 @@ ul.comment-list li ul.children {
   font-size: 11px;
 }
 .requests-card .widget-title {
-    display: block;
-    font-size: 13px;
-    color: #888;
-    margin-bottom: 8px;
+  display: block;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 8px;
 }
 .requests-breakdown {
-    display: flex;
-    justify-content: space-between;
-    gap: 6px;
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
 }
 .req-stat {
-    text-align: center;
-    flex: 1;
+  text-align: center;
+  flex: 1;
 }
 .req-count {
-    display: block;
-    font-size: 18px;
-    font-weight: 700;
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
 }
-.req-count.total { color: #2c3e50; }
-.req-count.approved { color: #28a745; }
-.req-count.pending { color: #ffc107; }
-.req-count.rejected { color: #dc3545; }
+.req-count.total {
+  color: #2c3e50;
+}
+.req-count.approved {
+  color: #28a745;
+}
+.req-count.pending {
+  color: #ffc107;
+}
+.req-count.rejected {
+  color: #dc3545;
+}
 .req-label {
-    display: block;
-    font-size: 11px;
-    color: #999;
-    text-transform: uppercase;
+  display: block;
+  font-size: 11px;
+  color: #999;
+  text-transform: uppercase;
 }
 .category-summary-card .category-row {
   padding: 6px 0;
@@ -8805,4 +8813,17 @@ ul.comment-list li ul.children {
 .category-summary-card .category-stats .badge {
   margin-left: 4px;
   font-weight: 500;
+}
+.category-input {
+  height: 45px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+  width: 100%;
+}
+.category-input:focus {
+  border-color: #556ee6;
+  box-shadow: 0 0 0 3px rgba(85, 110, 230, 0.15);
+  outline: none;
 }

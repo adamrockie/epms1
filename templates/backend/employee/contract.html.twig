@@ -118,6 +118,7 @@
                                 <th>Status</th>
                                 <th>Date Issued</th>
                                 <th>Documents</th>
+                                <th>Store Status</th>
                                 <th class="text-end no-sort">Action</th>
                             </tr>
                         </thead>
@@ -140,17 +141,25 @@
                                         </a>
                                     </div>
                                 </td>
+                                <td>
+                                    {% set doc = items.documents|first %}
+                                    {% if doc %}
+                                    <span class="badge {{ doc.status == 'received' ? 'bg-success' : 'bg-warning' }}">
+                                        {{ doc.status|capitalize }}
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Pending</span>
+                                    {% endif %}
+                                </td>
                                 <td class="text-end">
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                             aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <!--a class="dropdown-item" href="javascript:void(0);"  onclick="add_receivable('{{receivable}}')"><i class="fa fa-eye m-r-5"></i> View</a-->
                                             <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit_receivable"
-                                                onclick="edit_receivable('{{items.id}}')"><i
-                                                    class="fa fa-pencil m-r-5"></i> Edit</a>
-                                            <!--a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_employee" onclick="delete_warning('{{employee.ippis}}');"><i class="fa fa-trash-o m-r-5"></i> Delete</a-->
+                                                data-bs-target="#update_receivable"
+                                                onclick="open_update_receivable('{{items.id}}')"><i
+                                                    class="fa fa-upload m-r-5"></i> Update</a>
                                         </div>
                                     </div>
                                 </td>
@@ -160,209 +169,54 @@
                         </tbody>
                     </table>
 
-                    {#% include '/backend/employee/pagination.html.twig' 08131956314 1960 %#}
-
                 </div>
             </div>
         </div>
     </div>
     <!-- /Page Content -->
-
-    <!-- Add Receivable Modal -->
-    <div id="add_receivable" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Contract</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="form_add_receivable" method="post" enctype="multipart/form-data">
-
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="col-form-label">Contract Name <span
-                                            class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="contract" id="contract" required>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-form-label">Contractor <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="contractor" id="contractor" required>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-form-label">Status <span class="text-danger">*</span></label>
-                                    <select class="form-select" name="status" id="status" required>
-                                        <option value="">Select Status...</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Completed">Completed</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="col-form-label">Lot Number <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="lot_number" id="lot_number" required>
-                                </div>
-                            </div>
-
-
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="col-form-label">Date Issued <span class="text-danger">*</span></label>
-                                    <div class="cal-icon"><input class="form-control datetimepicker" type="text"
-                                            name="date" id="date" required></div>
-                                </div>
-                            </div>
-
-
-
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-form-label">Official Email</label>
-                                    <input class="form-control" type="text" name="email" id="email">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="col-form-label">Phone Number </label>
-                                    <input class="form-control" type="text" name="phone_number" id="phone_number">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4">
-                                <div class="form-group-text">
-                                    <label class="col-form-label">Description </label>
-                                    <textarea class="form-control" type="textarea" name="description"
-                                        id="description"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label class="col-form-label">Upload Documents<span
-                                            class="text-danger">*</span></label>
-                                    <input class="form-control" type="file" name="upload" id="upload">
-                                </div>
-                            </div>
-                        </div>
-
-                        <input type="hidden" value="{{token}}" name="token">
-
-                        <div class="submit-section">
-                            <button type="submit" class="btn btn-primary submit-btn">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Add Receivable Modal -->
-
     <!-- Edit Employee Modal -->
-    <div id="edit_receivable" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div id="update_receivable" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Contract</h5>
+                    <h5 class="modal-title">Update Receivable Status</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="form_edit_receivable" method="post" enctype="multipart/form-data">
-
+                    <form id="form_update_receivable" method="post" enctype="multipart/form-data">
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label class="col-form-label">Contract Name <span
+                                    <label class="col-form-label">Receiving Status <span
                                             class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="contract" id="econtract" required>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="col-form-label">Contractor <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="contractor" id="econtractor" required>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="col-form-label">Status <span class="text-danger">*</span></label>
-                                    <select class="form-select select_edit" name="status" id="estatus" required>
+                                    <select class="form-select select_update" name="received_status"
+                                        id="received_status" required>
                                         <option value="">Select Status...</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Completed">Completed</option>
+                                        <option value="received">Received</option>
+                                        <option value="not_received">Not Received</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="col-form-label">Lot Number <span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="lot_number" id="elot_number" required>
-                                </div>
-                            </div>
-
-
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="col-form-label">Date Issued <span class="text-danger">*</span></label>
-                                    <div class="cal-icon"><input class="form-control datetimepicker" type="text"
-                                            name="date" id="edate" required></div>
-                                </div>
-                            </div>
-
-
-
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="col-form-label">Official Email</label>
-                                    <input class="form-control" type="text" name="email" id="eemail">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="col-form-label">Phone Number </label>
-                                    <input class="form-control" type="text" name="phone_number" id="ephone_number">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-3">
-                                <div class="form-group-text">
-                                    <label class="col-form-label">Description </label>
-                                    <textarea class="form-control" type="textarea" name="description"
-                                        id="edescription"></textarea>
-                                </div>
-                            </div><br>
-
-                            <div id="preview">
-                                <img src="uploads/receive/" alt="" id="img_preview" width="100px" height="100px">
-                            </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label class="col-form-label">Upload Documents <span
-                                            class="text-danger">*</span></label>
-                                    <input class="form-control" type="file" name="upload" id="eupload">
+                                    <label class="col-form-label">Upload Documents</label>
+                                    <input class="form-control" type="file" name="documents[]" id="update_documents"
+                                        multiple>
+                                    <small class="text-muted">You can select multiple files (JPG, PNG, PDF).</small>
                                 </div>
                             </div>
+
+                            <div class="col-sm-12" id="existing_documents_list"></div>
                         </div>
 
                         <input type="hidden" value="{{token}}" name="token">
-
-                        <input type="hidden" name="id" id="eid">
+                        <input type="hidden" name="receivable_id" id="update_receivable_id">
 
                         <div class="submit-section">
-                            <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+                            <button type="submit" class="btn btn-primary submit-btn">Save</button>
                         </div>
                     </form>
                 </div>
@@ -371,97 +225,8 @@
     </div>
     <!-- /Edit Employee Modal -->
 
-    <!-- Delete Department Modal -->
-    <div class="modal custom-modal fade" id="delete_receivable" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="form-header">
-                        <h3>Delete Contract information?</h3>
-                        <p>Are you sure want to delete this contract information?</p>
-                    </div>
-                    <div class="modal-btn delete-action">
-                        <div class="row">
-                            <div class="col-6">
-                                <a href="javascript:void(0);" onclick="delete_office('true');"
-                                    class="btn btn-primary continue-btn">Delete</a>
-                            </div>
-                            <div class="col-6">
-                                <a href="javascript:void(0);" onclick="delete_office('false');" data-bs-dismiss="modal"
-                                    class="btn btn-primary cancel-btn">Cancel</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Delete Department Modal -->
-
-    <!-- Report Modal -->
-    <div id="receivable_report" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Report</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="gen_report_form" action="recgenreport" method="post">
-                        <div class="row">
-
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-form-label">Contractor <span class="text-danger"></span></label>
 
 
-                                    <select class="form-control" name="contractor" id="contractor_name"
-                                        style="width: 100%;">
-                                        <option value="">Select Contractor...</option>
-                                        {% for items in receiveable %}
-                                        <option value="{{ items.contractor }}">{{ items.contractor }}</option>
-                                        {% endfor %}
-                                    </select>
-
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-form-label">Date (From)<span
-                                                    class="text-danger">*</span></label>
-                                            <div class="cal-icon"><input class="form-control datetimepicker" type="text"
-                                                    name="from" id="from" required></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="col-form-label">Date (To)<span
-                                                    class="text-danger">*</span></label>
-                                            <div class="cal-icon"><input class="form-control datetimepicker" type="text"
-                                                    name="to" id="to" required></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-                        </div>
-                        <input type="hidden" value="{{token}}" name="token">
-
-                        <div class="submit-section">
-                            <button class="btn btn-primary submit-btn">Generate</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Report Modal -->
 
 
 

@@ -27,6 +27,7 @@ if (!empty($_FILES['upload']['name'])) {
 }
 
 $item->inventory = $_POST['inventory'];
+
 $item->quantity  = $_POST['quantity'];
 $item->status    = $_POST['status'];
 $item->warranty  = $_POST['warranty'];

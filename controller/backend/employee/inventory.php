@@ -69,7 +69,11 @@ if($user->isLoggedIn()){
     ->orderBy('category')
     ->get();
 
-
+    $categories = Inventory::whereNotNull('category')
+    ->where('category', '!=', '')
+    ->selectRaw('DISTINCT category')
+    ->orderBy('category')
+    ->pluck('category');
 
     $issued         = count(Inventory::where('status', '=', 'issued')->get());
     $nissued        = count(Inventory::where('status', '=', 'Not Issued')->get());
@@ -98,7 +102,8 @@ if($user->isLoggedIn()){
         'nissued'       => $nissued,
         'token'         => $token,
         'role'          => $role,
-        'current_user'  => $current_user,      
+        'current_user'  => $current_user,  
+        'categories' => $categories,    
         ]);
 }else{
     Redirect::to('home');

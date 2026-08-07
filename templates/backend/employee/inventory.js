@@ -84,6 +84,7 @@ $(document).ready(function () {
         $("#eserial_no").val(data.serial_no).toString();
         $("#eamount").val(data.amount).toString();
         $("#elife_span").val(data.life_span).toString();
+        $("#eitem_type").val(data.item_type).toString();
         $("#eupload").val(data.upload);
       },
     });

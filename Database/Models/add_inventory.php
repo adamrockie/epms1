@@ -7,7 +7,7 @@ use Database\Models\Inventory;
 // Return JSON only
 header('Content-Type: application/json');
 
-// ✅ Validate CSRF token
+// Validate CSRF token
 if (!Token::check($_POST['token'])) {
     echo json_encode([
         "status" => "error",
@@ -16,7 +16,7 @@ if (!Token::check($_POST['token'])) {
     exit;
 }
 
-// ✅ Validate required fields
+//  Validate required fields
 $required = ["inventory", "quantity", "status", "warranty", "quantity", "date"];
 foreach ($required as $field) {
     if (empty($_POST[$field])) {
@@ -47,8 +47,12 @@ if (!empty($_FILES['upload']['name'])) {
 try {
     Inventory::create([
         "inventory" => $_POST["inventory"],
+        'category'    => $_POST['category'],  
+        'item_type'    => $_POST['item_type'], 
         "quantity"  => $_POST["quantity"],
+        "amount"  => $_POST["amount"],
         "warranty"  => $_POST["warranty"],
+        "life_span"  => $_POST["life_span"],
         "status"    => $_POST["status"],
         "date"      => $_POST["date"],
         "upload"    => $filename

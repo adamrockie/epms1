@@ -58,13 +58,6 @@ include_once 'adminRoutes.php';
   include_once 'rolesRoutes.php';
   include_once 'leaveRoutes.php';
   include_once 'apiRoutes.php';
-  
-  /***
-   * Users Routes
-   */
-
-
-
 
 /**
  * AJAX Section

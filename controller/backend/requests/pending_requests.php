@@ -11,6 +11,7 @@ use Database\Models\Users as UserModel;
 use Classes\User;
 use Classes\Token;
 use Classes\Session;
+use Database\Models\ItemRequests;
 
 
 $user = new User();
@@ -28,7 +29,9 @@ if($user->isLoggedIn()){
     $userc      = UserModel::where('id', '=', $id)->first();
 
     $token = Token::generate();
-    $pending_requests = ApiCalls::getallrequests();
+    $pending_requests = ItemRequests::where('status', 'pending')->with('staff')->get();
+ 
+    
      
     echo $twig->render('backend/requests/pending_requests.html.twig', [
         'title'     => 'Pending Requests',

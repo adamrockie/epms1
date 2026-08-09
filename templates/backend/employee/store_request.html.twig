@@ -1,0 +1,206 @@
+{% extends "backend/patials/master.html" %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+{% block headscripts %}
+
+<link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+<!-- Datatable CSS -->
+<link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+
+<style>
+    .badge-status {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div id="fakeloader-overlay" class="visible incoming">
+    <div class="loader-wrapper-outer">
+        <div class="loader-wrapper-inner">
+            <div class="loader"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Page Content -->
+<div class="content container-fluid" id="mcontents">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Request from Store</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Procurement Request</li>
+                </ul>
+            </div>
+        </div>
+        <div class="content container-fluid">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-list-alt"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{total_requests}}</h3>
+                                <span>My <br>Requests</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-clock-o"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{total_pending}}</h3>
+                                <span>Pending</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-check-circle"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{total_approved}}</h3>
+                                <span>Approved</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-times-circle"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{total_rejected}}</h3>
+                                <span>Rejected</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table datatable" id="request_table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Description</th>
+                                <th>Date Requested</th>
+                                <th>Status</th>
+                                <th class="text-end no-sort">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for req in my_requests %}
+                            <tr>
+                                <td>{{req.subject}}</td>
+                                <td>{{req.description|slice(0, 60)}}{% if req.description|length > 60 %}...{% endif %}
+                                </td>
+                                <td>{{req.created_at}}</td>
+                                <td>
+                                    {% if req.status == 'approve' %}
+                                    <span class="badge bg-success badge-status">Approved</span>
+                                    {% elseif req.status == 'reject' %}
+                                    <span class="badge bg-danger badge-status">Rejected</span>
+                                    {% elseif req.status == 'disbursed' %}
+                                    <span class="badge bg-info badge-status">Disbursed</span>
+                                    {% else %}
+                                    <span class="badge bg-warning badge-status">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-end">
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            {% if req.status == 'pending' %}
+                                            <a class="dropdown-item" href="javascript:void(0);"
+                                                onclick="edit_item_request('{{req.id}}')"><i
+                                                    class="fa fa-pencil m-r-5"></i> Edit</a>
+                                            <a class="dropdown-item" href="javascript:void(0);"
+                                                onclick="delete_warning('{{req.id}}')"><i
+                                                    class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                            {% else %}
+                                            <a class="dropdown-item" href="javascript:void(0);"
+                                                onclick="view_note({{ req.subject|json_encode }}, {{ req.status|json_encode }}, {{ (req.note ?: '')|json_encode }})"><i
+                                                    class="fa fa-eye m-r-5"></i> View Note</a>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Content -->
+
+
+    <!-- View Note Modal -->
+    <div id="view_note" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Request Note</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Subject:</strong> <span id="note_subject"></span></p>
+                    <p><strong>Status:</strong> <span id="note_status"></span></p>
+                    <p><strong>Note from Reviewer:</strong></p>
+                    <p id="note_text" class="text-muted"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /View Note Modal -->
+
+
+
+
+
+
+</div>
+
+{% endblock %}
+
+{% block jsscript %}
+
+<!-- Datetimepicker JS -->
+<script src="assets/js/moment.min.js"></script>
+<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+<!-- Datatable JS -->
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        window.FakeLoader.init({ auto_hide: true });
+    });
+</script>
+
+<script src="templates/backend/employee/store_request.js"></script>
+
+{% endblock %}

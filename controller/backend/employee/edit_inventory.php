@@ -27,7 +27,8 @@ if($user->isLoggedIn()){
         $amount                 = $items['amount'];
         $status                = $items['status'];
         $warranty               = $items['warranty'];
-        $quantity               = $items['quantity'];
+        $life_span              =  $items['life_span'];
+        $serial_no               = $items['serial_no'];
         $date                   = $items['date'];
         $upload                 = $items['upload'];
             
@@ -39,7 +40,8 @@ if($user->isLoggedIn()){
             'amount'            => $amount,
             'status'           => $status,
             'warranty'          => $warranty,
-            'quantity'          => (string)$quantity,
+            'life_span'         => $life_span,
+            'serial_no'          => $serial_no,
             'date'              => $date,
             'upload'            => $upload,
             

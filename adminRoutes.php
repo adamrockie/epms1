@@ -41,6 +41,54 @@ $router->map('GET','/receiveable',  function( ) {
     require __DIR__ . '/controller/backend/employee/receiveable.php';
 } , 'receiveable');
 
+$router->map('GET','/contract',  function( ) {
+    require __DIR__ . '/controller/backend/employee/contract.php';
+} , 'contract');
+
+
+$router->map('GET','/procurement_request',  function( ) {
+    require __DIR__ . '/controller/backend/employee/procurement_request.php';
+} , 'procurement_request');
+
+$router->map('GET', '/get_receivable_documents/[i:id]', function ($id) {
+    $params = ['id' => $id];
+    require __DIR__ . '/controller/backend/employee/get_receivable_documents.php';
+}, 'get_receivable_documents');
+
+
+$router->map('POST', '/update_receivable_status', function () {
+    require __DIR__ . '/controller/backend/employee/update_receivable_status.php';
+}, 'update_receivable_status');
+
+
+$router->map('GET','/store_request',  function( ) {
+    require __DIR__ . '/controller/backend/employee/store_request.php';
+} , 'store_request');
+
+$router->map('POST', '/add_request_item', function () {
+    require __DIR__ . '/controller/backend/employee/add_request_item.php';
+}, 'add_request_item');
+
+$router->map('GET', '/get_item_request/[*:id]', function ($id) {
+    $_GET['id'] = $id;
+    require __DIR__ . '/controller/backend/employee/get_request_item.php';
+}, 'get_item_request');
+ 
+$router->map('POST', '/update_request_item', function () {
+    require __DIR__ . '/controller/backend/employee/update_request_item.php';
+}, 'update_request_item');
+ 
+$router->map('POST', '/delete_item_request', function () {
+    require __DIR__ . '/controller/backend/employee/delete_request_item.php';
+}, 'delete_item_request');
+ 
+$router->map('POST', '/add_item_remark', function () {
+    require __DIR__ . '/controller/backend/employee/add_request_remark.php';
+}, 'add_item_remark');
+
+
+
+
 $router->map('POST','/add_inventory',  function( ) {
     require __DIR__ . '/controller/backend/employee/add_inventory.php';
 } , 'add_inventory');
@@ -53,6 +101,15 @@ $router->map('GET','/inventory',  function( ) {
 $router->map('POST','/update_inventory',  function( ) {
     require __DIR__ . '/controller/backend/employee/update_inventory.php';
 } , 'update_inventory');
+
+$router->map('GET','/view_inventory/[*:id]', function($id) {
+    $_GET['id'] = $id;  
+    require __DIR__ . '/controller/backend/employee/view_inventory.php';
+}, 'view_inventory');
+
+$router->map('POST','/reduce_qty', function() {
+    require __DIR__ . '/controller/backend/employee/reduce_qty.php';
+}, 'reduce_qty');
 
 $router->map('GET','/report',  function( ) {
     require __DIR__ . '/controller/backend/employee/report.php';
@@ -74,6 +131,20 @@ $router->map('GET','/edit_inventory/[*:id]',  function( $id ) {
     require __DIR__ . '/controller/backend/employee/edit_inventory.php';
 } , 'edit_inventory');
 
+$router->map('GET','/request',  function( ) {
+    require __DIR__ . '/controller/backend/employee/request.php';
+} , 'request');
+
+
+$router->map('GET','/view_request/[*:id]',  function($id) {
+    $_GET['id'] = $id; 
+    require __DIR__ . '/controller/backend/employee/view_request.php';
+}, 'view_request');
+
+
+$router->map('POST','/update_item_request',  function( ) {
+    require __DIR__ . '/controller/backend/employee/update_item_request.php';
+} , 'update_item_request');
 
 /** Receivable */
 $router->map('POST','/add_receivable',  function( ) {

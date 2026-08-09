@@ -1,0 +1,216 @@
+{% extends "backend/patials/master.html" %}
+{% block title %} {{title}} {% endblock %}
+{% block headscripts %}
+<style>
+    @media print {
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Hide everything */
+        body * {
+            visibility: hidden;
+        }
+
+        .card-body {
+            position: relative;
+        }
+
+        /* Show only QR section */
+        #qr-section,
+        #qr-section * {
+            visibility: visible;
+        }
+
+        /* Remove absolute positioning (VERY IMPORTANT) */
+        #qr-section {
+            position: absolute !important;
+            right: 0;
+            left: 0;
+
+        }
+
+        /* Prevent page break issues */
+        html,
+        body {
+            height: auto;
+            overflow: hidden;
+        }
+
+        @page {
+            margin: 10mm;
+        }
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="content container-fluid">
+
+    <!-- ITEM DETAILS -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <h4>{{ request.inventory.inventory }}</h4>
+        </div>
+
+        <div class="col-md-12">
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="card-body">
+                        <div class="row">
+
+                            <!-- IMAGE -->
+                            <div class="col-md-6 text-center">
+
+                                <img src="uploads/inventory/{{ request.inventory.upload }}"
+                                    style="width:200px;height:200px;object-fit:cover;">
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Item </th>
+                                <td>{{ request.inventory.inventory }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Item ID</th>
+                                <td>{{ request.inventory.id }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Amount</th>
+                                <td>{{ request.inventory.amount }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Warranty</th>
+                                <td>{{ request.inventory.warranty ?? 'N/A' }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Life Span</th>
+                                <td>{{ request.inventory.life_span ?? '0' }} year(s)</td>
+                            </tr>
+
+                            <!--tr>
+                                <th>Status</th>
+                                <td>{{ request.inventory.status }}</td>
+                            </tr-->
+
+                            <tr>
+                                <th>Date Added</th>
+                                <td>{{ request.inventory.date }}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <!-- STAFF DETAILS -->
+                            <div class="card ">
+                                <div class="card-header">
+                                    <h4>Disbursed to</h4>
+                                </div>
+
+                                <div class="card-body">
+
+                                    <table class="table table-bordered">
+
+                                        <tr>
+                                            <th>Full Name</th>
+                                            <td>
+                                                {{ request.staff.title ?? '' }}
+                                                {{ request.staff.surname ?? '' }}
+                                                {{ request.staff.middlename ?? '' }}
+                                                {{ request.staff.lastname ?? '' }}
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>IPPIS</th>
+                                            <td>{{ request.staff.ippis }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Email</th>
+                                            <td>{{ request.staff.official_email ?? 'N/A' }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Phone</th>
+                                            <td>{{ request.staff.phone ?? 'N/A' }}</td>
+                                        </tr>
+
+
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <!-- REQUEST INFO (for record only) -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Request Info</h4>
+                                </div>
+
+                                <div class="card-body">
+
+                                    <table class="table table-bordered">
+
+                                        <tr>
+                                            <th>Requested Qty</th>
+                                            <td>{{ request.qty }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Status</th>
+                                            <td>{{ request.status }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Request Date</th>
+                                            <td>{{ request.request_date }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Comment</th>
+                                            <td>{{ request.comment ?? 'No comment' }}</td>
+                                        </tr>
+
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+{% endblock %}

@@ -3,42 +3,42 @@
 
 {% block title %} {{title}} {% endblock %}
 
-    {% block headscripts %}
+{% block headscripts %}
 
-    <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
-    <!-- Datatable CSS -->
-    <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+<!-- Datatable CSS -->
+<link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
 
-    <style>
-        /* Preview */
-        .preview{
-            width: 100px;
-            height: 100px;
-            border: 1px solid black;
-            margin: 0 auto;
-            background: white;
-        }
-        
-        .preview img{
-            display: none;
-        }
-    </style>
+<style>
+    /* Preview */
+    .preview {
+        width: 100px;
+        height: 100px;
+        border: 1px solid black;
+        margin: 0 auto;
+        background: white;
+    }
 
-    {% endblock %}
+    .preview img {
+        display: none;
+    }
+</style>
+
+{% endblock %}
 
 {% block content %}
 
 <div id="fakeloader-overlay" class="visible incoming">
     <div class="loader-wrapper-outer">
-      <div class="loader-wrapper-inner">
-        <div class="loader"></div>
-      </div>
+        <div class="loader-wrapper-inner">
+            <div class="loader"></div>
+        </div>
     </div>
 </div>
 
 <!-- Page Content -->
-<div class="content container-fluid"  id="mcontents">
-    
+<div class="content container-fluid" id="mcontents">
+
     <!-- Page Header -->
     <div class="page-header">
         <div class="row align-items-center">
@@ -49,460 +49,830 @@
                     <li class="breadcrumb-item active">Inventory</li>
                 </ul>
             </div>
-        </div><br>
-        <div class="content container-fluid">
-			<div class="row">
-				<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-					<div class="card dash-widget">
-						<div class="card-body">
-							<span class="dash-widget-icon"><i class="fa fa-cube"></i></span>
-							    <div class="dash-widget-info">
-									<h3>{{tinventory}}</h3>
-									<span>Total <br>Inventory</span>
-								</div>
-							</div>
-						</div>
-					</div>
-			<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-			    <div class="card dash-widget">
-				    <div class="card-body">
-					    <span class="dash-widget-icon"><i class="fa fa-cube"></i></span>
-						    <div class="dash-widget-info">
-						        <h3>{{issued}}</h3>
-								<span>Total <br>Issued</span>
-						    </div>
-					</div>
-				</div>
-			</div>
-            <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-			    <div class="card dash-widget">
-				    <div class="card-body">
-					    <span class="dash-widget-icon"><i class="fa fa-cube"></i></span>
-						    <div class="dash-widget-info">
-						        <h3>{{nissued}}</h3>
-								<span>Total <br>Not Issued</span>
-						    </div>
-					</div>
-				</div>
-			</div>   
             <div class="col-auto float-end ms-auto">
-                <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_inventory"><i class="fa fa-plus"></i> Add Asset</a>
+                <a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_inventory"><i
+                        class="fa fa-plus"></i> Add Asset</a>
                 <div class="view-icons">
                     <!--a href="employees" class="grid-view btn btn-link"><i class="fa fa-th"></i></a-->
                     <a href="inventory" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
                 </div>
             </div>
-            <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-            <a href="#" data-bs-toggle="modal" data-bs-target="#report">
-				<div class="card dash-widget">
-					<div class="card-body">
-						<span class="dash-widget-icon"><i class="fa fa-book"></i></span>
-							<div class="dash-widget-info">
-								<h3>***</h3>
-								<span>Generate Report</span>
-							</div>
-					</div>
-				</div>
-            </a>
-			</div>
-        </div>
-    </div>
-    <!-- /Page Header -->
-    
-    <div class="row">
-        <div class="col-md-12">
-            <div class="table-responsive">
-                <table class="table table-striped custom-table datatable" id="staff_table">
-                    <thead>
-                        <tr>
-                            
-                            <th>Inventory</th>
-                            <th>Quantity</th>
-                            <th>Warranty</th>
-                            <!--th>Amount</th-->
-                            <th>Status</th>
-                            <th>Date</th>
-                            <th>Image</th>
-                            <th class="text-end no-sort">Action</th>
-                        </tr>
-                    </thead>
-                   <tbody>
-                    {% for items in inventory %}
-                        <tr>
-                            <td>{{items.inventory}}</td>
-                            <td>{{items.quantity}}</td>
-                            <td>{{items.warranty}}</td>
-                            <!--td>{{items.amount}}</td-->
-                            <td>{{items.status}}</td>
-                            <td>{{items.date}}</td>
-                            <td>
-                            <div class="action-icon d-inline-flex">
-                                <a class="dropdown-item" href="javascript:void(0)" onclick="viewInventoryImage('{{items.upload}}')">
-                                    <i class="fa fa-eye m-r-5"></i>
-                                </a>
+        </div><br>
+        <div class="content container-fluid">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-cube"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{tinventory}}</h3>
+                                <span>Total <br>Inventory</span>
                             </div>
-                            </td>
-                             <td class="text-end">
-                                <div class="dropdown dropdown-action">
-                                    <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <!--a class="dropdown-item" href="javascript:void(0);"  onclick="view_profile('{{items.id}}')"><i class="fa fa-eye m-r-5"></i> More Details</a-->
-                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_inventory" onclick="edit_inventory({{items.id}})"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-cube"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{issued}}</h3>
+                                <span>Total <br>Issued</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-cube"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{nissued}}</h3>
+                                <span>Total <br>Not Issued</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="request" class="text-decoration-none">
+                        <div class="card dash-widget requests-card">
+                            <div class="card-body">
+                                <span class="widget-title">Item Requests</span>
+                                <div class="dash-widget-info w-100">
+
+                                    <div class="requests-breakdown">
+                                        <div class="req-stat">
+                                            <span class="req-count total">{{ total_requests }}</span>
+                                            <span class="req-label">Total</span>
+                                        </div>
+                                        <div class="req-stat">
+                                            <span class="req-count approved">{{ total_approved }}</span>
+                                            <span class="req-label">Approved</span>
+                                        </div>
+                                        <div class="req-stat">
+                                            <span class="req-count approved">{{ total_disburst }}</span>
+                                            <span class="req-label">Disbursed</span>
+                                        </div>
+                                        <div class="req-stat">
+                                            <span class="req-count pending">{{ total_pending }}</span>
+                                            <span class="req-label">Pending</span>
+                                        </div>
+                                        <div class="req-stat">
+                                            <span class="req-count rejected">{{ total_rejected }}</span>
+                                            <span class="req-label">Rejected</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-
-                    {% endfor %}
-                   </tbody>
-                </table>
-            <!-- View Inventory Image Modal -->
-
-            <div id="view_inventory_modal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center;">
-            <div style="background:#fff; padding:20px; border-radius:8px; max-width:500px; width:90%; position:relative;">
-                <button id="close_inventory_modal" style="position:absolute; top:10px; right:10px; border:none; background:none; font-size:18px; cursor:pointer;">&times;</button>
-                <img id="inventory_modal_image" src="" alt="Inventory" style="width:100%; height:auto; display:block; margin-top:20px;">
-            </div>
-            </div>
-
-
-
-
-
-            {#% include '/backend/employee/pagination.html.twig'  08131956314 1960 %#}
-                           
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /Page Content -->
-
-<!-- Add Inventory Modal -->
-<div id="add_inventory" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add New Asset</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="form_add_inventory" method="post" enctype="multipart/form-data">
-
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Inventory <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="inventory" id="inventory" placeholder="name" required>
                             </div>
                         </div>
-                        
-                        <!--div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-form-label">Amount <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="amount" id="amount" placeholder="Enter Amount" required>
-                            </div>
-                        </div-->
-
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-form-label">Quantity <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="quantity" id="quantity" placeholder="quantity" required>
-                            </div>
-                        </div>
-                      
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label class="col-form-label">Status <span class="text-danger">*</span></label>
-                            <select class="form-select" name="status" id="status" required>
-                                <option value="">Select Status...</option>
-                               <option value="Issued">Issued</option>
-                               <option value="Not issued">Not Issued</option>
-                            </select>
-                        </div>
-                    </div>
-
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-form-label">Warranty <span class="text-danger">*</span></label>
-                                <select class="form-select" name="warranty" id="warranty" required>
-                                    <option value="">Select...</option>
-                                    <option value="12months">12 Months</option>
-                                    <option value="24months">24 Months</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4">  
-                            <div class="form-group">
-                                <label class="col-form-label">Date<span class="text-danger">*</span></label>
-                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date" id="date" required></div>
-                            </div>
-                        </div>
-
-                        
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label class="col-form-label">Upload Asset<span class="text-danger">*</span></label>
-                                <input class="form-control" type="file" name="upload" id="upload">
-                            </div>
-                        </div>
-                    </div>
-
-                    <input type="hidden" value="{{token}}" name="token">
-
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /Add Inventory Modal -->
-
-<!-- Edit Inventory Modal -->
-<div id="edit_inventory" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Asset</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="form_edit_inventory"  method="post" enctype="multipart/form-data">
-                    <input type="hidden" id="item_id" name="id">
-
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-form-label">Inventory <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="inventory" id="einventory" required>
-                            </div>
-                        </div>
-                          
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-form-label">Status <span class="text-danger">*</span></label>
-                                <select class="form-select select_edit" name="status" id="cstatus" required>
-                                    <option value="">Select...</option>
-                                    <option value="Issued">Issued</option>
-                                    <option value="Not issued">Not Issued</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-form-label">Warranty <span class="text-danger">*</span></label>
-                                <select class="select_edit" name="warranty" id="ewarranty" required>
-                                    <option value="">Select...</option>
-                                    <option value="12months">12 Months</option>
-                                    <option value="24months">24 Months</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-form-label">Quantity <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="quantity" id="equantity" placeholder="quantity" required>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4">  
-                            <div class="form-group">
-                                <label class="col-form-label">Date <span class="text-danger">*</span></label>
-                                <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="date" id="edate" required></div>
-                            </div>
-                        </div>
-
-                       
-                        <div id="preview">
-                            <img src="uploads/inventory/" alt="" id="img_preview" width="100px" height="100px">
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label class="col-form-label">Upload Asset <span class="text-danger">*</span></label>
-                                <input class="form-control" type="file" name="upload" id="eupload">
-                            </div>
-                        </div>
-                    </div>
-
-                    <input type="hidden" value="{{token}}" name="token">
-                      <input type="hidden" name="id" id="eid">
-                    <input type="hidden" name="ippis" id="eeippis">
-
-                    <div class="submit-section">
-                        <button type="submit" class="btn btn-primary submit-btn">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /Edit Inventory Modal -->
-
-<!-- Delete Department Modal -->
-<div class="modal custom-modal fade" id="delete_invor" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-header">
-                    <h3>Delete Asset?</h3>
-                    <p>Are you sure want to delete this asset?</p>
+                    </a>
                 </div>
-                <div class="modal-btn delete-action">
-                    <div class="row">
-                        <div class="col-6">
-                            <a href="javascript:void(0);" onclick="delete_office('true');" class="btn btn-primary continue-btn">Delete</a>
-                        </div>
-                        <div class="col-6">
-                            <a href="javascript:void(0);" onclick="delete_office('false');" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                <div class="col-md-12 col-lg-6 col-xl-3">
+                    <div class="card dash-widget category-summary-card">
+                        <div class="card-body">
+                            <h6 class="mb-3"><i class="fa fa-th-large m-r-5"></i> Assets by Type</h6>
+                            {% for cat in inventory_summary %}
+                            <div class="d-flex justify-content-between align-items-center category-row">
+                                <span class="category-name">{{ cat.category }}</span>
+                                <div class="category-stats">
+                                    <span class="badge bg-secondary">{{ cat.total }}</span>
+                                    <span class="badge bg-danger">{{ cat.issued_count }} out</span>
+                                    <span class="badge bg-success">{{ cat.available_count }} avail</span>
+                                </div>
+                            </div>
+                            {% endfor %}
                         </div>
                     </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#report">
+                        <div class="card dash-widget">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="fa fa-book"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>***</h3>
+                                    <span>Generate Report</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table datatable" id="staff_table">
+                        <thead>
+                            <tr>
+                                <th>Inventory</th>
+                                <th>Serial Number</th>
+                                <th>Warranty</th>
+                                <th>Expected Useful Life</th>
+                                <th>Item Cost</th>
+                                <th>Current Cost of Item</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Image</th>
+                                <th class="text-end no-sort">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for items in inventory %}
+                            <tr>
+                                <td>{{items.inventory}}</td>
+                                <td>{{items.serial_no}}</td>
+                                <td>{{items.warranty}}</td>
+                                <td>{{items.life_span}} year(s)</td>
+                                <td class="text-end">₦{{items.amount|number_format(2)}}</td>
+                                <td class="text-end">₦{{items.current_value|number_format(2) }}</td>
+                                <td>{{items.status}}</td>
+                                <td>{{items.date}}</td>
+                                <td>
+                                    <div class="action-icon d-inline-flex">
+                                        <a class="dropdown-item" href="javascript:void(0)"
+                                            onclick="viewInventoryImage('{{items.upload}}')">
+                                            <i class="fa fa-eye m-r-5"></i>
+                                        </a>
+
+                                        <a href="javascript:void(0)"
+                                            onclick="viewQR('{{items.id}}', '{{items.inventory|e('js')}}', '{{items.serial_no|e('js')}}')">
+                                            <i class="fa fa-qrcode m-r-5"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="text-end">
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <!--a class="dropdown-item" href="javascript:void(0);"  onclick="view_profile('{{items.id}}')"><i class="fa fa-eye m-r-5"></i> More Details</a-->
+                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#edit_inventory"
+                                                onclick="edit_inventory({{items.id}})"><i
+                                                    class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <!-- View Inventory Image Modal -->
+
+                    <div id="view_inventory_modal" class="modal"
+                        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center;">
+                        <div
+                            style="background:#fff; padding:20px; border-radius:8px; max-width:500px; width:90%; position:relative;">
+                            <button id="close_inventory_modal"
+                                style="position:absolute; top:10px; right:10px; border:none; background:none; font-size:18px; cursor:pointer;">&times;</button>
+                            <img id="inventory_modal_image" src="" alt="Inventory"
+                                style="width:100%; height:auto; display:block; margin-top:20px;">
+                        </div>
+                    </div>
+
+                    {#% include '/backend/employee/pagination.html.twig' 08131956314 1960 %#}
+
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- /Delete Department Modal -->
+    <!-- /Page Content -->
 
-<!-- Report Modal -->
-<div id="report" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Report</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="gen_report_form" action="invgenreport" method="post">
-                    <div class="row">
-                    
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Inventory Name <span class="text-danger"></span></label>
-                              <select class="form-control" name="inventory" id="repinventory" style="width: 100%;">
-                                <option value="">Select Inventory...</option>
-                                {% for items in inventory %}
-                                    <option value="{{ items.inventory }}">{{ items.inventory }}</option>
-                                {% endfor %}
-                              </select>
-
+    <!-- Add Inventory Modal -->
+    <div id="add_inventory" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Asset</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form_add_inventory" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Inventory <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" name="inventory" id="inventory"
+                                        placeholder="name" required>
+                                </div>
                             </div>
-                        </div>
-                          <div class="col-sm-12">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                   <div class="form-group">
-                                       <label class="col-form-label">Date (From)<span class="text-danger">*</span></label>
-                                       <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="from" id="from" required></div>
-                                   </div>
-                               </div>
-                               <div class="col-sm-6">
-                                   <div class="form-group">
-                                       <label class="col-form-label">Date (To)<span class="text-danger">*</span></label>
-                                       <div class="cal-icon"><input class="form-control datetimepicker" type="text" name="to" id="to" required></div>
-                                   </div>
-                               </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Serial Number <span
+                                            class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" name="serial_no" id="serial_no"
+                                        placeholder="Serial Number" required>
+                                </div>
                             </div>
 
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Per Unit Cost<span
+                                            class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" name="amount" id="amount"
+                                        placeholder="Enter Amount" required>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Status <span class="text-danger">*</span></label>
+                                    <select class="form-select" name="status" id="status" required>
+                                        <option value="">Select Status...</option>
+                                        <option value="Issued">Issued</option>
+                                        <option value="Not issued">Not Issued</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Date<span class="text-danger">*</span></label>
+                                    <div class="cal-icon"><input class="form-control datetimepicker" type="text"
+                                            name="date" id="date" required></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Warranty <span class="text-danger">*</span></label>
+                                    <select class="form-select" name="warranty" id="warranty" required>
+                                        <option value="">Select...</option>
+                                        <option value="12months">12 Months</option>
+                                        <option value="24months">24 Months</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Category <span class="text-danger">*</span></label>
+                                    <select class="form-select" name="item_type" id="item_type" required>
+                                        <option value="">Select Category</option>
+                                        <option value="consumable">Consumable</option>
+                                        <option value="capital">Capital</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Item Type <span class="text-danger">*</span></label>
+                                    <input class="form-control category-input" type="text" name="category" id="category"
+                                        list="category_list" placeholder="e.g. Computer, Printer, AC" autocomplete="off"
+                                        required>
+                                    <datalist id="category_list">
+                                        {% for cat in categories %}
+                                        <option value="{{ cat }}"></option>
+                                        {% endfor %}
+                                    </datalist>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Upload Asset<span class="text-danger">*</span></label>
+                                    <input class="form-control" type="file" name="upload" id="upload">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Expected Useful Life<span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" name="life_span" id="life_span" class="form-control">
+                                </div>
+                            </div>
                         </div>
 
-                        
-                     
-                        <div class="col-sm-8">
-                    
-                    </div>
-                       
-                     
-                       
-                    </div>    
-                    <input type="hidden" value="{{token}}" name="token">
-                    <input type="hidden" value="inventory" name="category">
+                        <input type="hidden" value="{{token}}" name="token">
 
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Generate</button>
-                    </div>
-                </form>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Submit</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- /Report Modal -->
+    <!-- /Add Inventory Modal -->
+
+    <!-- Edit Inventory Modal -->
+    <div id="edit_inventory" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Asset</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form_edit_inventory" method="post" enctype="multipart/form-data">
+                        <input type="hidden" id="item_id" name="id">
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Inventory <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" name="inventory" id="einventory" required>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Status <span class="text-danger">*</span></label>
+                                    <select class="form-select select_edit" name="status" id="cstatus" required>
+                                        <option value="">Select...</option>
+                                        <option value="Issued">Issued</option>
+                                        <option value="Not issued">Not Issued</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Warranty <span class="text-danger">*</span></label>
+                                    <select class="select_edit" name="warranty" id="ewarranty" required>
+                                        <option value="">Select...</option>
+                                        <option value="12months">12 Months</option>
+                                        <option value="24months">24 Months</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Serial Number <span
+                                            class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" name="serial_no" id="eserial_no"
+                                        placeholder="Serial Number" required>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Per Unit Cost<span
+                                            class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" name="amount" id="eamount"
+                                        placeholder="Enter Amount" required>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Date <span class="text-danger">*</span></label>
+                                    <div class="cal-icon"><input class="form-control datetimepicker" type="text"
+                                            name="date" id="edate" required></div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Category <span class="text-danger">*</span></label>
+                                    <select class="form-select select_edit" name="item_type" id="eitem_type" required>
+                                        <option value="">Select...</option>
+                                        <option value="consumable">Consumable</option>
+                                        <option value="capital">Capital</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Item Type <span class="text-danger">*</span></label>
+                                    <input class="form-control category-input" type="text" name="category"
+                                        id="ecategory" list="category_list" placeholder="e.g. Computer, Printer, AC"
+                                        autocomplete="off" required>
+                                    <datalist id="category_list">
+                                        {% for cat in categories %}
+                                        <option value="{{ cat }}"></option>
+                                        {% endfor %}
+                                    </datalist>
+                                </div>
+                            </div>
+
+                            <div id="preview">
+                                <img src="uploads/inventory/" alt="" id="img_preview" width="100px" height="100px">
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Upload Asset <span
+                                            class="text-danger">*</span></label>
+                                    <input class="form-control" type="file" name="upload" id="eupload">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Expected Useful Life<span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" name="life_span" id="elife_span" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" value="{{token}}" name="token">
+                        <input type="hidden" name="id" id="eid">
+                        <input type="hidden" name="ippis" id="eeippis">
+
+                        <div class="submit-section">
+                            <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Edit Inventory Modal -->
+    <!-- Delete Department Modal -->
+    <div class="modal custom-modal fade" id="delete_invor" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="form-header">
+                        <h3>Delete Asset?</h3>
+                        <p>Are you sure want to delete this asset?</p>
+                    </div>
+                    <div class="modal-btn delete-action">
+                        <div class="row">
+                            <div class="col-6">
+                                <a href="javascript:void(0);" onclick="delete_office('true');"
+                                    class="btn btn-primary continue-btn">Delete</a>
+                            </div>
+                            <div class="col-6">
+                                <a href="javascript:void(0);" onclick="delete_office('false');" data-bs-dismiss="modal"
+                                    class="btn btn-primary cancel-btn">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Delete Department Modal -->
+
+    <!-- Report Modal -->
+    <div id="report" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Report</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="gen_report_form" action="invgenreport" method="post">
+                        <div class="row">
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Inventory Name <span
+                                            class="text-danger"></span></label>
+                                    <select class="form-control" name="inventory" id="repinventory"
+                                        style="width: 100%;">
+                                        <option value="">Select Inventory...</option>
+                                        {% for items in inventory %}
+                                        <option value="{{ items.inventory }}">{{ items.inventory }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Date (From)<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="cal-icon"><input class="form-control datetimepicker" type="text"
+                                                    name="from" id="from" required></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Date (To)<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="cal-icon"><input class="form-control datetimepicker" type="text"
+                                                    name="to" id="to" required></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
 
 
 
+                            <div class="col-sm-8">
 
-{% endblock %}
+                            </div>
 
-{% block jsscript %} 
 
-<!-- Datetimepicker JS -->
-<script src="assets/js/moment.min.js"></script>
-<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
-<!-- Datatable JS -->
-<script src="assets/js/jquery.dataTables.min.js"></script>
-<script src="assets/js/dataTables.bootstrap4.min.js"></script>
-<!-- Select 2 -->
-<script src="assets/backend/js/select2.full.min.js"></script>
 
-<script>
+                        </div>
+                        <input type="hidden" value="{{token}}" name="token">
+                        <input type="hidden" value="inventory" name="category">
 
-    view_profile = function(id){
-        //alert(id);
-            window.location.href = "profile/"+id;
-    }   
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Generate</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Report Modal -->
 
-    $(document).ready(
-        function() {
-            window.FakeLoader.init( { auto_hide: true } );
+    <!-- Qr code Modal -->
+    <div id="qr_modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+     background:rgba(0,0,0,0.6); justify-content:center; align-items:center;">
+
+        <div
+            style="background:#fff; padding:20px; border-radius:8px; max-width:400px; width:90%; text-align:center; position:relative;">
+
+            <button onclick="closeQRModal()"
+                style="position:absolute; top:10px; right:10px; border:none; background:none; font-size:18px; cursor:pointer;">
+                &times;
+            </button>
+
+            <h5>QR Code</h5>
+
+            <img id="qr_image" src="" style="width:200px; margin:20px 0;">
+
+            <br>
+
+            <button onclick="printQR()" class="btn btn-primary btn-sm">
+                Print QR
+            </button>
+
+        </div>
+    </div>
+
+    <!-- /Qr code Modal -->
+
+    {% endblock %}
+
+    {% block jsscript %}
+
+    <!-- Datetimepicker JS -->
+    <script src="assets/js/moment.min.js"></script>
+    <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+    <!-- Datatable JS -->
+    <script src="assets/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Select 2 -->
+    <script src="assets/backend/js/select2.full.min.js"></script>
+
+    <script>
+
+        view_profile = function (id) {
+            //alert(id);
+            window.location.href = "profile/" + id;
         }
-    );
 
-</script>
-<script>
-    // Show modal function
-function viewInventoryImage(uploadFileName) {
-    var modal = document.getElementById('view_inventory_modal');
-    var img = document.getElementById('inventory_modal_image');
+        $(document).ready(
+            function () {
+                window.FakeLoader.init({ auto_hide: true });
+            }
+        );
 
-    img.src = 'uploads/inventory/' + uploadFileName; // set the image
-    modal.style.display = 'flex'; // show modal
-}
+    </script>
+    <script>
+        // Show modal function
+        function viewInventoryImage(uploadFileName) {
+            var modal = document.getElementById('view_inventory_modal');
+            var img = document.getElementById('inventory_modal_image');
 
-// Close modal
-document.getElementById('close_inventory_modal').addEventListener('click', function() {
-    document.getElementById('view_inventory_modal').style.display = 'none';
-});
+            img.src = 'uploads/inventory/' + uploadFileName; // set the image
+            modal.style.display = 'flex'; // show modal
+        }
 
-// Optional: close modal when clicking outside the modal content
-document.getElementById('view_inventory_modal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        this.style.display = 'none';
-    }
-});
-
- $(document).ready(function() {
-        $('#repinventory').select2({
-            dropdownParent: $('#report'), 
-            placeholder: "Select Inventory",
-            allowClear: true
+        // Close modal
+        document.getElementById('close_inventory_modal').addEventListener('click', function () {
+            document.getElementById('view_inventory_modal').style.display = 'none';
         });
-    });
 
-</script>
+        // Optional: close modal when clicking outside the modal content
+        document.getElementById('view_inventory_modal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
 
-<script src="templates/backend/employee/inventory.js"></script>
+        $(document).ready(function () {
+            $('#repinventory').select2({
+                dropdownParent: $('#report'),
+                placeholder: "Select Inventory",
+                allowClear: true
+            });
+        });
+
+
+    </script>
+    <script>
+        function viewQR(id, name, serial) {
+            const modal = document.getElementById("qr_modal");
+            const img = document.getElementById("qr_image");
+
+            img.src = "/epms1/functions/generate_inventory_qr.php?id=" + id;
+            img.dataset.itemName = name || "";
+            img.dataset.itemSerial = serial || "";
+
+            modal.style.display = "flex";
+        }
+
+        function closeQRModal() {
+            document.getElementById("qr_modal").style.display = "none";
+        }
+
+        function printQR() {
+            const img = document.getElementById("qr_image");
+            const itemName = img.dataset.itemName || "Unnamed Item";
+            const itemSerial = img.dataset.itemSerial || "N/A";
+
+            fetch(img.src, { credentials: "omit" })
+                .then(res => res.blob())
+                .then(blob => {
+                    const objectURL = URL.createObjectURL(blob);
+
+                    const win = window.open('', '', 'width=600,height=250');
+                    win.document.write(`
+            <html>
+            <head>
+                <title>Print QR</title>
+                <style>
+                    @page {
+                        size: 90.3mm 29mm;
+                        margin: 0;
+                    }
+                    * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                        color-adjust: exact;
+                    }
+                    body {
+                        width: 90.3mm;
+                        height: 29mm;
+                        background: #fff;
+                        font-family: Arial, Helvetica, sans-serif;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: stretch;
+                        overflow: hidden;
+                    }
+
+                    /* ── Left: Black brand strip ── */
+                    .brand-strip {
+                        width: 6mm;
+                        background: #000 !important;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                    }
+                    .brand-strip span {
+                        color: #fff !important;
+                        font-size: 5.5pt;
+                        font-weight: bold;
+                        letter-spacing: 2.5px;
+                        writing-mode: vertical-rl;
+                        transform: rotate(180deg);
+                        white-space: nowrap;
+                    }
+
+                    /* ── QR Code section ── */
+                    .qr-section {
+                        width: 27mm;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 1mm;
+                        flex-shrink: 0;
+                    }
+                    .qr-wrap {
+                        border: 0.4mm solid #000;
+                        padding: 0.7mm;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background: #fff !important;
+                    }
+                    .qr-wrap img {
+                        width: 21mm;
+                        height: 21mm;
+                        display: block;
+                    }
+
+                    /* ── Text section ── */
+                    .text-section {
+                        flex: 1;
+                        min-width: 0;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        padding: 2mm 2.8mm;
+                        gap: 1.3mm;
+                        overflow: hidden;
+                    }
+                    .item-name {
+                        font-size: 7.5pt;
+                        font-weight: bold;
+                        color: #111;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 100%;
+                    }
+
+                    /* ── Serial number curved card ── */
+                    .serial-card {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 1mm;
+                        background: #111 !important;
+                        border-radius: 3mm 1mm 3mm 1mm;
+                        padding: 1mm 2.2mm;
+                        max-width: fit-content;
+                    }
+                    .serial-label {
+                        font-size: 4pt;
+                        color: #fff !important;
+                        letter-spacing: 0.6px;
+                       
+                        font-weight: bold;
+                    }
+                    .serial-value {
+                        font-size: 6.5pt;
+                        color: #fff !important;
+                        font-weight: bold;
+                        letter-spacing: 0.4px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    .site-url {
+                        font-size: 6pt;
+                        color: #000;
+                        letter-spacing: 0.3px;
+                        font-weight: 600;
+                        margin-top: 10px;
+                        text-align: center;
+                    }
+                    .footer-text {
+                        font-size: 6pt;
+                        color: #000;
+                        font-weight: 600;
+                        letter-spacing: 1.2px;
+                        text-transform: uppercase;
+                    
+                    }
+                </style>
+            </head>
+            <body>
+
+                <div class="brand-strip">
+                    <span>OAUGF</span>
+                </div>
+
+                <div class="qr-section">
+                    <div class="qr-wrap">
+                        <img src="${objectURL}" onload="window.print(); window.close();" />
+                    </div>
+                </div>
+
+                <div class="text-section">
+                <div class="footer-text">— OAUGF AMS —</div>
+                    <div class="item-name">${itemName}</div>
+                    <div class="serial-card">
+                        <span class="serial-label">Serial number:</span>
+                        <span class="serial-value">${itemSerial}</span>
+                    </div>
+                    <div class="site-url">www.oaugf.ng</div>
+                    
+                </div>
+
+            </body>
+            </html>
+        `);
+                    win.document.close();
+                })
+                .catch(err => {
+                    console.error("Failed to load QR image for printing:", err);
+                    alert("Could not load QR code for printing. Please try again.");
+                });
+        }
+    </script>
+
+
+    <script src="templates/backend/employee/inventory.js"></script>
 
 
 
 
-{% endblock %}
+    {% endblock %}

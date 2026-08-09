@@ -27,9 +27,12 @@ if(!empty($_FILES['upload']['name'])){
 // save to DB
 $inv = new Inventory();
 $inv->inventory = $_POST['inventory'];
-$inv->quantity  = $_POST['quantity'];
+$inv->serial_no  = $_POST['serial_no'];
+$inv->amount    = $_POST['amount'];
 $inv->status    = $_POST['status'];
 $inv->warranty  = $_POST['warranty'];
+$inv->life_span = $_POST['life_span'];
+$inv->category = $_POST['category'];
 $inv->date      = $_POST['date'];
 $inv->upload    = $upload;
 

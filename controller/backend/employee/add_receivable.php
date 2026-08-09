@@ -23,14 +23,7 @@ $uid = Session::get($sessionName);
 
 $user = new User();
 
-
-
-
-
 if($user->isLoggedIn() && Token::check(Input::get('token'))){
-
-
-    
 
     $upload      = 'null';
     $upload_status = '0';
@@ -42,42 +35,42 @@ if($user->isLoggedIn() && Token::check(Input::get('token'))){
             $file_name=null;
             $uploads = $_SERVER['DOCUMENT_ROOT']."/epms1/uploads/receive/";
 
-            if($_FILES){
-                $validextensions = array("jpg", "jpeg", "png");
-                $temporary  = explode(".", $_FILES["upload"]["name"]);            
-                $file_extension  = end($temporary);
-                    if ($_FILES["upload"]["error"] > 0) 
-                    {
-                       // echo "Return Code: " . $_FILES["passport"]["error"] . "<br/><br/>";
-                       $upload_status = '0';
-                    } else {
-                                $temporary          = explode(".", $_FILES["upload"]["name"]);
-                                $file_extension     = end($temporary);
-                                
-                                $file_name  = uniqid();
+        if($_FILES){
+            $validextensions = array("jpg", "jpeg", "png");
+            $temporary  = explode(".", $_FILES["upload"]["name"]);            
+            $file_extension  = end($temporary);
+            if ($_FILES["upload"]["error"] > 0) 
+            {
+                // echo "Return Code: " . $_FILES["passport"]["error"] . "<br/><br/>";
+                $upload_status = '0';
+            } else {
+                        $temporary          = explode(".", $_FILES["upload"]["name"]);
+                        $file_extension     = end($temporary);
+                        
+                        $file_name  = uniqid();
 
-                                if(move_uploaded_file($_FILES["upload"]["tmp_name"], $uploads.$file_name.'.'.$file_extension)) {
-                                    $upload = $file_name.'.'.$file_extension; 
-                                    $upload_status = '1';
-                                }         
-                        }
+                        if(move_uploaded_file($_FILES["upload"]["tmp_name"], $uploads.$file_name.'.'.$file_extension)) {
+                            $upload = $file_name.'.'.$file_extension; 
+                            $upload_status = '1';
+                        }         
+                }
             }
 
             /**
             * Upload Script Ends here 
             */
 
-    $id                         = uniqid();
-    $contract                   = Sanitize::sanitize(Input::get('contract'));
-    $contractor                 = Sanitize::sanitize(Input::get('contractor'));
-    $lot_number                 = Sanitize::sanitize(Input::get('lot_number'));
-    $status                     = Sanitize::sanitize(Input::get('status'));
-    $email                      = Sanitize::sanitize(Input::get('email'));
-    $phone_number               = Sanitize::sanitize(Input::get('phone_number'));
-    $date                       = Sanitize::sanitize(Input::get('date'));
-    $description                = Sanitize::sanitize(Input::get('description'));
-    
+        $id                         = uniqid();
+        $contract                   = Sanitize::sanitize(Input::get('contract'));
+        $contractor                 = Sanitize::sanitize(Input::get('contractor'));
+        $lot_number                 = Sanitize::sanitize(Input::get('lot_number'));
+        $status                     = Sanitize::sanitize(Input::get('status'));
+        $email                      = Sanitize::sanitize(Input::get('email'));
+        $phone_number               = Sanitize::sanitize(Input::get('phone_number'));
+        $date                       = Sanitize::sanitize(Input::get('date'));
+        $description                = Sanitize::sanitize(Input::get('description'));
         
+            
     if($upload_status == 1){
 
         $saved = Receiveable::create([

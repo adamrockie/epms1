@@ -5,11 +5,48 @@
  * API Routes
  */
 
-
 //Get a list of all inventory items
 $router->map('GET','/api_inventory',  function(  ) {
     require __DIR__ . '/controller/backend/api/api_inventory.php';
 } , 'api_inventory');
+
+
+// Receive POST inventory request from epms
+$router->map('POST', '/api_inventory_request',  function() {
+    require __DIR__ . '/controller/backend/api/api_inventory_request.php';
+}, 'api_inventory_request');
+
+// Get login staff inventory request
+$router->map('GET', '/api_my_requests', function() {
+    require __DIR__ . '/controller/backend/api/api_my_requests.php';
+}, 'api_my_requests');
+
+
+// Get login staff store update for request
+$router->map('GET', '/api_request_update', function() {
+    require __DIR__ . '/controller/backend/api/api_request_update.php';
+}, 'api_request_update');
+
+// Get Pending Approvals for AGF and Director
+$router->map('GET', '/api_pending_approval', function() {
+    require __DIR__ . '/controller/backend/api/api_pending_approval.php';
+}, 'api_pending_approval');
+
+// head of department reponse to staff item request from epms
+$router->map('POST', '/api_heads_response',  function() {
+    require __DIR__ . '/controller/backend/api/api_heads_response.php';
+}, 'api_heads_response');
+
+// staff delete request if not approved yet
+$router->map('POST', '/api_delete_request', function() {
+    require __DIR__ . '/controller/backend/api/api_delete_request.php';
+}, 'api_delete_request');
+
+
+// agf of department reponse to staff item request from epms
+$router->map('POST', '/api_agf_response',  function() {
+    require __DIR__ . '/controller/backend/api/api_agf_response.php';
+}, 'api_agf_response');
 
 
 //Get a staff current department
@@ -84,6 +121,14 @@ $router->map('GET','/api_doc/[*:id]',  function( $id ) {
     require __DIR__ . '/controller/backend/api/aapi_doc.php';
 } , 'aapi_doc');
 
+// procurement request
+$router->map('GET','/api_get_procurement_requests',  function(  ) {
+    require __DIR__ . '/controller/backend/api/api_get_procurement_requests.php';
+} , 'api_get_procurement_requests');
 
- 
+$router->map('POST', '/api_agf_procurement_response',  function() {
+    require __DIR__ . '/controller/backend/api/api_agf_procurement_response.php';
+}, 'api_agf_procurement_response');
+
+
 ?>

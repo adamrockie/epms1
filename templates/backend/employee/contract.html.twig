@@ -1,0 +1,273 @@
+{% extends "backend/patials/master.html" %}
+
+
+{% block title %} {{title}} {% endblock %}
+
+{% block headscripts %}
+
+<link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+<!-- Datatable CSS -->
+<link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+
+<style>
+    /* Preview */
+    .preview {
+        width: 100px;
+        height: 100px;
+        border: 1px solid black;
+        margin: 0 auto;
+        background: white;
+    }
+
+    .preview img {
+        display: none;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div id="fakeloader-overlay" class="visible incoming">
+    <div class="loader-wrapper-outer">
+        <div class="loader-wrapper-inner">
+            <div class="loader"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Page Content -->
+<div class="content container-fluid" id="mcontents">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Receivables</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Receivables</li>
+                </ul>
+            </div>
+        </div>
+        <div class="content container-fluid">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-handshake-o"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{tprojects}}</h3>
+                                <span>Total <br>Contracts</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-handshake-o"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{pending}}</h3>
+                                <span>Pending <br>Contracts</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card dash-widget">
+                        <div class="card-body">
+                            <span class="dash-widget-icon"><i class="fa fa-handshake-o"></i></span>
+                            <div class="dash-widget-info">
+                                <h3>{{completed}}</h3>
+                                <span>Completed <br>Contracts</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#receivable_report">
+                        <div class="card dash-widget">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="fa fa-book"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>***</h3>
+                                    <span>Generate Report</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table datatable" id="staff_table">
+                        <thead>
+                            <tr>
+
+                                <th>Contract Name</th>
+                                <th>Description</th>
+                                <th>Contractor</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Status</th>
+                                <th>Date Issued</th>
+                                <th>Documents</th>
+                                <th>Store Status</th>
+                                <th class="text-end no-sort">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for items in receiveable %}
+                            <tr>
+
+                                <td>{{items.contract}}</td>
+                                <td>{{items.description}}</td>
+                                <td>{{items.contractor}}</td>
+                                <td>{{items.email}}</td>
+                                <td>{{items.phone_number}}</td>
+                                <td>{{items.status}}</td>
+                                <td>{{items.date}}</td>
+                                <td>
+                                    <div class="action-icon d-inline-flex">
+                                        <a class="dropdown-item" href="/epms1/uploads/receive/{{ items.upload }}"
+                                            download="{{ items.upload }}">
+                                            <i class="fa fa-download m-r-5"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% set doc = items.documents|first %}
+                                    {% if doc %}
+                                    <span class="badge {{ doc.status == 'received' ? 'bg-success' : 'bg-warning' }}">
+                                        {{ doc.status|capitalize }}
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-end">
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                            aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#update_receivable"
+                                                onclick="open_update_receivable('{{items.id}}')"><i
+                                                    class="fa fa-upload m-r-5"></i> Update</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Content -->
+    <!-- Edit Employee Modal -->
+    <div id="update_receivable" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Receivable Status</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form_update_receivable" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">Receiving Status <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select select_update" name="received_status"
+                                        id="received_status" required>
+                                        <option value="">Select Status...</option>
+                                        <option value="received">Received</option>
+                                        <option value="not_received">Not Received</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">Upload Documents</label>
+                                    <input class="form-control" type="file" name="documents[]" id="update_documents"
+                                        multiple>
+                                    <small class="text-muted">You can select multiple files (JPG, PNG, PDF).</small>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12" id="existing_documents_list"></div>
+                        </div>
+
+                        <input type="hidden" value="{{token}}" name="token">
+                        <input type="hidden" name="receivable_id" id="update_receivable_id">
+
+                        <div class="submit-section">
+                            <button type="submit" class="btn btn-primary submit-btn">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Edit Employee Modal -->
+
+
+
+
+
+
+    {% endblock %}
+
+    {% block jsscript %}
+
+    <!-- Datetimepicker JS -->
+    <script src="assets/js/moment.min.js"></script>
+    <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+    <!-- Datatable JS -->
+    <script src="assets/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Select 2 -->
+    <script src="assets/backend/js/select2.full.min.js"></script>
+
+    <script>
+
+        view_profile = function (id) {
+            //alert(id);
+            window.location.href = "profile/" + id;
+        }
+
+        $(document).ready(
+            function () {
+                window.FakeLoader.init({ auto_hide: true });
+            }
+        );
+
+    </script>
+    <script> $(document).ready(function () {
+            $('#contractor_name').select2({
+                dropdownParent: $('#receivable_report'),
+                placeholder: "Select Contractor",
+                allowClear: true
+            });
+        });
+    </script>
+
+
+    <script src="templates/backend/employee/contract.js"></script>
+
+
+    {% endblock %}

@@ -75,6 +75,19 @@ if($user->isLoggedIn()){
     ->orderBy('category')
     ->pluck('category');
 
+    $item_type_summary = Inventory::selectRaw('item_type, COUNT(*) as total')
+    ->selectRaw("SUM(CASE WHEN status = 'issued' THEN 1 ELSE 0 END) as issued_count")
+    ->selectRaw("SUM(CASE WHEN status != 'issued' THEN 1 ELSE 0 END) as available_count")
+    ->groupBy('item_type')
+    ->orderBy('item_type')
+    ->get();
+
+    $item_types = Inventory::whereNotNull('item_type')
+    ->where('item_type', '!=', '')
+    ->selectRaw('DISTINCT item_type')
+    ->orderBy('item_type')
+    ->pluck('item_type');
+
     $issued         = count(Inventory::where('status', '=', 'issued')->get());
     $nissued        = count(Inventory::where('status', '=', 'Not Issued')->get());
     $all_item_requests = ItemRequests::with('staff')->get();
@@ -104,6 +117,8 @@ if($user->isLoggedIn()){
         'role'          => $role,
         'current_user'  => $current_user,  
         'categories' => $categories,    
+        'item_type_summary' => $item_type_summary,
+        'item_types'         => $item_types,
         ]);
 }else{
     Redirect::to('home');

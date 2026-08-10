@@ -30,6 +30,8 @@ if ($user->isLoggedIn()) {
     $status        = Sanitize::sanitize(Input::get('status'));
     $warranty       = Sanitize::sanitize(Input::get('warranty'));
     $life_span      = Sanitize::sanitize(Input::get('life_span'));
+    $item_type      = Sanitize::sanitize(Input::get('item_type'));
+    $category      = Sanitize::sanitize(Input::get('category'));
     $serial_no       = Sanitize::sanitize(Input::get('serial_no'));
     $date           = Sanitize::sanitize(Input::get('date'));
     $upload         = $record->upload; // default to existing image
@@ -63,6 +65,8 @@ if ($user->isLoggedIn()) {
             'status'           => $status,
             'warranty'          => $warranty,
             'life_span'         => $life_span,
+            'item_type'         => $item_type,
+            'category'         => $category,
             'serial_no'          => $serial_no,
             'date'              => $date,
             'upload'            => $upload,

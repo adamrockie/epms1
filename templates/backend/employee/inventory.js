@@ -74,7 +74,10 @@ $(document).ready(function () {
         $("#einventory").val(data.inventory);
         $("#eid").val(data.id);
         $("#cstatus").val(data.status).attr("selected", "selected").change();
-
+        $("#eitem_type")
+          .val(data.item_type)
+          .attr("selected", "selected")
+          .change();
         $("#ewarranty")
           .val(data.warranty)
           .attr("selected", "selected")
@@ -85,6 +88,7 @@ $(document).ready(function () {
         $("#eamount").val(data.amount).toString();
         $("#elife_span").val(data.life_span).toString();
         $("#eitem_type").val(data.item_type).toString();
+        $("#ecategory").val(data.category).toString();
         $("#eupload").val(data.upload);
       },
     });

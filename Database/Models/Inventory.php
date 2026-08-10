@@ -21,7 +21,7 @@ class Inventory extends Model
     * @var array
     */
     protected $fillable = [
-        'id','inventoryid', 'inventory', 'amount', 'status', 'warranty', 'life_span', 'serial_no', 'date', 'upload', 
+        'id','inventoryid', 'inventory', 'item_type', 'category', 'amount', 'status', 'warranty', 'life_span', 'serial_no', 'date', 'upload', 
         'created_at', 'updated_at', 'deleted_at'
     ];
 

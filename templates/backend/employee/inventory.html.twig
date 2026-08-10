@@ -93,8 +93,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                     <a href="request" class="text-decoration-none">
                         <div class="card dash-widget requests-card">
@@ -129,35 +127,60 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-md-12 col-lg-6 col-xl-3">
-                    <div class="card dash-widget category-summary-card">
-                        <div class="card-body">
-                            <h6 class="mb-3"><i class="fa fa-th-large m-r-5"></i> Assets by Type</h6>
-                            {% for cat in inventory_summary %}
-                            <div class="d-flex justify-content-between align-items-center category-row">
-                                <span class="category-name">{{ cat.category }}</span>
-                                <div class="category-stats">
-                                    <span class="badge bg-secondary">{{ cat.total }}</span>
-                                    <span class="badge bg-danger">{{ cat.issued_count }} out</span>
-                                    <span class="badge bg-success">{{ cat.available_count }} avail</span>
+
+
+                <div class="row">
+                    {# Left Stack Column: Assets by Category + Generate Report #}
+                    <div class="col-md-12 col-lg-6 col-xl-3 d-flex flex-column gap-3">
+                        {# Top Card #}
+                        <div class="card dash-widget category-summary-card mb-0">
+                            <div class="card-body">
+                                <h6 class="mb-3"><i class="fa fa-th-large m-r-5"></i> Assets by Category</h6>
+                                {% for type in item_type_summary %}
+                                <div class="d-flex justify-content-between align-items-center category-row">
+                                    <span class="category-name">{{ type.item_type }}</span>
+                                    <div class="category-stats">
+                                        <span class="badge bg-secondary">{{ type.total }}</span>
+                                        <span class="badge bg-danger">{{ type.issued_count }} out</span>
+                                        <span class="badge bg-success">{{ type.available_count }} avail</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        {# Bottom Card #}
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#report" class="text-decoration-none">
+                            <div class="card dash-widget mb-0">
+                                <div class="card-body">
+                                    <span class="dash-widget-icon"><i class="fa fa-book"></i></span>
+                                    <div class="dash-widget-info">
+                                        <h3>***</h3>
+                                        <span>Generate Report</span>
+                                    </div>
                                 </div>
                             </div>
-                            {% endfor %}
+                        </a>
+                    </div>
+
+                    {# Right Column: Assets by Type #}
+                    <div class="col-md-12 col-lg-6 col-xl-3">
+                        <div class="card dash-widget category-summary-card  mb-0">
+                            <div class="card-body">
+                                <h6 class="mb-3"><i class="fa fa-th-large m-r-5"></i> Assets by Type</h6>
+                                {% for cat in inventory_summary %}
+                                <div class="d-flex justify-content-between align-items-center category-row">
+                                    <span class="category-name">{{ cat.category }}</span>
+                                    <div class="category-stats">
+                                        <span class="badge bg-secondary">{{ cat.total }}</span>
+                                        <span class="badge bg-danger">{{ cat.issued_count }} out</span>
+                                        <span class="badge bg-success">{{ cat.available_count }} avail</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#report">
-                        <div class="card dash-widget">
-                            <div class="card-body">
-                                <span class="dash-widget-icon"><i class="fa fa-book"></i></span>
-                                <div class="dash-widget-info">
-                                    <h3>***</h3>
-                                    <span>Generate Report</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
                 </div>
             </div>
         </div>
@@ -178,6 +201,8 @@
                                 <th>Status</th>
                                 <th>Date</th>
                                 <th>Image</th>
+                                <th>Item type</th>
+                                <th>Category</th>
                                 <th class="text-end no-sort">Action</th>
                             </tr>
                         </thead>
@@ -205,6 +230,8 @@
                                         </a>
                                     </div>
                                 </td>
+                                <td>{{items.category}}</td>
+                                <td>{{items.item_type}}</td>
                                 <td class="text-end">
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"

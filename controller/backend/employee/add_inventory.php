@@ -33,9 +33,9 @@ $inv->status    = $_POST['status'];
 $inv->warranty  = $_POST['warranty'];
 $inv->life_span = $_POST['life_span'];
 $inv->category = $_POST['category'];
+$inv->item_type = $_POST['item_type'];
 $inv->date      = $_POST['date'];
 $inv->upload    = $upload;
-
 if ($inv->save()) {
     echo json_encode([
         "status" => "success",
